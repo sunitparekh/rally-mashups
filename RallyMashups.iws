@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="b1a0723c-48f5-4e79-aced-eb869246e042" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scrum_board.html" afterPath="$PROJECT_DIR$/src/scrum_board.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RallyMashups.iws" afterPath="$PROJECT_DIR$/RallyMashups.iws" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/README" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="RallyMashups.iws" />
@@ -63,10 +63,19 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="scrum_board.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="scrum_board.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scrum_board.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="121" column="0" selection-start="3774" selection-end="3774" vertical-scroll-proportion="-1.6759002">
+            <state line="121" column="0" selection-start="3774" selection-end="3774" vertical-scroll-proportion="63.68421">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="31" column="0" selection-start="1805" selection-end="1805" vertical-scroll-proportion="0.5020243">
               <folding />
             </state>
           </provider>
@@ -84,6 +93,7 @@
       <list>
         <option value="$PROJECT_DIR$/src/drag_n_drop_swimlanes.html" />
         <option value="$PROJECT_DIR$/src/scrum_board.html" />
+        <option value="$PROJECT_DIR$/README" />
       </list>
     </option>
   </component>
@@ -125,7 +135,38 @@
       <pane id="Favorites" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
-        <subPane />
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RallyMashups" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RallyMashups" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RallyMashups" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RallyMashups" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RallyMashups" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
       <pane id="Scope" />
     </panes>
@@ -346,7 +387,14 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/scrum_board.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="0" selection-start="3774" selection-end="3774" vertical-scroll-proportion="-1.6759002">
+        <state line="121" column="0" selection-start="3774" selection-end="3774" vertical-scroll-proportion="63.68421">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="0" selection-start="1805" selection-end="1805" vertical-scroll-proportion="0.5020243">
           <folding />
         </state>
       </provider>
