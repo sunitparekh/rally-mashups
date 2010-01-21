@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="https://3.66.79.175//slm/js-lib/dojo/1.3.1/dojo/dojo.js"></script>
+    <script type="text/javascript" src="https://3.66.79.175//slm/mashup/1.14/js/batch-toolkit.js"></script>
+    <script type="text/javascript" src="https://3.66.79.175//slm/mashup/1.14/js/utilities.js"></script>
+    <script type="text/javascript" src="https://3.66.79.175//slm/mashup/1.14/js/dropdown.js"></script>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+
+    <style type="text/css">
+        .scrum-board {
+            height: 700px;
+        }
+
+        .swimlane {
+            width: 150px;
+            border-right: 2px solid;
+            float: left;
+            height: 700px;
+        }
+
+        .swimlane .name, .swimlane .swimlane-total {
+            height: 30px;
+            text-align: center;
+            padding: 5px 5px;
+        }
+
+        .card {
+            width: 135px;
+            margin: 5px 5px;
+            border: solid 1px black;
+            border-left-width: 5px;
+            font-size: 0.7em;
+        }
+
+        .story {
+            border-left-color: blue;
+        }
+
+        .defect {
+            border-left-color: red;
+        }
+
+        .card .number {
+            text-align: left;
+            width: 85px;
+            background: #B5D8EB;
+            padding: 1px 5px;
+            float: left;
+        }
+
+        .card .estimate {
+            text-align: right;
+            width: 30px;
+            background: #B5D8EB;
+            padding: 1px 5px;
+            float: right;
+        }
+
+        .card .owner {
+            background: #B5D8EB;
+            padding: 1px 5px;
+        }
+
+        .card .state {
+            background: #ffcccc;
+            padding: 1px 5px;
+        }
+
+        .card .header {
+            clear: both;
+        }
+
+        .card .title {
+            padding: 2px 5px;
+        }
+
+        .yui-dd-drop-over {
+            background-color: #FFA928;
+        }
+    </style>
+</head>
+<body>
+<div id="filters">
+    <form action="#">
+        <div id="iterationLabel" style="float:left"></div>
+        <div style="float:left">: &nbsp;
+            <select id="iterationList"></select>
+        </div>
+    </form>
+</div>
+<div style="clear:both;">&nbsp;</div>
+<div id="scrum-board" class="scrum-board"></div>
+
+<script type="text/javascript">
+    YUI().use('dd','io','json', function(Y) {
+
+        var kanbanToScheduleStateMapping = new Array(10);
+
+        function loadMappings() {
+            kanbanToScheduleStateMapping['Defined'] = "Backlog";
+            kanbanToScheduleStateMapping['Prioritised'] = "Backlog";
+            kanbanToScheduleStateMapping['In Analysis'] = "Backlog";
+            kanbanToScheduleStateMapping['Ready For Development'] = "Defined";
+            kanbanToScheduleStateMapping['In Development'] = "In-Progress";
+            kanbanToScheduleStateMapping['Ready For Code Review'] = "In-Progress";
+            kanbanToScheduleStateMapping['In Code Review'] = "In-Progress";
+            kanbanToScheduleStateMapping['Ready For Test'] = "In-Progress";
+            kanbanToScheduleStateMapping['In Test'] = "In-Progress";
+            kanbanToScheduleStateMapping['Ready For Acceptance'] = "Completed";
+            kanbanToScheduleStateMapping['Accepted'] = "Accepted";
+        }
+
+        function loadSwimlanes() {
+            loadMappings();
+
+            var swimlanes = Y.Array(['In Analysis','Ready For Development','In Development','Ready For Code Review','In Code Review','Ready For Test','In Test','Ready For Acceptance','Accepted']);
+//            var swimlanes = Y.Array(['Defined','Prioritised','In Analysis','Ready For Development','In Development','Ready For Code Review','In Code Review','Ready For Test','In Test','Ready For Acceptance','Accepted']);
+//            var swimlanes = Y.Array(['Backlog','Defined','In-Progress','Completed','Accepted']);
+            var scrumBoard = Y.one('#scrum-board');
+            scrumBoard.setContent('<div></div>');
+
+            Y.each(swimlanes, function(value, index, array) {
+                scrumBoard.append(createSwimlane(value));    
+            });
+
+        }
+
+        function createSwimlane(swimlane) {
+            return '<div id="' + swimlaneId(swimlane) + '" class="swimlane">' +
+                   '<div class="name">' + swimlane + '</div>' +
+                   '<div id="' + swimlaneTotalId(swimlane) + '" class="swimlane-total">0</div>' +
+                   '</div>';
+        }
+
+        function swimlaneId(swimlane){
+           return swimlane.replace(/ /g,'-');
+        }
+
+        function swimlaneFromId(swimlaneId){
+           return swimlaneId.replace(/-/g,' ');
+        }
+
+        function swimlaneTotalId(swimlane){
+            return swimlaneId(swimlane) + "-Total";    
+        }
+
+        var iterationDropdown;
+        var batchToolkit;
+
+        function runMainQuery() {
+            var queryArr = [];
+
+            var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState";
+            queryArr[0] =
+            {
+                key: 'defects',
+                type: 'defect',
+                fetch: fields,
+                order: "Rank",
+                query: "(Iteration.Name = " + "\"" + iterationDropdown.getSelectedName() + "\")"
+            };
+
+            queryArr[1] =
+            {
+                key: "stories",
+                type: "hierarchicalrequirement",
+                fetch: fields,
+                order: "Rank",
+                query: "(Iteration.Name = " + "\"" + iterationDropdown.getSelectedName() + "\")"
+            };
+
+            batchToolkit.findAll(queryArr, loadCards);
+        }
+
+        function initPage() {
+            batchToolkit = new RALLY.Mashup.BatchToolkit('__WORKSPACE_OID__', '__PROJECT_OID__',
+                    '__PROJECT_SCOPING_UP__', '__PROJECT_SCOPING_DOWN__');
+
+            iterationDropdown = new RALLY.Mashup.Dropdown(batchToolkit, RALLY.Mashup.ITERATION,
+                    'iterationList', 'iterationLabel', 'mu_iteration_status');
+            iterationDropdown.invoke(runMainQuery);
+        }
+
+        function loadCards(results) {
+            loadSwimlanes();
+            
+            loadCardsOfType(results.defects, 'defect', 'Defect');
+            loadCardsOfType(results.stories, 'story', 'HierarchicalRequirement');
+
+            applyDragNDrop();
+        }
+
+        function loadCardsOfType(cards, type, rallyType) {
+            for (var cardIndex = 0; cardIndex < cards.length; cardIndex++) {
+                placeCard(cards[cardIndex]['KanbanState'], createCard(cards[cardIndex], type, rallyType), cards[cardIndex]['PlanEstimate']);
+            }
+        }
+
+        function createCard(card, type, rallyType) {
+            var cardEstimate = card['PlanEstimate'] != null ? card['PlanEstimate'] : '&nbsp;';
+            return '<div id="' + card['ObjectID'] + '" class="card ' + type + '"><input type="hidden" class="rallyType" name="rallyType" value="' + rallyType + '" />' +
+                           '<div class="header"><div class="number">' + card['FormattedID'] + '</div><div class="estimate">' + cardEstimate + '</div></div>' +
+                           '<div class="title">' + card['Name'] + '</div>' +
+                           '<div class="state">' + card['ScheduleState'] + '</div>' +
+                           '<div class="owner">' + cardOwner(card['Owner']) + '</div>' +
+                           '</div>';
+        }
+
+        function cardOwner(owner){
+            return owner.substring(0,owner.indexOf("."));
+        }
+
+        function placeCard(swimlane, cardHtml, estimate) {
+            if (swimlane == null) return; // this happens if KanbanState value is NULL
+            var swimlaneElement = Y.one('#' + swimlaneId(swimlane));
+            if (swimlaneElement == null) return; // in case if the swimlane if not defined on the screen
+            swimlaneElement.append(cardHtml);
+            updateSwimlaneTotalEstimate(swimlane,  estimate);
+        }
+
+        function applyDragNDrop() {
+            Y.all('.card').plug(Y.Plugin.Drag);
+
+            Y.Node.all('.swimlane').each(function(swimlane, index) {
+                swimlane.plug(Y.Plugin.Drop);
+                swimlane.drop.on('drop:hit', function(element) {
+                    var card = element.drag.get('node');
+                    var swimlane = element.drop.get('node');
+                    updateCardState(card, swimlane);
+                });
+            });
+        }
+
+        function updateCardState(card, swimlane) {
+            var rallyType = Y.one('.rallyType', card).get('value');
+            var swimlaneName = swimlaneFromId(swimlane.get('id'));
+            var dataAsJSON = '{"' + rallyType + '": { "KanbanState" : "' + swimlaneName + '" , "ScheduleState" : "' + kanbanToScheduleStateMapping[swimlaneName] + '"}}';
+            var changeStatePostUrl = 'https://3.66.79.175/slm/webservice/1.14/' + rallyType + '/' + card.get('id') + ".js";
+            var changeStatePostConfig = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                data: dataAsJSON,
+                on: {
+                    success: updateStateSuccessful,
+                    failure: updateStateFailed
+                }
+            };
+
+            Y.io(changeStatePostUrl, changeStatePostConfig);
+        }
+
+        function updateStateSuccessful(ioId, o) {
+//            alert('Successfully updated state. \n Response:' + o.responseText);
+            runMainQuery();
+        }
+
+        function updateStateFailed(ioId, o) {
+            alert('Failed updating state. \n Response:' + o.responseText);
+            runMainQuery();
+        }
+
+        function updateSwimlaneTotalEstimate(swimlane, estimate) {
+            if (estimate == null || estimate == 0) return;
+            
+            var element = document.getElementById(swimlaneTotalId(swimlane));
+            element.innerHTML = parseInt(element.innerHTML,10) + estimate;
+        }
+
+
+        initPage();
+    });
+</script>
+
+</body>
+</html>
