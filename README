@@ -1,31 +1,3 @@
-I am planning to host all my Rally Mashups here, so its easy to share and provide updates to users. This Mashups are purely HTML files and doesn't contain any company specific data. Please read the comments written on top in mashup file for specific installation steps.
+Read more about RALLY mashps on wiki pages.
 
-h1. # 1 Scrum Board
-
-h3. Features
-# Swimlanes based on Kanban state (not first two due to screen size limitation)
-# Darg 'n' Drop feature to move cards from one state to another. It also updates the respective RALLY scheduled state. Mapping is right there in Custom Mashup.
-# Defects are with RED border and User Stories are with BLUE border.
-# ID, Esimate, Title/Name, Owner and Schedule State are show as card details.
-# Total Estimate in Story Points is shows in Swimlane header.
-# User can select different sprint from the dropdown menu.
-
-Download "Scrum Board Rally Mashup":http://github.com/sunitparekh/rally-mashups/raw/master/src/scrum_board.html
-
-h2. How to add custom mashup in RALLY?
-# Goto Track tab, in second level menu there is + (plus) sign at the end. Click on that
-# Popup window will show up
-# Choose Custom Mashup option in that and copy/past the HTML code from following link, give name 'Scrum Board' and click on 'Save & Close'
-# Done
-
-h2. Happy to hear your feedback.
-
-"Report Issues, New Feature Request or New Mashup Request":http://github.com/sunitparekh/rally-mashups/issues
-# Report defects in mashup and record them as issues. Vote existing defects that will help me to fix them first.
-# Go through current issues and please vote feature you want in mahsup. Add comments if required.
-# Create new issues for features and new mashup request and tag them appropriately. This will help me
-
-h2. RoadMap
-
-Planning to release update every week what ever I fix so please come and watch this space every Monday.
-
+http://wiki.github.com/sunitparekh/rally-mashups/
