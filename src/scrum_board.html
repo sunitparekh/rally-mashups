@@ -1,5 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+    Customise your view:
+    1. Don't want to see more swimlanes?
+       remove from the 'swimlanes' array on line # 136
+
+    2. Want to change the width of the page.
+       goto line # 21
+
+-->
 <html>
 <head>
     <title></title>
@@ -13,6 +22,7 @@
     <style type="text/css">
         .scrum-board {
             height: 700px;
+            width: 1700px;
         }
 
         .swimlane {
@@ -127,7 +137,7 @@
         function loadSwimlanes() {
             loadMappings();
 
-            var swimlanes = Y.Array(['In Analysis','Ready For Development','In Development','Ready For Code Review','In Code Review','Ready For Test','In Test','Ready For Acceptance','Accepted']);
+            var swimlanes = Y.Array(['Defined','Prioritised','In Analysis','Ready For Development','In Development','Ready For Code Review','In Code Review','Ready For Test','In Test','Ready For Acceptance','Accepted']);
             var scrumBoard = Y.one('#scrum-board');
             scrumBoard.setContent('<div></div>');
 
