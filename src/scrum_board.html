@@ -3,10 +3,10 @@
 <html>
 <head>
     <title></title>
-    <script type="text/javascript" src="https://3.66.79.175//slm/js-lib/dojo/1.3.1/dojo/dojo.js"></script>
-    <script type="text/javascript" src="https://3.66.79.175//slm/mashup/1.14/js/batch-toolkit.js"></script>
-    <script type="text/javascript" src="https://3.66.79.175//slm/mashup/1.14/js/utilities.js"></script>
-    <script type="text/javascript" src="https://3.66.79.175//slm/mashup/1.14/js/dropdown.js"></script>
+    <script type="text/javascript" src="/slm/js-lib/dojo/1.3.1/dojo/dojo.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/batch-toolkit.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/utilities.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/dropdown.js"></script>
 
     <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 
@@ -28,6 +28,10 @@
             padding: 5px 5px;
         }
 
+        .swimlane .swimlane-total {
+            color: green;
+        }
+
         .card {
             width: 135px;
             margin: 5px 5px;
@@ -41,7 +45,7 @@
         }
 
         .defect {
-            border-left-color: red;
+            border-left-color: orange;
         }
 
         .card .number {
@@ -76,6 +80,12 @@
 
         .card .title {
             padding: 2px 5px;
+        }
+
+        .blocked-true {
+            border-top: solid 5px red;
+            border-right: solid 5px red;
+            border-bottom: solid 5px red;
         }
 
         .yui-dd-drop-over {
@@ -130,7 +140,7 @@
         function createSwimlane(swimlane) {
             return '<div id="' + swimlaneId(swimlane) + '" class="swimlane">' +
                    '<div class="name">' + swimlane + '</div>' +
-                   '<div id="' + swimlaneTotalId(swimlane) + '" class="swimlane-total">0</div>' +
+                   '<div class="swimlane-total"><span id="' + swimlaneTotalId(swimlane) + '">0</span> pts</div>' +
                    '</div>';
         }
 
@@ -152,7 +162,7 @@
         function runMainQuery() {
             var queryArr = [];
 
-            var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState";
+            var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked";
             queryArr[0] =
             {
                 key: 'defects',
@@ -200,7 +210,7 @@
 
         function createCard(card, type, rallyType) {
             var cardEstimate = card['PlanEstimate'] != null ? card['PlanEstimate'] : '&nbsp;';
-            return '<div id="' + card['ObjectID'] + '" class="card ' + type + '"><input type="hidden" class="rallyType" name="rallyType" value="' + rallyType + '" />' +
+            return '<div id="' + card['ObjectID'] + '" class="card ' + type + ' blocked-' + card['Blocked'] + ' "><input type="hidden" class="rallyType" name="rallyType" value="' + rallyType + '" />' +
                            '<div class="header"><div class="number">' + card['FormattedID'] + '</div><div class="estimate">' + cardEstimate + '</div></div>' +
                            '<div class="title">' + card['Name'] + '</div>' +
                            '<div class="state">' + card['ScheduleState'] + '</div>' +
@@ -237,7 +247,7 @@
             var rallyType = Y.one('.rallyType', card).get('value');
             var swimlaneName = swimlaneFromId(swimlane.get('id'));
             var dataAsJSON = '{"' + rallyType + '": { "KanbanState" : "' + swimlaneName + '" , "ScheduleState" : "' + kanbanToScheduleStateMapping[swimlaneName] + '"}}';
-            var changeStatePostUrl = 'https://3.66.79.175/slm/webservice/1.14/' + rallyType + '/' + card.get('id') + ".js";
+            var changeStatePostUrl = '/slm/webservice/1.14/' + rallyType + '/' + card.get('id') + ".js";
             var changeStatePostConfig = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json; charset=utf-8' },
