@@ -1,9 +1,17 @@
 Read more about RALLY mashps on wiki pages.
-
 http://wiki.github.com/sunitparekh/rally-mashups/
 
-Next Release v0.6 (Date: TBD)
-* Open card in edit mode on click
+Rally Mashups developed by sUnit, ThoughtWorks Inc.
+
+v0.6 (Date: 2 Feb 2010)
+New Features
+* Undefined swimlane added for card not having KanbanState value (http://github.com/sunitparekh/rally-mashups/issues#issue/4)
+* Clicking on Rally User Story # and Defect # opens card in edit mode similar to other rally pages, also refreshes scrum board on save (http://github.com/sunitparekh/rally-mashups/issues#issue/3)
+* Better owner naming with cookies for caching since webservice calls are very slow (http://github.com/sunitparekh/rally-mashups/issues#issue/10)
+* Tahoma font used inplace of default font since Tahoma looks better in small font size (http://github.com/sunitparekh/rally-mashups/issues#issue/12)
+* Truncated the story name to 70 char (approx 3 lines) for better visibility (http://github.com/sunitparekh/rally-mashups/issues#issue/11)
+Defects Fixed
+* card state doesn't get updated due sometime due to inappropriate rally type def (http://github.com/sunitparekh/rally-mashups/issues/closed#issue/18 & http://github.com/sunitparekh/rally-mashups/issues/closed#issue/9)
 
 v0.5.2 (Date: 22 Jan 2009)
 * fixed IE6 issue with width

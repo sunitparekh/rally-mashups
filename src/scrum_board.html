@@ -7,11 +7,11 @@
 
     2. Want to change the width of the page.
        goto line # 21
-
 -->
 <html>
 <head>
     <title></title>
+    <script charset="utf-8" src="/slm/pack/combined.js.h-1314550004.pack" type="text/javascript"></script>
     <script type="text/javascript" src="/slm/js-lib/dojo/1.3.1/dojo/dojo.js"></script>
     <script type="text/javascript" src="/slm/mashup/1.14/js/batch-toolkit.js"></script>
     <script type="text/javascript" src="/slm/mashup/1.14/js/utilities.js"></script>
@@ -30,8 +30,12 @@
             color: red;
         }
 
+        .version {
+            text-decoration: none;
+        }
+
         .filter {
-            margin-bottom: 5px;    
+            margin-bottom: 5px;
         }
 
         .clear {
@@ -121,7 +125,7 @@
 </head>
 <body>
 <div class="global">
-    <div >
+    <div style="float:left">
         <form action="#">
             <div id="iterationLabel" style="float:left"></div>
             <div class="filter" style="float:left">: &nbsp;
@@ -129,10 +133,13 @@
             </div>
         </form>
     </div>
+    <div style="float:right"><a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">v0.6</a></div>
     <div id="scrum-board" class="scrum-board clear"></div>
 </div>
 <script type="text/javascript">
-    YUI().use('dd','io','json', function(Y) {
+    var YahooUI = YUI().use('dd','io','json','node','cookie', function(Y) {
+
+        Y.namespace('MashupsApp');
 
         var kanbanToScheduleStateMapping = new Array(10);
 
@@ -159,7 +166,7 @@
             scrumBoard.setContent('<div></div>');
 
             Y.each(swimlanes, function(value, index, array) {
-                scrumBoard.append(createSwimlane(value));    
+                scrumBoard.append(createSwimlane(value));
             });
 
         }
@@ -180,13 +187,13 @@
         }
 
         function swimlaneTotalId(swimlane){
-            return swimlaneId(swimlane) + "-Total";    
+            return swimlaneId(swimlane) + "-Total";
         }
 
         var iterationDropdown;
         var batchToolkit;
 
-        function runMainQuery() {
+        Y.MashupsApp.runMainQuery = function () {
             var queryArr = [];
 
             var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked";
@@ -217,12 +224,12 @@
 
             iterationDropdown = new RALLY.Mashup.Dropdown(batchToolkit, RALLY.Mashup.ITERATION,
                     'iterationList', 'iterationLabel', 'mu_iteration_status');
-            iterationDropdown.invoke(runMainQuery);
+            iterationDropdown.invoke(Y.MashupsApp.runMainQuery);
         }
 
         function loadCards(results) {
             loadSwimlanes();
-            
+
             loadCardsOfType(results.defects, 'defect', 'Defect');
             loadCardsOfType(results.stories, 'story', 'HierarchicalRequirement');
 
@@ -237,15 +244,21 @@
 
         function createCard(card, type, rallyType) {
             var cardEstimate = card['PlanEstimate'] != null ? card['PlanEstimate'] : '&nbsp;';
-            return '<div id="' + card['ObjectID'] + '" class="card ' + type + ' blocked-' + card['Blocked'] + ' "><input type="hidden" class="rallyType" name="rallyType" value="' + rallyType + '" />' +
-                           '<div class="header"><div class="number">' + card['FormattedID'] + '</div><div class="estimate">' + cardEstimate + '</div></div>' +
-                           '<div class="title">' + card['Name'] + '</div>' +
+            var cardId = card['ObjectID'];
+            return '<div id="' + cardId + '" class="card ' + type + ' blocked-' + card['Blocked'] + ' "><input id="' + cardRallyTypeId(cardId) + '" type="hidden" class="rallyType" name="rallyType" value="' + rallyType + '" />' +
+                           '<div class="header"><div class="number"><a href="#" onclick="editCard(' + cardId + ',\'' + rallyType + '\');" >' + card['FormattedID'] + '</a></div><div class="estimate">' + cardEstimate + '</div></div>' +
+                           '<div class="title">' + truncateTitle(card['Name']) + '</div>' +
                            '<div class="state">' + card['ScheduleState'] + '</div>' +
-                           '<div id="' + cardOwnerId(card['ObjectID']) + '" class="owner">' + cardOwner(card['Owner'], card['ObjectID']) + '</div>' +
+                           '<div id="' + cardOwnerId(cardId) + '" class="owner">' + cardOwner(card['Owner'], cardId) + '</div>' +
                            '</div>';
         }
 
         function cardOwner(owner, cardObjectId){
+            var ownerNameFromCookie = Y.Cookie.get("email-"+owner);
+            if (ownerNameFromCookie != null) {
+                return ownerNameFromCookie;
+            }
+
             updateUserFromEmailAddress(owner, cardObjectId);
             return owner.substring(0,owner.indexOf("."));
         }
@@ -272,9 +285,10 @@
         }
 
         function updateCardState(card, swimlane) {
-            var rallyType = Y.one('.rallyType', card).get('value');
+            var rallyType = document.getElementById(cardRallyTypeId(card.get('id'))).value;
             var swimlaneName = swimlaneFromId(swimlane.get('id'));
             var dataAsJSON = '{"' + rallyType + '": { "KanbanState" : "' + swimlaneName + '" , "ScheduleState" : "' + kanbanToScheduleStateMapping[swimlaneName] + '"}}';
+//            alert(dataAsJSON + " for RallyType " + rallyType);
             var changeStatePostUrl = '/slm/webservice/1.14/' + rallyType + '/' + card.get('id') + ".js";
             var changeStatePostConfig = {
                 method: 'POST',
@@ -290,18 +304,21 @@
         }
 
         function updateStateSuccessful(ioId, o) {
-//            alert('Successfully updated state. \n Response:' + o.responseText);
-            runMainQuery();
+            var response = Y.JSON.parse(o.responseText);
+            if (response['OperationResult']['Errors'].length > 0) {
+                alert('Failed updating state. \n Response:' + o.responseText);
+            }
+            Y.MashupsApp.runMainQuery();
         }
 
         function updateStateFailed(ioId, o) {
             alert('Failed updating state. \n Response:' + o.responseText);
-            runMainQuery();
+            Y.MashupsApp.runMainQuery();
         }
 
         function updateSwimlaneTotalEstimate(swimlane, estimate) {
             if (estimate == null || estimate == 0) return;
-            
+
             var element = document.getElementById(swimlaneTotalId(swimlane));
             element.innerHTML = parseInt(element.innerHTML,10) + estimate;
         }
@@ -313,14 +330,18 @@
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json; charset=utf-8' },
                 on: {
-                    success: function (x, o, cardId){
+                    success: function (x, o, args){
+                        var ownerName = args[1];
                         var response = Y.JSON.parse(o.responseText);
-                        var ownerName = response['QueryResult']['Results'][0]['_refObjectName'];
-                        var element = document.getElementById(cardOwnerId(cardId));
-                        element.innerHTML = ownerName;
+                        var ownerObject = response['QueryResult']['Results'][0];
+                        if (ownerObject != null) {
+                            ownerName = ownerObject['_refObjectName'];
+                            Y.Cookie.set("email-" + args[1], ownerName);
+                        }
+                        document.getElementById(cardOwnerId(args[0])).innerHTML = ownerName;
                     }
                 },
-                arguments: cardObjectId 
+                arguments: [cardObjectId, email]
             };
 
             Y.io(changeStatePostUrl, changeStatePostConfig);
@@ -330,8 +351,30 @@
             return cardId + '-owner';
         }
 
+        function cardRallyTypeId(cardId) {
+            return cardId + '-rallyId';
+        }
+
+        function truncateTitle(title) {
+            if (title.length <= 70) return title;
+            return title.substring(0,70) + '...';
+        }
+
         initPage();
     });
+
+    function editCard(cardId, rallyCardType){
+        if (rallyCardType == 'HierarchicalRequirement') rallyCardType = "Hierarchical Requirement";
+        var url = '/slm/awp/edit.sp?oid=' + cardId +  '&typeDefName=' + rallyCardType +  '';
+        popup(url, 800, 600, 'littleN');
+        return false;
+    }
+
+    function refreshWindow(url, cardNumber, cardTitle, flag1, flag2, flag3){
+        YahooUI.MashupsApp.runMainQuery();
+    }
+
+
 </script>
 
 </body>
