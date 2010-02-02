@@ -20,22 +20,38 @@
     <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 
     <style type="text/css">
+        .global {
+            font-family: tahoma,arial,verdana,geneva,sans-serif;
+            font-size: 0.7em;
+            height: 1000px;
+        }
+
+        #Undefined .name{
+            color: red;
+        }
+
+        .filter {
+            margin-bottom: 5px;    
+        }
+
+        .clear {
+            clear:both;
+        }
+
         .scrum-board {
-            height: 700px;
             width: 1900px;
+            height: 1000px;
         }
 
         .swimlane {
             width: 150px;
             border-right: 2px solid;
             float: left;
-            height: 700px;
+            height: 1000px;
         }
 
         .swimlane .name, .swimlane .swimlane-total {
-            height: 30px;
             text-align: center;
-            padding: 5px 5px;
         }
 
         .swimlane .swimlane-total {
@@ -47,7 +63,7 @@
             margin: 5px 5px;
             border: solid 1px black;
             border-left-width: 5px;
-            font-size: 0.7em;
+            font-size: 0.9em;
         }
 
         .story {
@@ -104,23 +120,24 @@
     </style>
 </head>
 <body>
-<div id="filters">
-    <form action="#">
-        <div id="iterationLabel" style="float:left"></div>
-        <div style="float:left">: &nbsp;
-            <select id="iterationList"></select>
-        </div>
-    </form>
+<div class="global">
+    <div >
+        <form action="#">
+            <div id="iterationLabel" style="float:left"></div>
+            <div class="filter" style="float:left">: &nbsp;
+                <select id="iterationList"></select>
+            </div>
+        </form>
+    </div>
+    <div id="scrum-board" class="scrum-board clear"></div>
 </div>
-<div style="clear:both;">&nbsp;</div>
-<div id="scrum-board" class="scrum-board"></div>
-
 <script type="text/javascript">
     YUI().use('dd','io','json', function(Y) {
 
         var kanbanToScheduleStateMapping = new Array(10);
 
         function loadMappings() {
+            kanbanToScheduleStateMapping['Undefined'] = "Backlog";
             kanbanToScheduleStateMapping['Defined'] = "Backlog";
             kanbanToScheduleStateMapping['Prioritised'] = "Backlog";
             kanbanToScheduleStateMapping['In Analysis'] = "Backlog";
@@ -137,7 +154,7 @@
         function loadSwimlanes() {
             loadMappings();
 
-            var swimlanes = Y.Array(['Defined','Prioritised','In Analysis','Ready For Development','In Development','Ready For Code Review','In Code Review','Ready For Test','In Test','Ready For Acceptance','Accepted']);
+            var swimlanes = Y.Array(['Undefined','Defined','Prioritised','In Analysis','Ready For Development','In Development','Ready For Code Review','In Code Review','Ready For Test','In Test','Ready For Acceptance','Accepted']);
             var scrumBoard = Y.one('#scrum-board');
             scrumBoard.setContent('<div></div>');
 
@@ -224,16 +241,17 @@
                            '<div class="header"><div class="number">' + card['FormattedID'] + '</div><div class="estimate">' + cardEstimate + '</div></div>' +
                            '<div class="title">' + card['Name'] + '</div>' +
                            '<div class="state">' + card['ScheduleState'] + '</div>' +
-                           '<div class="owner">' + cardOwner(card['Owner']) + '</div>' +
+                           '<div id="' + cardOwnerId(card['ObjectID']) + '" class="owner">' + cardOwner(card['Owner'], card['ObjectID']) + '</div>' +
                            '</div>';
         }
 
-        function cardOwner(owner){
+        function cardOwner(owner, cardObjectId){
+            updateUserFromEmailAddress(owner, cardObjectId);
             return owner.substring(0,owner.indexOf("."));
         }
 
         function placeCard(swimlane, cardHtml, estimate) {
-            if (swimlane == null) return; // this happens if KanbanState value is NULL
+            if (swimlane == null) swimlane = 'Undefined'; // this happens if KanbanState value is NULL
             var swimlaneElement = Y.one('#' + swimlaneId(swimlane));
             if (swimlaneElement == null) return; // in case if the swimlane if not defined on the screen
             swimlaneElement.append(cardHtml);
@@ -288,6 +306,29 @@
             element.innerHTML = parseInt(element.innerHTML,10) + estimate;
         }
 
+        function updateUserFromEmailAddress(email, cardObjectId){
+            if (email == null) return;
+            var changeStatePostUrl = '/slm/webservice/1.14/user.js?query=(EmailAddress = ' + email + ' )';
+            var changeStatePostConfig = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                on: {
+                    success: function (x, o, cardId){
+                        var response = Y.JSON.parse(o.responseText);
+                        var ownerName = response['QueryResult']['Results'][0]['_refObjectName'];
+                        var element = document.getElementById(cardOwnerId(cardId));
+                        element.innerHTML = ownerName;
+                    }
+                },
+                arguments: cardObjectId 
+            };
+
+            Y.io(changeStatePostUrl, changeStatePostConfig);
+        }
+
+        function cardOwnerId(cardId) {
+            return cardId + '-owner';
+        }
 
         initPage();
     });
