@@ -3,6 +3,11 @@ http://wiki.github.com/sunitparekh/rally-mashups/
 
 Rally Mashups developed by sUnit, ThoughtWorks Inc.
 
+v0.7 (Edge/Under Development release, Date: TBD)
+New Features
+* Usability: improved Rally Scheduled State, Estimate and Blocked state visibility
+
+
 v0.6 (Date: 2 Feb 2010)
 New Features
 * Undefined swimlane added for card not having KanbanState value (http://github.com/sunitparekh/rally-mashups/issues#issue/4)

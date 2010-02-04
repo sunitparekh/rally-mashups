@@ -21,8 +21,8 @@
 
     <style type="text/css">
         .global {
-            font-family: tahoma,arial,verdana,geneva,sans-serif;
-            font-size: 0.7em;
+            font-family: arial,verdana,geneva,sans-serif;
+            font-size: 0.75em;
             height: 1000px;
         }
 
@@ -64,10 +64,11 @@
 
         .card {
             width: 135px;
-            margin: 5px 5px;
+            margin: 10px 5px;
             border: solid 1px black;
             border-left-width: 5px;
             font-size: 0.9em;
+            overflow: hidden;
         }
 
         .story {
@@ -87,20 +88,26 @@
         }
 
         .card .estimate {
-            text-align: right;
-            width: 30px;
-            background: #B5D8EB;
-            padding: 1px 5px;
-            float: right;
-        }
-
-        .card .owner {
-            background: #B5D8EB;
-            padding: 1px 5px;
+            background: gray;
+            color: white;
+            width: 15px;
+            padding: 1px 3px;
+            float: left;
+            text-align:center;
         }
 
         .card .state {
-            background: #ccffcc;
+            width: 15px;
+            background: #006600;
+            color: white;
+            float: left;
+            padding: 1px 2px;
+            text-align:center;
+        }
+
+
+        .card .owner {
+            background: #B5D8EB;
             padding: 1px 5px;
         }
 
@@ -112,10 +119,8 @@
             padding: 2px 5px;
         }
 
-        .blocked-true {
-            border-top: solid 5px red;
-            border-right: solid 5px red;
-            border-bottom: solid 5px red;
+        .card .blocked-true {
+            background: red;
         }
 
         .yui-dd-drop-over {
@@ -133,7 +138,7 @@
             </div>
         </form>
     </div>
-    <div style="float:right"><a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">v0.6</a></div>
+    <div style="float:right"><a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">Scrum Board v0.6</a></div>
     <div id="scrum-board" class="scrum-board clear"></div>
 </div>
 <script type="text/javascript">
@@ -245,12 +250,23 @@
         function createCard(card, type, rallyType) {
             var cardEstimate = card['PlanEstimate'] != null ? card['PlanEstimate'] : '&nbsp;';
             var cardId = card['ObjectID'];
-            return '<div id="' + cardId + '" class="card ' + type + ' blocked-' + card['Blocked'] + ' "><input id="' + cardRallyTypeId(cardId) + '" type="hidden" class="rallyType" name="rallyType" value="' + rallyType + '" />' +
-                           '<div class="header"><div class="number"><a href="#" onclick="editCard(' + cardId + ',\'' + rallyType + '\');" >' + card['FormattedID'] + '</a></div><div class="estimate">' + cardEstimate + '</div></div>' +
+            return '<div id="' + cardId + '" class="card ' + type  + ' "><input id="' + cardRallyTypeId(cardId) + '" type="hidden" class="rallyType" name="rallyType" value="' + rallyType + '" />' +
+                           '<div class="header"><div class="number"><a href="#" onclick="editCard(' + cardId + ',\'' + rallyType + '\');" >' + card['FormattedID'] + '</a></div><div class="estimate">' + cardEstimate + '</div>' +
+                           '<div class="state' + ' blocked-' + card['Blocked'] + '">' + scheduleStateChar(card['ScheduleState']) + '</div></div>' +
                            '<div class="title">' + truncateTitle(card['Name']) + '</div>' +
-                           '<div class="state">' + card['ScheduleState'] + '</div>' +
                            '<div id="' + cardOwnerId(cardId) + '" class="owner">' + cardOwner(card['Owner'], cardId) + '</div>' +
                            '</div>';
+        }
+
+        function scheduleStateChar(state) {
+            switch (state) {
+                case 'Backlog': return 'B';
+                case 'Defined': return 'D';
+                case 'In-Progress': return 'P';
+                case 'Completed': return 'C';
+                case 'Accepted': return 'A';
+            }
+
         }
 
         function cardOwner(owner, cardObjectId){
