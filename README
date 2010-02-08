@@ -1,14 +1,14 @@
 Read more about RALLY mashps on wiki pages.
 http://wiki.github.com/sunitparekh/rally-mashups/
 
-Rally Mashups developed by sUnit, ThoughtWorks Inc.
+=== Rally Mashups developed by sUnit, ThoughtWorks Inc.
 
-v0.7 (Edge/Under Development release, Date: TBD)
+== v0.7 (Edge/Under Development release, Date: TBD)
 New Features
 * Usability: improved Rally Scheduled State, Estimate and Blocked state visibility
 
 
-v0.6 (Date: 2 Feb 2010)
+== v0.6 (Date: 2 Feb 2010)
 New Features
 * Undefined swimlane added for card not having KanbanState value (http://github.com/sunitparekh/rally-mashups/issues#issue/4)
 * Clicking on Rally User Story # and Defect # opens card in edit mode similar to other rally pages, also refreshes scrum board on save (http://github.com/sunitparekh/rally-mashups/issues#issue/3)
@@ -18,13 +18,13 @@ New Features
 Defects Fixed
 * card state doesn't get updated due sometime due to inappropriate rally type def (http://github.com/sunitparekh/rally-mashups/issues/closed#issue/18 & http://github.com/sunitparekh/rally-mashups/issues/closed#issue/9)
 
-v0.5.2 (Date: 22 Jan 2009)
+== v0.5.2 (Date: 22 Jan 2009)
 * fixed IE6 issue with width
 
-v0.5.1 (Date: 22 Jan 2009)
+== v0.5.1 (Date: 22 Jan 2009)
 * quick width fixes for low resolution screens
 
 
-v0.5 (Date: 22 Jan 2009)
+== v0.5 (Date: 22 Jan 2009)
 * Scrum Board mash-up first release
 
