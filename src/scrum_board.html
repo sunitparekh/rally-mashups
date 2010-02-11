@@ -1,13 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<!--
-    Customise your view:
-    1. Don't want to see more swimlanes?
-       remove from the 'swimlanes' array on line # 136
-
-    2. Want to change the width of the page.
-       goto line # 21
--->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <title></title>
@@ -48,10 +39,16 @@
         }
 
         .swimlane {
+            margin-top:10px;
             width: 150px;
             border-right: 2px solid;
             float: left;
             height: 1000px;
+        }
+
+        .swimlane .hideunhide {
+            padding-right: 10px;
+            text-align: right;
         }
 
         .swimlane .name, .swimlane .swimlane-total {
@@ -64,7 +61,7 @@
 
         .card {
             width: 135px;
-            margin: 10px 5px;
+            margin: 5px 5px;
             border: solid 1px black;
             border-left-width: 5px;
             font-size: 0.9em;
@@ -123,13 +120,17 @@
             background: red;
         }
 
+        #actionMenu {
+            margin-left: 20px;
+        }
+
         .yui-dd-drop-over {
             background-color: #FFA928;
         }
     </style>
 </head>
 <body>
-<div class="global">
+<div class="global yui-skin-sam">
     <div style="float:left">
         <form action="#">
             <div id="iterationLabel" style="float:left"></div>
@@ -138,15 +139,45 @@
             </div>
         </form>
     </div>
-    <div style="float:right"><a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">Scrum Board v0.6</a></div>
+    <div style="float:left;" id="actionMenu" class="yui-menu yui-menu-horizontal yui-menubuttonnav">
+        <div class="yui-menu-content"><!-- Content box -->
+        <ul class="first-of-type">
+            <li>
+                <a class="yui-menu-label" href="#show-swimlane"><em>Show Swimlane</em></a>
+                <div id="show-swimlane" class="yui-menu">
+                    <div class="yui-menu-content">
+                        <ul id="showSwimlaneActions">
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a class="yui-menu-label" href="#hide-swimlane"><em>Hide Swimnlane</em></a>
+                <div id="hide-swimlane" class="yui-menu">
+                    <div class="yui-menu-content">
+                        <ul id="hideSwimlaneActions">
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        </div>
+    </div>
+    <div style="float:right">
+        <a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">Scrum Board v0.7</a>
+    </div>
     <div id="scrum-board" class="scrum-board clear"></div>
 </div>
 <script type="text/javascript">
-    var YahooUI = YUI().use('dd','io','json','node','cookie', function(Y) {
+var YahooUI = YUI().use('dd','io','json','node','cookie','node-menunav', function(Y) {
 
         Y.namespace('MashupsApp');
 
+        Y.MashupsApp.cookieSwimlanes = 'swimlanes';
+        Y.MashupsApp.cookieHide = 'hide';
+
         var kanbanToScheduleStateMapping = new Array(10);
+        var swimlanes = Y.Array(['Undefined','Defined','Prioritised','In Analysis','Ready For Development','In Development','Ready For Code Review','In Code Review','Ready For Test','In Test','Ready For Acceptance','Accepted']);
 
         function loadMappings() {
             kanbanToScheduleStateMapping['Undefined'] = "Backlog";
@@ -166,7 +197,6 @@
         function loadSwimlanes() {
             loadMappings();
 
-            var swimlanes = Y.Array(['Undefined','Defined','Prioritised','In Analysis','Ready For Development','In Development','Ready For Code Review','In Code Review','Ready For Test','In Test','Ready For Acceptance','Accepted']);
             var scrumBoard = Y.one('#scrum-board');
             scrumBoard.setContent('<div></div>');
 
@@ -239,6 +269,42 @@
             loadCardsOfType(results.stories, 'story', 'HierarchicalRequirement');
 
             applyDragNDrop();
+
+            loadActionMenu();
+        }
+
+        function loadActionMenu(){
+            addShowHideMenuActions();
+            hideSwimlanes();
+
+            var menu = Y.one("#actionMenu");
+            menu.plug(Y.Plugin.NodeMenuNav);
+            menu.get("ownerDocument").get("documentElement").removeClass("yui-loading");
+        }
+
+        function addShowHideMenuActions() {
+            var showSwimlaneActions = Y.one('#showSwimlaneActions');
+            var hideSwimlaneActions = Y.one('#hideSwimlaneActions');
+            Y.each(swimlanes, function(swimlane, index, array) {
+                var showSwimlaneAction = '<li class="yui-menuitem"><a class="yui-menuitem-content" href="#" onclick="showSwimlane(\'' + swimlaneId(swimlane) + '\')">' + swimlane + '</a></li>';
+                var hideSwimlaneAction = '<li class="yui-menuitem"><a class="yui-menuitem-content" href="#" onclick="hideSwimlane(\'' + swimlaneId(swimlane) + '\')">' + swimlane + '</a></li>';
+                if (index == 0) {
+                    showSwimlaneActions.setContent(showSwimlaneAction);
+                    hideSwimlaneActions.setContent(hideSwimlaneAction);
+
+                } else {
+                    showSwimlaneActions.append(showSwimlaneAction);
+                    hideSwimlaneActions.append(hideSwimlaneAction);
+                }
+            });
+        }
+
+        function hideSwimlanes() {
+            var swimlanesToHide = Y.Cookie.getSubs(Y.MashupsApp.cookieSwimlanes);
+            if (swimlanesToHide == null) return;
+            Y.each(swimlanes, function(swimlane, index, array) {
+                if (swimlanesToHide[swimlaneId(swimlane)] == Y.MashupsApp.cookieHide) { hideSwimlane(swimlaneId(swimlane)); }
+            });
         }
 
         function loadCardsOfType(cards, type, rallyType) {
@@ -270,7 +336,7 @@
         }
 
         function cardOwner(owner, cardObjectId){
-            var ownerNameFromCookie = Y.Cookie.get("email-"+owner);
+            var ownerNameFromCookie = Y.Cookie.getSub("email-name",owner);
             if (ownerNameFromCookie != null) {
                 return ownerNameFromCookie;
             }
@@ -352,7 +418,7 @@
                         var ownerObject = response['QueryResult']['Results'][0];
                         if (ownerObject != null) {
                             ownerName = ownerObject['_refObjectName'];
-                            Y.Cookie.set("email-" + args[1], ownerName);
+                            Y.Cookie.setSub("email-name", args[1], ownerName , { expires: new Date("January 12, 2025") });
                         }
                         document.getElementById(cardOwnerId(args[0])).innerHTML = ownerName;
                     }
@@ -383,6 +449,18 @@
         if (rallyCardType == 'HierarchicalRequirement') rallyCardType = "Hierarchical Requirement";
         var url = '/slm/awp/edit.sp?oid=' + cardId +  '&typeDefName=' + rallyCardType +  '';
         popup(url, 800, 600, 'littleN');
+        return false;
+    }
+
+    function hideSwimlane(swimlaneId){
+        document.getElementById(swimlaneId).style.display = 'none';
+        YahooUI.Cookie.setSub(YahooUI.MashupsApp.cookieSwimlanes,swimlaneId,YahooUI.MashupsApp.cookieHide, { expires: new Date("January 12, 2025") });
+        return false;
+    }
+
+    function showSwimlane(swimlaneId){
+        document.getElementById(swimlaneId).style.display = 'block';
+        YahooUI.Cookie.removeSub(YahooUI.MashupsApp.cookieSwimlanes,swimlaneId, { removeIfEmpty: true });
         return false;
     }
 

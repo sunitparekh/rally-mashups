@@ -2,19 +2,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Simple Testing Example</title>
-
-    <style type="text/css">
-            /*margin and padding on body element
-          can introduce errors in determining
-          element position and are not recommended;
-          we turn them off as a foundation for YUI
-          CSS treatments. */
-        body {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    <title>Mashups Test Runner Page - with FireUnit</title>
 
     <script type="text/javascript" src="../lib/yui.js"></script>
     <script type="text/javascript" src="../lib/test-fireunit.js"></script>
@@ -22,53 +10,17 @@
     <script type="text/javascript" src="test-suite.js"></script>
     <script type="text/javascript" src="card-tests.js"></script>
 
-    <!--begin custom header content for this example-->
-    <style type="text/css">
-        #testLogger {
-            margin-bottom: 1em;
-        }
-
-        #testLogger .yui-console .yui-console-title {
-            border: 0 none;
-            color: #000;
-            font-size: 13px;
-            font-weight: bold;
-            margin: 0;
-            text-transform: none;
-        }
-
-        #testLogger .yui-console .yui-console-entry-meta {
-            margin: 0;
-        }
-
-        .yui-skin-sam .yui-console-entry-pass .yui-console-entry-cat {
-            background: #070;
-            color: #fff;
-        }
-
-        .yui-skin-sam .yui-console-entry-fail .yui-console-entry-cat {
-            background: #cc0000;
-            color: #fff;
-        }
-
-    </style>
-
 </head>
+<body>
 
-<body class=" yui-skin-sam">
+<div></div>
 
-<div id="testLogger"></div>
 <script type="text/javascript">
     YUI().use('test-fireunit', 'test', 'test-suite', function (Y) {
-
         Y.FireUnit.attach(Y.Test.Runner);
         Y.Test.Runner.add(Y.Mashups.Suite.ExampleSuite);
         Y.Test.Runner.run();
-
     });
 </script>
-
-
 </body>
 </html>
-<!-- p3.ydn.re1.yahoo.com compressed/chunked Fri Feb  5 04:52:04 PST 2010 --> 

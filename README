@@ -6,7 +6,9 @@ http://wiki.github.com/sunitparekh/rally-mashups/
 == v0.7 (Edge/Under Development release, Date: TBD)
 New Features
 * Usability: improved Rally Scheduled State, Estimate and Blocked state visibility
-
+New Features
+* Now user can show/hide swimlanes on the ScrumBoard. (http://github.com/sunitparekh/rally-mashups/issues#issue/16)
+Notes: Uses cookies to remember hidden swimlanes on sessino reload. Applicable to all projects.
 
 == v0.6 (Date: 2 Feb 2010)
 New Features

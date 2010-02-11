@@ -1,0 +1,745 @@
+{"QueryResult": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "Errors": [], "Warnings": [], "TotalResultCount": 16, "StartIndex": 1, "PageSize": 20, "Results": [
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/321905964.js",
+        "_objectVersion": "9",
+        "_refObjectName": "Sprint 0",
+        "CreationDate": "2009-05-06T13:01:54.000Z",
+        "_CreatedAt": "May 6, 2009",
+        "ObjectID": 321905964,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-06-11T23:59:59.000Z",
+        "Name": "Sprint 0",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/321905965.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-01-01T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "<p><strong>Not a real sprint.<br \/><\/strong>This simply matches Release 0<\/p>",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/321912026.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/321847655.js",
+        "_objectVersion": "11",
+        "_refObjectName": "R1 - Sprint 1",
+        "CreationDate": "2009-03-30T11:28:17.000Z",
+        "_CreatedAt": "Mar 30, 2009",
+        "ObjectID": 321847655,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-06-25T23:59:59.000Z",
+        "Name": "R1 - Sprint 1",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/321847656.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-06-15T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "<p>First real sprint. Only 2 weeks long. Main purpose is to get get into the rhythm of real agile devlopment.<\/p>",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322014260.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322014262.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/321986621.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322020041.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322019753.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322026574.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322019342.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322020644.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322026013.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/321847651.js",
+        "_objectVersion": "18",
+        "_refObjectName": "R1 - Sprint 2",
+        "CreationDate": "2009-03-30T11:27:30.000Z",
+        "_CreatedAt": "Mar 30, 2009",
+        "ObjectID": 321847651,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-07-09T23:59:59.000Z",
+        "Name": "R1 - Sprint 2",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/321847652.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-06-29T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "<p>Like Sprint 1, just 2 weeks long. Priary focus is to learn what we need to do in a hardening sprint. If the hardening does not take all our effort, we will slip in some real development work.<br \/><strong>NOTE: Currently, this sprint contains MUCH more than can be achieved in the time<\/strong>. This is because of the late addition of high priority LCS stories. This is a temporary situation; untouched user stories will be rolled forward.<\/p>",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322014264.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322051686.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322020046.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322049549.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322054866.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322056219.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322070373.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322047030.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322049757.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322050105.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/321847658.js",
+        "_objectVersion": "11",
+        "_refObjectName": "R2 - Sprint 3",
+        "CreationDate": "2009-03-30T11:29:02.000Z",
+        "_CreatedAt": "Mar 30, 2009",
+        "ObjectID": 321847658,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-07-31T23:59:59.000Z",
+        "Name": "R2 - Sprint 3",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/321847659.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-07-13T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "First sprint of Release 2. Also the first 3 week sprint (as we intend all future sprints to be). Main theme is completing Elm Phase Completion left-overs.",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322088756.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322092482.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322092484.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322092489.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322092491.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322101862.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322088827.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322092486.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/321847661.js",
+        "_objectVersion": "15",
+        "_refObjectName": "R2 - Sprint 4",
+        "CreationDate": "2009-03-30T11:29:41.000Z",
+        "_CreatedAt": "Mar 30, 2009",
+        "ObjectID": 321847661,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-08-21T23:59:59.000Z",
+        "Name": "R2 - Sprint 4",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/321847662.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-08-03T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "<p>The main theme of this sprint is to get the implementation of Related Designs under way.<br \/><strong>NOTE - this&nbsp;Sprint was greatly curtailed&nbsp; due to a huge impact from vacations and training courses<\/strong><\/p>",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322196155.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322183318.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322183650.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322183073.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322195608.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322196161.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322196163.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322196165.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/322100029.js",
+        "_objectVersion": "6",
+        "_refObjectName": "R2 - Sprint 5",
+        "CreationDate": "2009-07-14T08:33:56.000Z",
+        "_CreatedAt": "Jul 14, 2009",
+        "ObjectID": 322100029,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-09-10T23:59:59.000Z",
+        "Name": "R2 - Sprint 5",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/322100030.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-08-24T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "The main theme for Sprint 5 is the substantial completion of Related Designs functionality, so that only minimal development work is required in Sprint 6 in order for it to be demonstrable at the US User Conference in mid-October.",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322259049.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322282479.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322278346.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322272852.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322272997.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322278333.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322278416.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/322100034.js",
+        "_objectVersion": "9",
+        "_refObjectName": "R2 - Sprint 6",
+        "CreationDate": "2009-07-14T08:34:54.000Z",
+        "_CreatedAt": "Jul 14, 2009",
+        "ObjectID": 322100034,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-10-01T23:59:59.000Z",
+        "Name": "R2 - Sprint 6",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/322100035.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-09-14T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "<p>Last sprint of Release 2.&nbsp;Main objective is a fully installable working system that can be immediately shipped to the USA for the Americas User Conference in Phoenix 2 weeks later. May be characterised principally as a hardening sprint - this will be decided during Sprint 5.<\/p>",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322522959.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322400044.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322401635.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322399653.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322563060.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322560433.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322356581.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/322202966.js",
+        "_objectVersion": "6",
+        "_refObjectName": "R3 - Sprint 7",
+        "CreationDate": "2009-08-06T13:14:24.000Z",
+        "_CreatedAt": "Aug 6, 2009",
+        "ObjectID": 322202966,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-10-23T23:59:59.000Z",
+        "Name": "R3 - Sprint 7",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/322202967.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-10-05T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "The first sprint of Release 3.",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322820073.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322821043.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322904340.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322827389.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322828329.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322830983.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322821943.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/322833202.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/322261636.js",
+        "_objectVersion": "10",
+        "_refObjectName": "R3 - Sprint 8",
+        "CreationDate": "2009-08-20T11:48:05.000Z",
+        "_CreatedAt": "Aug 20, 2009",
+        "ObjectID": 322261636,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-11-27T23:59:59.000Z",
+        "Name": "R3 - Sprint 8",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": 17.0,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/322261637.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-11-16T00:00:00.000Z",
+        "State": "Accepted",
+        "Theme": "FIRST SPRINT OF THE \"NEW REGIEME\" - 2 WEEK SPRINTS, AND STORY POINTS ONLY REPRESENT DEVELOPER EFFORT",
+        "UserIterationCapacities": [
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/324167858.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/324400195.js",
+                "_type": "UserIterationCapacity"
+            },
+            {
+                "_rallyAPIMajor": "1",
+                "_rallyAPIMinor": "14",
+                "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/useriterationcapacity\/324259272.js",
+                "_type": "UserIterationCapacity"
+            }
+        ],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/322295254.js",
+        "_objectVersion": "3",
+        "_refObjectName": "R3 - Sprint 9",
+        "CreationDate": "2009-08-28T08:45:51.000Z",
+        "_CreatedAt": "Aug 28, 2009",
+        "ObjectID": 322295254,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-12-11T23:59:59.000Z",
+        "Name": "R3 - Sprint 9",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/322295255.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-11-30T00:00:00.000Z",
+        "State": "Committed",
+        "Theme": "",
+        "UserIterationCapacities": [],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/324426453.js",
+        "_objectVersion": "1",
+        "_refObjectName": "R3 - Sprint 10",
+        "CreationDate": "2009-11-30T09:33:43.000Z",
+        "_CreatedAt": "Nov 30, 2009",
+        "ObjectID": 324426453,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2009-12-25T23:59:59.000Z",
+        "Name": "R3 - Sprint 10",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/324426454.js", "_type": "RevisionHistory"},
+        "StartDate": "2009-12-14T00:00:00.000Z",
+        "State": "Planning",
+        "Theme": "",
+        "UserIterationCapacities": [],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/324569039.js",
+        "_objectVersion": "3",
+        "_refObjectName": "R4 - Sprint 11",
+        "CreationDate": "2009-12-07T11:47:41.000Z",
+        "_CreatedAt": "Dec 7, 2009",
+        "ObjectID": 324569039,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2010-01-15T23:59:59.000Z",
+        "Name": "R4 - Sprint 11",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/324569040.js", "_type": "RevisionHistory"},
+        "StartDate": "2010-01-04T00:00:00.000Z",
+        "State": "Planning",
+        "Theme": "First sprint of Internal Release 4",
+        "UserIterationCapacities": [],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/324574142.js",
+        "_objectVersion": "1",
+        "_refObjectName": "R4 - Sprint 12",
+        "CreationDate": "2009-12-07T14:52:10.000Z",
+        "_CreatedAt": "Dec 7, 2009",
+        "ObjectID": 324574142,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2010-01-29T23:59:59.000Z",
+        "Name": "R4 - Sprint 12",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/324574143.js", "_type": "RevisionHistory"},
+        "StartDate": "2010-01-18T00:00:00.000Z",
+        "State": "Planning",
+        "Theme": "",
+        "UserIterationCapacities": [],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/325139287.js",
+        "_objectVersion": "1",
+        "_refObjectName": "R4 - Sprint 13",
+        "CreationDate": "2010-01-18T07:51:32.000Z",
+        "_CreatedAt": "Jan 18",
+        "ObjectID": 325139287,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2010-02-12T23:59:59.000Z",
+        "Name": "R4 - Sprint 13",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/325139288.js", "_type": "RevisionHistory"},
+        "StartDate": "2010-02-01T00:00:00.000Z",
+        "State": "Planning",
+        "Theme": "",
+        "UserIterationCapacities": [],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/325139306.js",
+        "_objectVersion": "1",
+        "_refObjectName": "R4 - Sprint 14",
+        "CreationDate": "2010-01-18T07:53:35.000Z",
+        "_CreatedAt": "Jan 18",
+        "ObjectID": 325139306,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2010-02-26T23:59:59.000Z",
+        "Name": "R4 - Sprint 14",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/325139307.js", "_type": "RevisionHistory"},
+        "StartDate": "2010-02-15T00:00:00.000Z",
+        "State": "Planning",
+        "Theme": "",
+        "UserIterationCapacities": [],
+        "_type": "Iteration"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/iteration\/325139321.js",
+        "_objectVersion": "1",
+        "_refObjectName": "R4 - Sprint 15",
+        "CreationDate": "2010-01-18T07:54:15.000Z",
+        "_CreatedAt": "Jan 18",
+        "ObjectID": 325139321,
+        "Subscription": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/subscription\/128266604.js", "_refObjectName": "ge_energy", "_type": "Subscription"},
+        "Workspace": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/workspace\/128266607.js", "_refObjectName": "SSG Software", "_type": "Workspace"},
+        "EndDate": "2010-03-12T23:59:59.000Z",
+        "Name": "R4 - Sprint 15",
+        "Notes": "",
+        "Project": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/project\/321826629.js", "_refObjectName": "Design Manager", "_type": "Project"},
+        "Resources": null,
+        "RevisionHistory": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/revisionhistory\/325139322.js", "_type": "RevisionHistory"},
+        "StartDate": "2010-03-01T00:00:00.000Z",
+        "State": "Planning",
+        "Theme": "",
+        "UserIterationCapacities": [],
+        "_type": "Iteration"
+    }
+]}}

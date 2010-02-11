@@ -1,0 +1,16 @@
+fetch all the defects in an iteration:
+/slm/webservice/1.14/defect.js?query=(Iteration.ObjectID = "325139287")&fetch=true&order=Rank&start=1&pagesize=100
+
+ fetch all iterations for the project:
+/slm/webservice/1.14/iteration.js?query=(Project.ObjectID = "321826629")&fetch=true&order=StartDate&start=1&pagesize=100
+/slm/webservice/1.14/iteration.js?query=(Project.Name = "Design Manager")&fetch=true&order=StartDate&start=1&pagesize=100
+/slm/webservice/1.14/iteration.js?query=(Project.ObjectID = "__PROJECT_OID__")&fetch=true&order=StartDate&start=1&pagesize=100
+
+
+fetch current user object
+https://3.66.79.175/slm/webservice/1.14/user.js
+
+fetch current user profile where the default project is mentioned
+https://3.66.79.175/slm/webservice/1.14/userprofile/322906577?stylesheet=/slm/doc/webservice/browser.xsl
+
+

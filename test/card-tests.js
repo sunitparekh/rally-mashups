@@ -2,6 +2,9 @@ YUI.add('card-tests', function(Y) {
 
     Y.namespace('Mashups.Tests');
 
+    Y.Mashups.Tests.Data.Stories = new Array();
+    Y.Mashups.Tests.Data.Defects = new Array();
+
     Y.Mashups.Tests.CardTests = new Y.Test.Case({
         name : "Card Tests",
 
@@ -23,6 +26,11 @@ YUI.add('card-tests', function(Y) {
 
         'should fail' : function () {
             Y.Assert.fail();
+        },
+
+        'should be able to return the Kanban state' : function() {
+            var story = new Y.Mashups.Stroy();
+            
         }
     })
 }, '0.6', {requires: ['test','mashups-card']});
