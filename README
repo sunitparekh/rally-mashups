@@ -6,6 +6,10 @@ http://wiki.github.com/sunitparekh/rally-mashups/
 == v0.8 (Edge Under Development Release, Date: TBD)
 http://github.com/sunitparekh/rally-mashups/issues/labels/In%20Progress
 
+== v0.7.1 (Date: 15 Feb 2010)
+Defects Fixed
+* fixed defect related to owner field empty reported by Andy
+
 == v0.7 (Date: 11 Feb 2010)
 New Features
 * Usability: improved Rally Scheduled State, Estimate and Blocked State display
