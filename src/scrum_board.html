@@ -336,6 +336,7 @@ var YahooUI = YUI().use('dd','io','json','node','cookie','node-menunav', functio
         }
 
         function cardOwner(owner, cardObjectId){
+            if (owner == null || owner.length == 0) return;
             var ownerNameFromCookie = Y.Cookie.getSub("email-name",owner);
             if (ownerNameFromCookie != null) {
                 return ownerNameFromCookie;
