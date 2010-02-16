@@ -5,20 +5,27 @@ YUI.add('card-tests', function(Y) {
     Y.Mashups.Tests.CardTests = new Y.Test.Case({
         name : "Card Tests",
 
+        setUp : function () {
+            Y.Mashups.cleanSwimlaneBoard();
+        },
+
+        tearDown : function () {
+        },
+
         'user story type card should be of type Story' : function () {
-            Y.Assert.isInstanceOf(Y.Mashups.Story, new Y.Mashups.Story(Y.Mashups.Tests.Data.Stories[0]), "object is not of instance Story");
+            Y.Assert.isInstanceOf(Y.Mashups.Story, new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]), "object is not of instance Story");
         },
 
         'user story type card should be of type Card' : function () {
-            Y.Assert.isInstanceOf(Y.Mashups.Card, new Y.Mashups.Story(Y.Mashups.Tests.Data.Stories[0]), "object is not of instance Card");
+            Y.Assert.isInstanceOf(Y.Mashups.Card, new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]), "object is not of instance Card");
         },
 
         'defect type card should be of type Defect' : function () {
-            Y.Assert.isInstanceOf(Y.Mashups.Defect, new Y.Mashups.Defect(Y.Mashups.Tests.Data.Defects[0]), "object is not of instance Defect");
+            Y.Assert.isInstanceOf(Y.Mashups.Defect, new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[0]), "object is not of instance Defect");
         },
 
         'defect type card should be of type Card' : function () {
-            Y.Assert.isInstanceOf(Y.Mashups.Card, new Y.Mashups.Defect(Y.Mashups.Tests.Data.Defects[0]), "object is not of instance Card");
+            Y.Assert.isInstanceOf(Y.Mashups.Card, new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[0]), "object is not of instance Card");
         },
 
         'should be able to return the appropriate values from story card' : function() {
@@ -69,15 +76,33 @@ YUI.add('card-tests', function(Y) {
             Y.Assert.areEqual("In Code Review", defect.KanbanState);
         },
 
-        'should be able to sort the defect and story cards based on Rank' : function() {
-            var cards = Y.Mashups.Tests.Data.Stories.concat(Y.Mashups.Tests.Data.Defects);
-            cards.sort(Y.Mashups.Card.sortByRank);
+        'should create collection of cards as list': function() {
+            var cards = new Y.Mashups.Cards().addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]))
+                    .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[0]));
 
-            Y.Assert.areEqual(321913223, cards[0].ObjectID); // first
-            Y.Assert.areEqual(325594710, cards[1].ObjectID); //second
-            Y.Assert.areEqual(324170706, cards[9].ObjectID); //last
+            Y.Assert.areEqual(2, cards.noOfCards());
+        },
+
+        'should be able to sort the defect and story cards based on Rank' : function() {
+            var cards = Y.Mashups.Tests.Data.Cards;
+            cards.sortByRank();
+
+            Y.Assert.areEqual(321913223, cards.indexOf(0).ObjectID); // first
+            Y.Assert.areEqual(325594710, cards.indexOf(1).ObjectID); //second
+            Y.Assert.areEqual(324170706, cards.indexOf(9).ObjectID); //last
+        },
+
+        'should load cards inside swimlane-cards div': function() {
+            Y.Mashups.Data.mySwimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            Y.Mashups.Swimlane.render();
+
+            var cards = Y.Mashups.Tests.Data.Cards;
+            cards.render();
+
+            Y.Assert.areEqual(1, Y.one("#Defined").all(".card").size());
+            Y.Assert.areEqual(2, Y.one("#In-Development").all(".card").size());
         }
     }
 
             )
-}, '1.0', {requires: ['test','mashups-card','mashups-test-data']});
+}, '1.0', {requires: ['test','mashups-card','mashups-global','mashups-swimlane','mashups-test-data']});

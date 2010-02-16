@@ -16,10 +16,77 @@
     border-right: 2px solid;
 }
 
+.swimlane-cards .swimlane {
+    height: 1000px;
+}
+
 .swimlane .name, .swimlane .estimate {
     text-align: center;
 }
 
 .swimlane .estimate {
     color: green;
+}
+
+.card {
+    width: 135px;
+    margin: 5px 5px;
+    border: solid 1px black;
+    border-left-width: 5px;
+    font-size: 0.9em;
+    overflow: hidden;
+}
+
+.story {
+    border-left-color: blue;
+}
+
+.defect {
+    border-left-color: orange;
+}
+
+.card .header {
+    clear: both;
+}
+
+.card .number {
+    text-align: left;
+    width: 85px;
+    background: #B5D8EB;
+    padding: 1px 5px;
+    float: left;
+}
+
+.card .estimate {
+    background: gray;
+    color: white;
+    width: 15px;
+    padding: 1px 3px;
+    float: left;
+    text-align:center;
+}
+
+.card .state {
+    width: 15px;
+    background: #006600;
+    color: white;
+    float: left;
+    padding: 1px 2px;
+    text-align:center;
+}
+
+.card .blocked-true {
+    background: red;
+}
+
+.card .title {
+    padding: 2px 5px;
+}
+
+.card .owner {
+    text-align: left;
+    width: 100px;
+    background: #B5D8EB;
+    padding: 1px 5px;
+    float: left;
 }

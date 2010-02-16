@@ -6,14 +6,10 @@ YUI.add('swimlane-tests', function(Y) {
         name : "Swimlane Tests",
 
         setUp : function () {
-
+            Y.Mashups.cleanSwimlaneBoard();
         },
 
         tearDown : function () {
-            Y.Mashups.Swimlanes = null;
-            Y.one(".swimlane-header").set("innerHTML","");
-            Y.one(".swimlane-cards").set("innerHTML","");
-            Y.one(".swimlane-footer").set("innerHTML","");
         },
 
         'should be able to create swimlane object with name' : function () {
@@ -24,7 +20,7 @@ YUI.add('swimlane-tests', function(Y) {
         },
 
         'should render swimlanes inside swimlane-header div': function () {
-            Y.Mashups.Swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            Y.Mashups.Data.mySwimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
             Y.Mashups.Swimlane.render();
 
             var swimlaneNodes = Y.one(".swimlane-header").all(".swimlane");
@@ -32,7 +28,7 @@ YUI.add('swimlane-tests', function(Y) {
         },
 
         'should render swimlanes inside swimlane-cards div': function () {
-            Y.Mashups.Swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            Y.Mashups.Data.mySwimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
             Y.Mashups.Swimlane.render();
 
             var swimlaneNodes = Y.one(".swimlane-cards").all(".swimlane");
@@ -40,7 +36,7 @@ YUI.add('swimlane-tests', function(Y) {
         },
 
         'should render swimlanes inside swimlane-footer div': function () {
-            Y.Mashups.Swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            Y.Mashups.Data.mySwimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
             Y.Mashups.Swimlane.render();
 
             var swimlaneNodes = Y.one(".swimlane-footer").all(".swimlane");
@@ -57,4 +53,4 @@ YUI.add('swimlane-tests', function(Y) {
     }
 
             )
-}, '1.0', {requires: ['test','mashups-swimlane','mashups-test-data']});
+}, '1.0', {requires: ['test','mashups-swimlane','mashups-global','mashups-test-data']});

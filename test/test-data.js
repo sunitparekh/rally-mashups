@@ -1,7 +1,7 @@
 YUI.add('mashups-test-data',function(Y){
     Y.namespace('Mashups.Tests.Data');
 
-    Y.Mashups.Tests.Data.Defects = new Array(
+    Y.Mashups.Tests.Data.DefectsAsData = new Array(
     {
         ObjectID: 325507112,
         FormattedID: "DE1385",
@@ -9,7 +9,7 @@ YUI.add('mashups-test-data',function(Y){
         Owner: "ian.newcombe@ge.com",
         Blocked: true,
         PlanEstimate: null,
-        Rank: 158.838,
+        Rank: 289.838,
         ScheduleState: "In-Progress",
         KanbanState: "In Development"
     },{
@@ -54,9 +54,15 @@ YUI.add('mashups-test-data',function(Y){
         KanbanState: "In Code Review"
     });
 
+    Y.Mashups.Tests.Data.Defects = new Array(
+        new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[0]),
+        new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[1]),
+        new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[2]),
+        new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[3]),
+        new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[4])
+    );
 
-
-    Y.Mashups.Tests.Data.Stories = new Array(
+    Y.Mashups.Tests.Data.StoriesAsData = new Array(
     {
         ObjectID: 325594710,
         FormattedID: "US10266",
@@ -108,6 +114,18 @@ YUI.add('mashups-test-data',function(Y){
         ScheduleState: "Completed",
         KanbanState: "Ready For Acceptance"
     });
+
+    Y.Mashups.Tests.Data.Cards = new Y.Mashups.Cards()
+            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]))
+            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[1]))
+            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[2]))
+            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[3]))
+            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[4]))
+            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[0]))
+            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[1]))
+            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[2]))
+            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[3]))
+            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[4]));
 
     Y.Mashups.Tests.Data.KanbanSwimlanesAsData = new Array(
         { Name: "Undefined" },

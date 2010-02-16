@@ -17,7 +17,7 @@ YUI.add('mashups-swimlane', function(Y) {
         },
 
         htmlID: function() {
-            return this.Name.replace(/ /g, '-');
+            return Y.Mashups.htmlID(this.Name);
         },
 
         renderHeaderRow: function() {
@@ -50,11 +50,11 @@ YUI.add('mashups-swimlane', function(Y) {
         var swimlaneHeader = Y.one(".swimlane-header");
         var swimlaneCards = Y.one(".swimlane-cards");
         var swimlaneFooter = Y.one(".swimlane-footer");
-        Y.each(Y.Mashups.Swimlanes, function(swimlane, index, array) {
+        Y.each(Y.Mashups.Data.mySwimlanes, function(swimlane, index, array) {
             swimlaneHeader.append(swimlane.renderHeaderRow());
             swimlaneCards.append(swimlane.renderCardsRow());
             swimlaneFooter.append(swimlane.renderHeaderRow());
         });
     }
 
-}, '1.0', {requires: ['base','node','io','json','dd','cookie']});
+}, '1.0', {requires: ['base','node','io','json','dd','cookie','mashups-global']});
