@@ -103,9 +103,25 @@
         }
 
 
-        .card .owner {
+        .card .footer .owner {
+            text-align: left;
+            width: 100px;
             background: #B5D8EB;
             padding: 1px 5px;
+            float: left;
+        }
+
+        .card .footer .selection {
+            text-align: left;
+            width: 15px;
+            background: #B5D8EB;
+            padding: 1px 5px;
+            float: right;
+        }
+
+        #cardSelected {
+            margin: 0;
+            padding: 0;
         }
 
         .card .header {
@@ -131,13 +147,12 @@
 </head>
 <body>
 <div class="global yui-skin-sam">
+    <form action="#">
     <div style="float:left">
-        <form action="#">
             <div id="iterationLabel" style="float:left"></div>
             <div class="filter" style="float:left">: &nbsp;
                 <select id="iterationList"></select>
             </div>
-        </form>
     </div>
     <div style="float:left;" id="actionMenu" class="yui-menu yui-menu-horizontal yui-menubuttonnav">
         <div class="yui-menu-content"><!-- Content box -->
@@ -167,6 +182,7 @@
         <a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">Scrum Board v0.7</a>
     </div>
     <div id="scrum-board" class="scrum-board clear"></div>
+    </form>
 </div>
 <script type="text/javascript">
 var YahooUI = YUI().use('dd','io','json','node','cookie','node-menunav', function(Y) {
@@ -309,19 +325,24 @@ var YahooUI = YUI().use('dd','io','json','node','cookie','node-menunav', functio
 
         function loadCardsOfType(cards, type, rallyType) {
             for (var cardIndex = 0; cardIndex < cards.length; cardIndex++) {
-                placeCard(cards[cardIndex]['KanbanState'], createCard(cards[cardIndex], type, rallyType), cards[cardIndex]['PlanEstimate']);
+                placeCard(cards[cardIndex].KanbanState, createCard(cards[cardIndex], type, rallyType), cards[cardIndex].PlanEstimate);
             }
         }
 
         function createCard(card, type, rallyType) {
-            var cardEstimate = card['PlanEstimate'] != null ? card['PlanEstimate'] : '&nbsp;';
-            var cardId = card['ObjectID'];
+            var cardEstimate = card.PlanEstimate != null ? card.PlanEstimate : '&nbsp;';
+            var cardId = card.ObjectID;
             return '<div id="' + cardId + '" class="card ' + type  + ' "><input id="' + cardRallyTypeId(cardId) + '" type="hidden" class="rallyType" name="rallyType" value="' + rallyType + '" />' +
-                           '<div class="header"><div class="number"><a href="#" onclick="editCard(' + cardId + ',\'' + rallyType + '\');" >' + card['FormattedID'] + '</a></div><div class="estimate">' + cardEstimate + '</div>' +
-                           '<div class="state' + ' blocked-' + card['Blocked'] + '">' + scheduleStateChar(card['ScheduleState']) + '</div></div>' +
-                           '<div class="title">' + truncateTitle(card['Name']) + '</div>' +
-                           '<div id="' + cardOwnerId(cardId) + '" class="owner">' + cardOwner(card['Owner'], cardId) + '</div>' +
-                           '</div>';
+                            '<div class="header">' +
+                                '<div class="number"><a href="#" onclick="editCard(' + cardId + ',\'' + rallyType + '\');" >' + card['FormattedID'] + '</a></div>' +
+                                '<div class="estimate">' + cardEstimate + '</div>' +
+                                '<div class="state' + ' blocked-' + card['Blocked'] + '">' + scheduleStateChar(card['ScheduleState']) + '</div>' +
+                            '</div>' +
+                            '<div class="title">' + truncateTitle(card['Name']) + '</div>' +
+                            '<div class="footer">' +
+                                '<div id="' + cardOwnerId(cardId) + '" class="owner">' + cardOwner(card['Owner'], cardId) + '</div>' +
+                                '<div class="selection"><input type="checkbox" name="cardSelected" id="cardSelected" value="' + card['FormattedID'] + '" /></div>' +
+                            '</div>';
         }
 
         function scheduleStateChar(state) {
@@ -336,7 +357,7 @@ var YahooUI = YUI().use('dd','io','json','node','cookie','node-menunav', functio
         }
 
         function cardOwner(owner, cardObjectId){
-            if (owner == null || owner.length == 0) return;
+            if (owner == null || owner.length == 0 || owner == undefined) return '&nbsp;';
             var ownerNameFromCookie = Y.Cookie.getSub("email-name",owner);
             if (ownerNameFromCookie != null) {
                 return ownerNameFromCookie;

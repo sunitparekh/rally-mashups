@@ -14,3 +14,17 @@ fetch current user profile where the default project is mentioned
 https://3.66.79.175/slm/webservice/1.14/userprofile/322906577?stylesheet=/slm/doc/webservice/browser.xsl
 
 
+RallyScheduledState:
+https://3.66.79.175/slm/webservice/1.14/attributedefinition/-12527.js?fetch=AllowedValues
+
+KanbanState:
+https://3.66.79.175/slm/webservice/1.14/attributedefinition/324771775.js?fetch=AllowedValues
+
+getting usename and email address for user
+https://3.66.79.175/slm/webservice/1.14/user.js?fetch=firstname,emailaddress
+
+https://wiki.rallydev.com/display/mshtk/Mashup+Toolkit
+
+
+
+(Iteration.ObjectID = "325139287")

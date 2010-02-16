@@ -1,0 +1,25 @@
+.outer-container {
+    width: 1900px;
+    font-family: arial, verdana, geneva, sans-serif;
+    font-size: 0.75em;
+}
+
+.swimlane-row {
+    clear: both;
+    margin: 0;
+    padding: 0;
+}
+
+.swimlane {
+    float: left;
+    width: 150px;
+    border-right: 2px solid;
+}
+
+.swimlane .name, .swimlane .estimate {
+    text-align: center;
+}
+
+.swimlane .estimate {
+    color: green;
+}

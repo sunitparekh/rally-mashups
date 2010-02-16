@@ -1,0 +1,134 @@
+{"AttributeDefinition": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/attributedefinition\/324771775.js", "_objectVersion": "1", "_refObjectName": "KanbanState", "AllowedValues": [
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "Defined",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "Prioritised",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "In Analysis",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "Ready For Development",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "In Development",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "Ready For Code Review",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "In Code Review",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "Ready For Test",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "In Test",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "Ready For Acceptance",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:41 am",
+        "ObjectID": null,
+        "StringValue": "Accepted",
+        "_type": "AllowedAttributeValue"
+    }
+], "Errors": [], "Warnings": []}}

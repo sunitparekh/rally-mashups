@@ -1,0 +1,57 @@
+{"AttributeDefinition": {"_rallyAPIMajor": "1", "_rallyAPIMinor": "14", "_ref": "https:\/\/3.66.79.175\/slm\/webservice\/1.14\/attributedefinition\/-12527.js", "_objectVersion": "1", "_refObjectName": "Schedule State", "AllowedValues": [
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:43 am",
+        "ObjectID": null,
+        "StringValue": "Backlog",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:43 am",
+        "ObjectID": null,
+        "StringValue": "Defined",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:43 am",
+        "ObjectID": null,
+        "StringValue": "In-Progress",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:43 am",
+        "ObjectID": null,
+        "StringValue": "Completed",
+        "_type": "AllowedAttributeValue"
+    },
+    {
+        "_rallyAPIMajor": "1",
+        "_rallyAPIMinor": "14",
+        "_ref": "null.js",
+        "_objectVersion": "0",
+        "CreationDate": null,
+        "_CreatedAt": "today at 3:43 am",
+        "ObjectID": null,
+        "StringValue": "Accepted",
+        "_type": "AllowedAttributeValue"
+    }
+], "Errors": [], "Warnings": []}}

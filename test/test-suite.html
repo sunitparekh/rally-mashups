@@ -4,16 +4,32 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Mashups Test Runner Page - with FireUnit</title>
 
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0?>/build/cssreset/reset-min.css">
+    <link rel="stylesheet" type="text/css" href="../src/common/rally-board-mashup.css">
     <script type="text/javascript" src="../lib/yui.js"></script>
+
     <script type="text/javascript" src="../lib/test-fireunit.js"></script>
+    <script type="text/javascript" src="../src/common/swimlane.js"></script>
     <script type="text/javascript" src="../src/common/card.js"></script>
+    <script type="text/javascript" src="test-data.js"></script>
     <script type="text/javascript" src="test-suite.js"></script>
+    <script type="text/javascript" src="swimlane-tests.js"></script>
     <script type="text/javascript" src="card-tests.js"></script>
 
 </head>
 <body>
 
-<div></div>
+<div class="outer-container">
+    <div class="navigation-bar">
+        <div class="iteration-filter"></div>
+        <div class="menu-bar"></div>
+    </div>
+    <div class="swimlane-board">
+        <div class="swimlane-header swimlane-row"></div>
+        <div class="swimlane-cards swimlane-row"></div>
+        <div class="swimlane-footer swimlane-row"></div>
+    </div>
+</div>
 
 <script type="text/javascript">
     YUI().use('test-fireunit', 'test', 'test-suite', function (Y) {
