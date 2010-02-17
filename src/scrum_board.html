@@ -368,7 +368,7 @@ var YahooUI = YUI().use('dd','io','json','node','cookie','node-menunav', functio
         }
 
         function placeCard(swimlane, cardHtml, estimate) {
-            if (swimlane == null) swimlane = 'Undefined'; // this happens if KanbanState value is NULL
+            if (swimlane == null || swimlane == "") swimlane = 'Undefined'; // this happens if KanbanState value is NULL
             var swimlaneElement = Y.one('#' + swimlaneId(swimlane));
             if (swimlaneElement == null) return; // in case if the swimlane if not defined on the screen
             swimlaneElement.append(cardHtml);

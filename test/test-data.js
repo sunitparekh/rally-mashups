@@ -142,19 +142,18 @@ YUI.add('mashups-test-data',function(Y){
         { Name: "Accepted" }
     );
 
-    Y.Mashups.Tests.Data.KanbanSwimlanes = new Array(
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[0]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[1]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[2]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[3]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[4]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[5]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[6]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[7]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[8]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[9]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[10]),
-        new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[11])
-    );
+    Y.Mashups.Tests.Data.KanbanSwimlanes = new Y.Mashups.Swimlanes()
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[0]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[1]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[2]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[3]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[4]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[5]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[6]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[7]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[8]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[9]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[10]))
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[11]));
     
 },'1.0',{requires: ['base','mashups-swimlane']});

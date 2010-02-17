@@ -6,7 +6,6 @@ YUI.add('card-tests', function(Y) {
         name : "Card Tests",
 
         setUp : function () {
-            Y.Mashups.cleanSwimlaneBoard();
         },
 
         tearDown : function () {
@@ -93,14 +92,25 @@ YUI.add('card-tests', function(Y) {
         },
 
         'should load cards inside swimlane-cards div': function() {
-            Y.Mashups.Data.mySwimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
-            Y.Mashups.Swimlane.render();
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            swimlanes.render();
 
             var cards = Y.Mashups.Tests.Data.Cards;
-            cards.render();
+            cards.render(swimlanes);
 
             Y.Assert.areEqual(1, Y.one("#Defined").all(".card").size());
             Y.Assert.areEqual(2, Y.one("#In-Development").all(".card").size());
+        },
+
+        'should add total estimate inside swimlane-header and swimlane-footer': function() {
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            swimlanes.render();
+
+            var cards = Y.Mashups.Tests.Data.Cards;
+            cards.render(swimlanes);
+
+            Y.Assert.areEqual(4, parseInt(Y.one("#header-Ready-For-Test").one(".estimate").get("innerHTML"),10));
+            Y.Assert.areEqual(4, parseInt(Y.one("#footer-Ready-For-Test").one(".estimate").get("innerHTML"),10));
         }
     }
 

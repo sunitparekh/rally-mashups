@@ -35,7 +35,7 @@ YUI.add('mashups-card', function(Y) {
 
         truncatedName: function() {
             if (this.Name.length <= Y.Mashups.Constants.CARD_NAME_LENGTH) return this.Name;
-            return this.Name.substring(0,Y.Mashups.Constants.CARD_NAME_LENGTH) + '...'; 
+            return this.Name.substring(0,Y.Mashups.Constants.CARD_NAME_LENGTH) + '...';
         },
 
         ownerName: function() {
@@ -94,7 +94,7 @@ YUI.add('mashups-card', function(Y) {
         Cards.superclass.constructor.apply(this, arguments);
     }
 
-    Cards.NAME = 'cards';
+    Cards.NAME = 'swimlanes';
     Cards.ATTRS = {swimlaneKey: { value: 'KanbanState'}};
 
     Y.extend(Cards, Y.Base, {
@@ -116,11 +116,11 @@ YUI.add('mashups-card', function(Y) {
             return this.cards[index];
         },
 
-        render: function() {
+        render: function(swimlanes) {
             var tempSwimlaneKey = this.get('swimlaneKey');
+            swimlanes.clearCards();
             Y.each(this.cards, function(card, index, array) {
-                var swimlaneCards = Y.one("#" + Y.Mashups.htmlID(card[tempSwimlaneKey]));
-                swimlaneCards.append(card.render());
+                swimlanes.addCard(card[tempSwimlaneKey], card.render(),card.PlanEstimate);
             });
         }
     });
