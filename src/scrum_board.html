@@ -247,7 +247,7 @@ var YahooUI = YUI().use('dd','io','json','node','cookie','node-menunav', functio
         Y.MashupsApp.runMainQuery = function () {
             var queryArr = [];
 
-            var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked";
+            var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked,Iteration";
             queryArr[0] =
             {
                 key: 'defects',
@@ -280,7 +280,6 @@ var YahooUI = YUI().use('dd','io','json','node','cookie','node-menunav', functio
 
         function loadCards(results) {
             loadSwimlanes();
-
             loadCardsOfType(results.defects, 'defect', 'Defect');
             loadCardsOfType(results.stories, 'story', 'HierarchicalRequirement');
 

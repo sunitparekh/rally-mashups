@@ -83,7 +83,7 @@ YUI.add('card-tests', function(Y) {
         },
 
         'should be able to sort the defect and story cards based on Rank' : function() {
-            var cards = Y.Mashups.Tests.Data.Cards;
+            var cards = Y.Mashups.Tests.Data.Cards();
             cards.sortByRank();
 
             Y.Assert.areEqual(321913223, cards.indexOf(0).ObjectID); // first
@@ -95,8 +95,8 @@ YUI.add('card-tests', function(Y) {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
             swimlanes.render();
 
-            var cards = Y.Mashups.Tests.Data.Cards;
-            cards.render(swimlanes);
+            var cards = Y.Mashups.Tests.Data.Cards();
+            swimlanes.renderCards(cards);
 
             Y.Assert.areEqual(1, Y.one("#cards-Defined").all(".card").size());
             Y.Assert.areEqual(2, Y.one("#cards-In-Development").all(".card").size());
@@ -106,8 +106,8 @@ YUI.add('card-tests', function(Y) {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
             swimlanes.render();
 
-            var cards = Y.Mashups.Tests.Data.Cards;
-            cards.render(swimlanes);
+            var cards = Y.Mashups.Tests.Data.Cards();
+            swimlanes.renderCards(cards);
 
             Y.Assert.areEqual(4, parseInt(Y.one("#header-Ready-For-Test").one(".estimate").get("innerHTML"),10));
             Y.Assert.areEqual(4, parseInt(Y.one("#footer-Ready-For-Test").one(".estimate").get("innerHTML"),10));
@@ -117,9 +117,8 @@ YUI.add('card-tests', function(Y) {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
             swimlanes.render();
 
-
-            var cards = Y.Mashups.Tests.Data.Cards;
-            cards.render(swimlanes);
+            var cards = Y.Mashups.Tests.Data.Cards();
+            swimlanes.renderCards(cards);
 
             Y.Assert.areEqual(3, Y.one("#cards-Undefined").all(".card").size());
         },
@@ -128,10 +127,23 @@ YUI.add('card-tests', function(Y) {
             var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes;
             swimlanes.render();
 
-            var cards = Y.Mashups.Tests.Data.CardsForEstimateSwimlanes;
-            cards.render(swimlanes);
+            var cards = Y.Mashups.Tests.Data.Cards();
+            swimlanes.renderCards(cards);
 
             Y.Assert.areEqual(2, Y.one("#cards-2").all(".card").size());
+        },
+
+        'should return required object on findByObjectID': function() {
+            var cards = Y.Mashups.Tests.Data.Cards();
+            Y.Assert.areEqual(321913223,cards.findByObjectID(321913223).ObjectID);
+        },
+
+        'should make play area for test as last test': function() {
+            var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes;
+            swimlanes.render();
+
+            var cards = Y.Mashups.Tests.Data.Cards();
+            swimlanes.renderCards(cards);
         }
     }
 

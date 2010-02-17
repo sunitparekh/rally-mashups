@@ -107,7 +107,7 @@ YUI.add('mashups-test-data',function(Y){
         KanbanState: ""
     });
 
-    Y.Mashups.Tests.Data.Cards = new Y.Mashups.Cards()
+    Y.Mashups.Tests.Data.Cards = function() { return new Y.Mashups.Cards()
             .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]))
             .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[1]))
             .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[2]))
@@ -117,19 +117,7 @@ YUI.add('mashups-test-data',function(Y){
             .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[1]))
             .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[2]))
             .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[3]))
-            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[4]));
-
-    Y.Mashups.Tests.Data.CardsForEstimateSwimlanes = new Y.Mashups.Cards({ swimlaneKey: 'PlanEstimate'})
-            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]))
-            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[1]))
-            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[2]))
-            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[3]))
-            .addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[4]))
-            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[0]))
-            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[1]))
-            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[2]))
-            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[3]))
-            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[4]));
+            .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[4]))};
 
     Y.Mashups.Tests.Data.KanbanSwimlanesAsData = new Array(
         { Name: "Defined" },
@@ -160,13 +148,13 @@ YUI.add('mashups-test-data',function(Y){
 
     Y.Mashups.Tests.Data.EstimateSwimlanesAsData = new Array(
         { Name: "0", Label: "Free (0)" },
-        { Name: "1", Label: "Small (0)" },
-        { Name: "2", Label: "Medium (0)"},
-        { Name: "3", Label: "Large (0)"},
-        { Name: "5", Label: "X-Large (0)"}
+        { Name: "1", Label: "Small (1)" },
+        { Name: "2", Label: "Medium (2)"},
+        { Name: "3", Label: "Large (3)"},
+        { Name: "5", Label: "X-Large (5)"}
     );
 
-    Y.Mashups.Tests.Data.EstimateSwimlanes = new Y.Mashups.Swimlanes({ swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "0.0", Label: "To Be Estimated"})})
+    Y.Mashups.Tests.Data.EstimateSwimlanes = new Y.Mashups.Swimlanes({ swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "To Be Estimated", Label: "To Be Estimated"}), swimlaneKey: 'PlanEstimate'})
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[0]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[1]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[2]))

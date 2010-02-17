@@ -25,10 +25,15 @@
 }
 
 .swimlane-not-available .name {
-    color: red;    
+    color: red;
 }
+
 .swimlane .estimate {
     color: green;
+}
+
+.yui-dd-drop-over {
+    background-color: #FFA928;
 }
 
 .card {
@@ -66,7 +71,7 @@
     width: 15px;
     padding: 1px 3px;
     float: left;
-    text-align:center;
+    text-align: center;
 }
 
 .card .state {
@@ -75,7 +80,7 @@
     color: white;
     float: left;
     padding: 1px 2px;
-    text-align:center;
+    text-align: center;
 }
 
 .card .blocked-true {

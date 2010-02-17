@@ -28,3 +28,10 @@ https://wiki.rallydev.com/display/mshtk/Mashup+Toolkit
 
 
 (Iteration.ObjectID = "325139287")
+(Iteration.Name = "325139287")
+
+RALLY.Mashup.ITERATION = Iteration
+RALLY.Mashup.RELEASE = Release
+
+filterDD.getSelectedName()
+filterDD.getSelectedOid()
