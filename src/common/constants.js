@@ -7,7 +7,7 @@ YUI.add('mashups-global',function(Y){
     Y.namespace('Mashups.Data');
 
     String.prototype.htmlID = function() {
-        return this.replace(/ /g, '-');
+        return this.replace(/ /g, '-').replace(/\./g,"-");
     };
 
 },'0.6',{requires: ['base']});

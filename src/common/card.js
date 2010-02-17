@@ -117,8 +117,8 @@ YUI.add('mashups-card', function(Y) {
         },
 
         render: function(swimlanes) {
-            var tempSwimlaneKey = this.get('swimlaneKey');
             swimlanes.clearCards();
+            var tempSwimlaneKey = this.get('swimlaneKey');
             Y.each(this.cards, function(card, index, array) {
                 swimlanes.addCard(card[tempSwimlaneKey], card.render(),card.PlanEstimate);
             });

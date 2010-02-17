@@ -21,27 +21,27 @@ YUI.add('mashups-swimlane', function(Y) {
             return this.Name.htmlID();
         },
 
-        renderHeaderRow: function(prefix) {
+        renderHeaderRow: function(prefix, swimlaneNotAvailableFlag) {
             var swimlaneNode = Y.Node.create("<div></div>");
             swimlaneNode.addClass("swimlane");
+            if (swimlaneNotAvailableFlag) swimlaneNode.addClass("swimlane-not-available");
             swimlaneNode.setAttribute("id", prefix + "-" + this.htmlID());
-            var swimlaneName = Y.Node.create("<div></div>");
-            swimlaneName.addClass("name");
-            swimlaneName.set("innerHTML", this.Label);
-            swimlaneNode.appendChild(swimlaneName);
+                var swimlaneName = Y.Node.create("<div></div>");
+                swimlaneName.addClass("name");
+                swimlaneName.set("innerHTML", this.Label);
+                swimlaneNode.appendChild(swimlaneName);
 
-            var swimlaneTotalEstimate = Y.Node.create("<div></div>");
-            swimlaneTotalEstimate.addClass("estimate");
-            swimlaneTotalEstimate.set("innerHTML", 0);
-            swimlaneNode.appendChild(swimlaneTotalEstimate);
-
+                var swimlaneTotalEstimate = Y.Node.create("<div></div>");
+                swimlaneTotalEstimate.addClass("estimate");
+                swimlaneTotalEstimate.set("innerHTML", 0);
+                swimlaneNode.appendChild(swimlaneTotalEstimate);
             return swimlaneNode;
         },
 
         renderCardsRow: function() {
             var swimlaneNode = Y.Node.create("<div></div>");
             swimlaneNode.addClass("swimlane");
-            swimlaneNode.setAttribute("id", this.htmlID());
+            swimlaneNode.setAttribute("id", "cards-" + this.htmlID());
             return swimlaneNode;
         }
     });
@@ -53,11 +53,11 @@ YUI.add('mashups-swimlane', function(Y) {
     }
 
     Swimlanes.NAME = 'swimlanes';
-    Swimlanes.ATTRS = {};
+    Swimlanes.ATTRS = { swimlaneNotAvailable : { value : new Y.Mashups.Swimlane({ Name: "Undefined"}) }};
 
     Y.extend(Swimlanes, Y.Base, {
         addSwimlane: function(swimlane) {
-            if (this.swimlanes == null) this.swimlanes = new Array();
+            if (this.swimlanes == null) this.swimlanes = new Array(this.get('swimlaneNotAvailable'));
             this.swimlanes = this.swimlanes.concat(swimlane);
             return this;
         },
@@ -66,11 +66,15 @@ YUI.add('mashups-swimlane', function(Y) {
             return this.swimlanes.length;
         },
 
-        findByName: function(swimlaneName) {
+        findByName: function(swimlaneName, returnThisIfNotFound) {
             var swimlaneFound = null;
             Y.each(this.swimlanes, function(swimlane, index, array) {
                 if (swimlane.Name == swimlaneName) swimlaneFound = swimlane;
             });
+            if (swimlaneFound == null) {
+                if (returnThisIfNotFound === undefined) returnThisIfNotFound = this.get("swimlaneNotAvailable");
+                swimlaneFound = returnThisIfNotFound;
+            }
             return swimlaneFound;
         },
 
@@ -83,10 +87,12 @@ YUI.add('mashups-swimlane', function(Y) {
             var swimlaneHeader = Y.one(".swimlane-header");
             var swimlaneCards = Y.one(".swimlane-cards");
             var swimlaneFooter = Y.one(".swimlane-footer");
+            var self = this;
             Y.each(this.swimlanes, function(swimlane, index, array) {
-                swimlaneHeader.append(swimlane.renderHeaderRow("header"));
+                var swimlaneNotAvailableFlag = (swimlane === self.get("swimlaneNotAvailable"));
+                swimlaneHeader.append(swimlane.renderHeaderRow("header", swimlaneNotAvailableFlag));
                 swimlaneCards.append(swimlane.renderCardsRow());
-                swimlaneFooter.append(swimlane.renderHeaderRow("footer"));
+                swimlaneFooter.append(swimlane.renderHeaderRow("footer", swimlaneNotAvailableFlag));
             });
         },
 
@@ -98,13 +104,13 @@ YUI.add('mashups-swimlane', function(Y) {
 
         clearCards : function() {
             Y.each(this.swimlanes, function(swimlane, index, array) {
-                var swimlaneCards = Y.one("#" + swimlane.htmlID());
+                var swimlaneCards = Y.one("#cards-" + swimlane.htmlID());
                 swimlaneCards.set("innerHTML","");
             });
         },
 
         addCard : function(swimlaneName, cardNode, estimate) {
-            var swimlaneCards = Y.one("#" + this.findByName(swimlaneName).htmlID());
+            var swimlaneCards = Y.one("#cards-" + this.findByName(swimlaneName).htmlID());
             swimlaneCards.append(cardNode);
             this.updateEstimate(swimlaneName, estimate, "header");
             this.updateEstimate(swimlaneName, estimate, "footer");
@@ -112,9 +118,9 @@ YUI.add('mashups-swimlane', function(Y) {
 
         updateEstimate : function(swimlaneName, estimate, prefix) {
             if (estimate == null || estimate == 0 || estimate == 0.0) return;
-            var swimlaneHeader = Y.one("#" + prefix + "-" + this.findByName(swimlaneName).htmlID());
-            var estimateNode = swimlaneHeader.one(".estimate");
-            var total = parseInt(estimateNode.get("innerHTML"),10) + estimate;
+            var swimlaneNode = Y.one("#" + prefix + "-" + this.findByName(swimlaneName).htmlID());
+            var estimateNode = swimlaneNode.one(".estimate");
+            var total = parseFloat(estimateNode.get("innerHTML")) + estimate;
             estimateNode.set("innerHTML",total);
         }
     });

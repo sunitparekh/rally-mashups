@@ -98,8 +98,8 @@ YUI.add('card-tests', function(Y) {
             var cards = Y.Mashups.Tests.Data.Cards;
             cards.render(swimlanes);
 
-            Y.Assert.areEqual(1, Y.one("#Defined").all(".card").size());
-            Y.Assert.areEqual(2, Y.one("#In-Development").all(".card").size());
+            Y.Assert.areEqual(1, Y.one("#cards-Defined").all(".card").size());
+            Y.Assert.areEqual(2, Y.one("#cards-In-Development").all(".card").size());
         },
 
         'should add total estimate inside swimlane-header and swimlane-footer': function() {
@@ -111,6 +111,27 @@ YUI.add('card-tests', function(Y) {
 
             Y.Assert.areEqual(4, parseInt(Y.one("#header-Ready-For-Test").one(".estimate").get("innerHTML"),10));
             Y.Assert.areEqual(4, parseInt(Y.one("#footer-Ready-For-Test").one(".estimate").get("innerHTML"),10));
+        },
+
+        'should create swimlane to keep all card without any swimlane': function() {
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            swimlanes.render();
+
+
+            var cards = Y.Mashups.Tests.Data.Cards;
+            cards.render(swimlanes);
+
+            Y.Assert.areEqual(3, Y.one("#cards-Undefined").all(".card").size());
+        },
+
+        'should create swimlane based on estimate of the card and palces them inside': function() {
+            var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes;
+            swimlanes.render();
+
+            var cards = Y.Mashups.Tests.Data.CardsForEstimateSwimlanes;
+            cards.render(swimlanes);
+
+            Y.Assert.areEqual(2, Y.one("#cards-2").all(".card").size());
         }
     }
 

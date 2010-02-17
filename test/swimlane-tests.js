@@ -51,9 +51,9 @@ YUI.add('swimlane-tests', function(Y) {
             Y.Assert.areEqual(12, swimlaneNodes.size());
         },
 
-        'should provide valid html id for name with spaces': function() {
-            var swimlane = new Y.Mashups.Swimlane({ Name: "Ready For Code Review" });
-            Y.Assert.areEqual("Ready-For-Code-Review", swimlane.htmlID());
+        'should provide valid html id for name with spaces and dots': function() {
+            var swimlane = new Y.Mashups.Swimlane({ Name: "Ready.For.Code Review And Big Name" });
+            Y.Assert.areEqual("Ready-For-Code-Review-And-Big-Name", swimlane.htmlID());
         },
 
         'should return appropriare siwmlane on findByName': function()  {
@@ -63,6 +63,15 @@ YUI.add('swimlane-tests', function(Y) {
 
             Y.Assert.areEqual(swimlanes.indexOf(6),swimlane);
             Y.Assert.areEqual("Ready-For-Code-Review",swimlane.htmlID());
+        },
+
+        'should create swimlane based on estimate': function() {
+            var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes;
+            swimlanes.render();
+
+            var swimlaneNodes = Y.one(".swimlane-header").all(".swimlane");
+            Y.Assert.areEqual(6, swimlaneNodes.size());
+
         }
 
 

@@ -24,6 +24,9 @@
     text-align: center;
 }
 
+.swimlane-not-available .name {
+    color: red;    
+}
 .swimlane .estimate {
     color: green;
 }
