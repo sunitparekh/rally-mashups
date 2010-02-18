@@ -3,8 +3,9 @@
         builds mashups used for rally as single files
     </description>
 
-    <!--  make minify-suffix value empty ("") if you don't want minified version in distributed mashups  -->
-    <property name="minify-suffix" value="-min"/>
+    <!--  make minify-suffix = "" : if you don't want minified version in distributed mashups  -->
+    <!--  make minify-suffix = "-min" : if you want minified version in distributed mashups  -->
+    <property name="minify-suffix" value=""/>
 
     <property name="src" location="src"/>
     <property name="javascript" location="src/javascripts"/>

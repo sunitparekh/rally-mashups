@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Estimation Board Mashup by sUnit, ThoughtWorks Inc.</title>
+
+    <script charset="utf-8" src="/slm/pack/combined.js.h-1314550004.pack" type="text/javascript"></script>
+    <script type="text/javascript" src="/slm/js-lib/dojo/1.3.1/dojo/dojo.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/batch-toolkit.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/utilities.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/dropdown.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://real.us.yimg.com/lib/yui/3.0.0/build/cssreset/reset-min.css"/>
+    <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+
+    <style type="text/css">
+        @css@
+    </style>
+    <script type="text/javascript">
+        @javascript@
+    </script>
+</head>
+<body>
+
+@layout@
+
+<script type="text/javascript">
+    YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
+        var service = null;
+        var swimlanes = null;
+        var filterType = RALLY.Mashup.RELEASE;
+
+        function initPage() {
+            service = new Y.Mashups.Service();
+            service.loadFilter(filterType, Y.Mashups.EstimationBoard.loadSwimlaneBoard);
+        }
+
+        Y.namespace('Mashups.EstimationBoard');
+
+        Y.Mashups.EstimationBoard.loadSwimlaneBoard = function() {
+            swimlanes = Y.Mashups.EstimationBoard.EstimationSwimlanes;
+            swimlanes.set('service',service);
+            swimlanes.renderSwimlanes();
+
+            Y.Mashups.EstimationBoard.refreshCardsOnBoard();
+        };
+
+        Y.Mashups.EstimationBoard.refreshCardsOnBoard = function() {
+            var cards = service.findCardsByFilter(filterType, Y.Mashups.EstimationBoard.renderCards);
+        };
+
+        Y.Mashups.EstimationBoard.renderCards = function(cards) {
+            cards.sortByRank();
+            swimlanes.renderCards(cards);
+        };
+
+        Y.Mashups.EstimationBoard.EstimationSwimlanes = new Y.Mashups.Swimlanes({
+            swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "To Be Estimated", Label: "To Be Estimated"}),
+            swimlaneKey: 'PlanEstimate'
+        })
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "0", Label: "Free (0)" }))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "1", Label: "Small (1)" }))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "2", Label: "Medium (2)"}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "3", Label: "Large (3)"}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "5", Label: "X-Large (5)"}));
+
+
+        initPage();
+    });
+
+</script>
+</body>
+</html>
