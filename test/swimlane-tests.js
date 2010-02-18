@@ -6,6 +6,7 @@ YUI.add('swimlane-tests', function(Y) {
         name : "Swimlane Tests",
 
         setUp : function () {
+            Y.Cookie.remove("email-name"); // remove cookie after verification
         },
 
         tearDown : function () {

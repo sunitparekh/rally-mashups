@@ -61,11 +61,14 @@ YUI.add('mashups-card', function(Y) {
 
         ownerName: function() {
             if (this.Owner == null) return "&nbsp;";
+            var ownerName = Y.Cookie.getSub("email-name",this.Owner);
+            if (ownerName != null) return ownerName;
             this.get('service').findOwnerNameByEmailId(this);
             return this.Owner;
         },
 
         updateOwnerName: function(ownerName) {
+            Y.Cookie.setSub("email-name",this.Owner, ownerName, { expires: new Date("January 12, 2025") });
             Y.one("#card-" + this.ObjectID).one(".owner").setContent(ownerName);
         },
         

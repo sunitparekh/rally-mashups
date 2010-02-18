@@ -6,6 +6,7 @@ YUI.add('card-tests', function(Y) {
         name : "Card Tests",
 
         setUp : function () {
+            Y.Cookie.remove("email-name"); // remove cookie after verification
         },
 
         tearDown : function () {
@@ -109,8 +110,8 @@ YUI.add('card-tests', function(Y) {
             var cards = Y.Mashups.Tests.Data.Cards();
             swimlanes.renderCards(cards);
 
-            Y.Assert.areEqual(4, parseInt(Y.one("#header-Ready-For-Test").one(".estimate").get("innerHTML"),10));
-            Y.Assert.areEqual(4, parseInt(Y.one("#footer-Ready-For-Test").one(".estimate").get("innerHTML"),10));
+            Y.Assert.areEqual(4, parseInt(Y.one("#header-Ready-For-Test").one(".estimate").get("innerHTML"), 10));
+            Y.Assert.areEqual(4, parseInt(Y.one("#footer-Ready-For-Test").one(".estimate").get("innerHTML"), 10));
         },
 
         'should create swimlane to keep all card without any swimlane': function() {
@@ -135,39 +136,78 @@ YUI.add('card-tests', function(Y) {
 
         'should return required object on findByObjectID': function() {
             var cards = Y.Mashups.Tests.Data.Cards();
-            Y.Assert.areEqual(321913223,cards.findByObjectID(321913223).ObjectID);
+            Y.Assert.areEqual(321913223, cards.findByObjectID(321913223).ObjectID);
         },
 
-        'should make mock calls to get owner of the cards': function() {
+        'should update owner with name on the card using service call': function() {
             var serviceMock = new Y.Mashups.Service();
             serviceMock.findOwnerNameByEmailId = function(card) {
-                var tempFunc = function() {card.updateOwnerName("test owner")};
+                var tempFunc = function() {
+                    card.updateOwnerName("test owner")
+                };
                 setTimeout(tempFunc, 500);
             };
 
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-            swimlanes.set('service',serviceMock);
+            swimlanes.set('service', serviceMock);
             swimlanes.render();
             var cards = new Y.Mashups.Cards().addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]));
             swimlanes.renderCards(cards);
 
 
             this.wait(function() {
+                Y.Assert.areEqual("test owner", Y.Cookie.getSub("email-name", "tajuddin.baig@ge.com"));
                 var ownerName = Y.one("#card-325594710").one(".owner").get("innerHTML");
                 Y.Assert.areEqual("test owner", ownerName)
             }, 1000);
+
+        },
+
+        'should update owner from cookie on the card': function() {
+            var serviceMock = new Y.Mashups.Service();
+            serviceMock.findOwnerNameByEmailId = function(card) {
+                var tempFunc = function() {
+                    card.updateOwnerName("test owner")
+                };
+                setTimeout(tempFunc, 500);
+            };
+
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
+            swimlanes.set('service', serviceMock);
+            swimlanes.render();
+            var cards = new Y.Mashups.Cards().addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]));
+            swimlanes.renderCards(cards);
+
+            this.wait(function() {
+                Y.Assert.areEqual("test owner", Y.Cookie.getSub("email-name", "tajuddin.baig@ge.com"));
+                var ownerName = Y.one("#card-325594710").one(".owner").get("innerHTML");
+                Y.Assert.areEqual("test owner", ownerName)
+
+                // recreating swimlane and cards so that while rendering card it uses cookie to get owner name
+                var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
+                swimlanes.render();
+                var cards = new Y.Mashups.Cards().addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]));
+                swimlanes.renderCards(cards);
+                var ownerName = Y.one("#card-325594710").one(".owner").get("innerHTML");
+                Y.Assert.areEqual("test owner", ownerName);
+
+            }, 1000);
+
+
         },
 
         'should make play area for test as last test': function() {
             var serviceMock = new Y.Mashups.Service();
             serviceMock.findOwnerNameByEmailId = function(card) {
-                var tempFunc = function() {card.updateOwnerName("test owner")};
+                var tempFunc = function() {
+                    card.updateOwnerName(card.Owner.substring(0, card.Owner.indexOf(".")))
+                };
                 setTimeout(tempFunc, 500);
             };
 
 
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-            swimlanes.set('service',serviceMock);
+            swimlanes.set('service', serviceMock);
             swimlanes.render();
 
             var cards = Y.Mashups.Tests.Data.Cards();
@@ -176,4 +216,4 @@ YUI.add('card-tests', function(Y) {
     }
 
             )
-}, '1.0', {requires: ['test','mashups-card','mashups-global','mashups-swimlane','mashups-test-data']});
+}, '1.0', {requires: ['test','cookie','mashups-card','mashups-global','mashups-swimlane','mashups-test-data']});
