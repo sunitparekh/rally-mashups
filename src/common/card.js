@@ -6,7 +6,10 @@ YUI.add('mashups-card', function(Y) {
     }
 
     Card.NAME = 'card';
-    Card.ATTRS = { type: { value: "card"}};
+    Card.ATTRS = {
+        type: { value: "card"},
+        service: {value : null }
+    };
 
     Y.extend(Card, Y.Base, {
         initializer: function(data) {
@@ -20,7 +23,7 @@ YUI.add('mashups-card', function(Y) {
             var card = Y.Node.create("<div></div>");
             card.addClass("card");
             card.addClass(this.get('type'));
-            card.setAttribute("id", this.ObjectID);
+            card.setAttribute("id", "card-" + this.ObjectID);
             var header = Y.Node.create("<div></div>");
             header.addClass("header");
             var number = Y.Node.create("<div></div>");
@@ -58,9 +61,14 @@ YUI.add('mashups-card', function(Y) {
 
         ownerName: function() {
             if (this.Owner == null) return "&nbsp;";
+            this.get('service').findOwnerNameByEmailId(this);
             return this.Owner;
         },
 
+        updateOwnerName: function(ownerName) {
+            Y.one("#card-" + this.ObjectID).one(".owner").setContent(ownerName);
+        },
+        
         estimate: function() {
             if (this.PlanEstimate == null) return "&nbsp;";
             return this.PlanEstimate;
@@ -142,4 +150,4 @@ YUI.add('mashups-card', function(Y) {
     });
     Y.Mashups.Cards = Cards;
 
-}, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global']});
+}, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global','mashup-service']});

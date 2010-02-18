@@ -45,7 +45,7 @@ YUI.add('mashups-swimlane', function(Y) {
             return swimlaneNode;
         },
 
-        move: function(card) {
+        move: function(service, card) {
             alert("Moving card " + card.FormattedID + " to swimlane " + this.Name);
         }
     });
@@ -57,7 +57,11 @@ YUI.add('mashups-swimlane', function(Y) {
     }
 
     Swimlanes.NAME = 'swimlanes';
-    Swimlanes.ATTRS = { swimlaneNotAvailable : { value : new Y.Mashups.Swimlane({ Name: "Undefined"}) }, swimlaneKey: { value: 'KanbanState'}};
+    Swimlanes.ATTRS = {
+        swimlaneNotAvailable : { value : new Y.Mashups.Swimlane({ Name: "Undefined"}) },
+        swimlaneKey: { value: 'KanbanState'},
+        service: { value : new Y.Mashups.Service() }
+    };
 
     Y.extend(Swimlanes, Y.Base, {
         initializer: function(config) {
@@ -114,8 +118,8 @@ YUI.add('mashups-swimlane', function(Y) {
                 cardsRowNode.plug(Y.Plugin.Drop);
                 cardsRowNode.drop.on('drop:hit', function(element) {
                     var swimlane = self.findByHtmlID(element.drop.get('node').getAttribute("id").substring("cards-".length));
-                    var card = self.findCardByObjectID(element.drag.get('node').getAttribute("id"));
-                    swimlane.move(card);
+                    var card = self.findCardByObjectID(element.drag.get('node').getAttribute("id").substring("card-".length));
+                    swimlane.move(self.get('service'), card);
                 });
                 swimlaneCards.append(cardsRowNode);
 
@@ -154,6 +158,7 @@ YUI.add('mashups-swimlane', function(Y) {
             this.clearCards();
             var self = this;
             Y.each(cards.cards, function(card) {
+                card.set('service', self.get('service'));
                 self.renderCard(card);
             });
         },
@@ -169,4 +174,4 @@ YUI.add('mashups-swimlane', function(Y) {
     Y.Mashups.Swimlanes = Swimlanes;
 
 
-}, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global']});
+}, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global','mashup-service']});

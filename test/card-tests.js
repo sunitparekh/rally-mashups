@@ -92,7 +92,7 @@ YUI.add('card-tests', function(Y) {
         },
 
         'should load cards inside swimlane-cards div': function() {
-            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.render();
 
             var cards = Y.Mashups.Tests.Data.Cards();
@@ -103,7 +103,7 @@ YUI.add('card-tests', function(Y) {
         },
 
         'should add total estimate inside swimlane-header and swimlane-footer': function() {
-            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.render();
 
             var cards = Y.Mashups.Tests.Data.Cards();
@@ -114,7 +114,7 @@ YUI.add('card-tests', function(Y) {
         },
 
         'should create swimlane to keep all card without any swimlane': function() {
-            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes;
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.render();
 
             var cards = Y.Mashups.Tests.Data.Cards();
@@ -124,7 +124,7 @@ YUI.add('card-tests', function(Y) {
         },
 
         'should create swimlane based on estimate of the card and palces them inside': function() {
-            var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes;
+            var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes();
             swimlanes.render();
 
             var cards = Y.Mashups.Tests.Data.Cards();
@@ -138,8 +138,36 @@ YUI.add('card-tests', function(Y) {
             Y.Assert.areEqual(321913223,cards.findByObjectID(321913223).ObjectID);
         },
 
+        'should make mock calls to get owner of the cards': function() {
+            var serviceMock = new Y.Mashups.Service();
+            serviceMock.findOwnerNameByEmailId = function(card) {
+                var tempFunc = function() {card.updateOwnerName("test owner")};
+                setTimeout(tempFunc, 500);
+            };
+
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
+            swimlanes.set('service',serviceMock);
+            swimlanes.render();
+            var cards = new Y.Mashups.Cards().addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]));
+            swimlanes.renderCards(cards);
+
+
+            this.wait(function() {
+                var ownerName = Y.one("#card-325594710").one(".owner").get("innerHTML");
+                Y.Assert.areEqual("test owner", ownerName)
+            }, 1000);
+        },
+
         'should make play area for test as last test': function() {
-            var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes;
+            var serviceMock = new Y.Mashups.Service();
+            serviceMock.findOwnerNameByEmailId = function(card) {
+                var tempFunc = function() {card.updateOwnerName("test owner")};
+                setTimeout(tempFunc, 500);
+            };
+
+
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
+            swimlanes.set('service',serviceMock);
             swimlanes.render();
 
             var cards = Y.Mashups.Tests.Data.Cards();

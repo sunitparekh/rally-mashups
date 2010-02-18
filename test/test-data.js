@@ -133,7 +133,8 @@ YUI.add('mashups-test-data',function(Y){
         { Name: "Accepted" }
     );
 
-    Y.Mashups.Tests.Data.KanbanSwimlanes = new Y.Mashups.Swimlanes()
+    Y.Mashups.Tests.Data.KanbanSwimlanes = function(){
+        return new Y.Mashups.Swimlanes( { service: new Y.Mashups.Stubs.Service() } )
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[0]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[1]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[2]))
@@ -144,7 +145,8 @@ YUI.add('mashups-test-data',function(Y){
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[7]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[8]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[9]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[10]));
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[10]))
+    };
 
     Y.Mashups.Tests.Data.EstimateSwimlanesAsData = new Array(
         { Name: "0", Label: "Free (0)" },
@@ -154,11 +156,17 @@ YUI.add('mashups-test-data',function(Y){
         { Name: "5", Label: "X-Large (5)"}
     );
 
-    Y.Mashups.Tests.Data.EstimateSwimlanes = new Y.Mashups.Swimlanes({ swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "To Be Estimated", Label: "To Be Estimated"}), swimlaneKey: 'PlanEstimate'})
+    Y.Mashups.Tests.Data.EstimateSwimlanes = function(){
+        return new Y.Mashups.Swimlanes({
+            swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "To Be Estimated", Label: "To Be Estimated"}),
+            swimlaneKey: 'PlanEstimate',
+            service: new Y.Mashups.Stubs.Service()
+        })
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[0]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[1]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[2]))
            .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[3]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[4]));
+           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[4]))
+    };
 
-},'1.0',{requires: ['base','mashups-swimlane']});
+},'1.0',{requires: ['base','mashups-swimlane','mashup-stubs']});
