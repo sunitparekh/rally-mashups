@@ -4,6 +4,21 @@
     font-size: 0.75em;
 }
 
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.navigation-bar {
+    margin: 5px 20px;
+}
+.navigation-bar select{
+    margin-left: 20px;
+}
+
 .swimlane-row {
     clear: both;
     margin: 0;
@@ -93,8 +108,9 @@
 
 .card .owner {
     text-align: left;
-    width: 100px;
+    width: 140px;
     background: #B5D8EB;
     padding: 1px 5px;
     float: left;
+    overflow: hidden;
 }

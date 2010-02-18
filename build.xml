@@ -1,0 +1,89 @@
+<project name="Rally Mashups by sUnit" default="build" basedir=".">
+    <description>
+        builds mashups used for rally as single files
+    </description>
+
+    <!--  make minify-suffix value empty ("") if you don't want minified version in distributed mashups  -->
+    <property name="minify-suffix" value="-min"/>
+
+    <property name="src" location="src"/>
+    <property name="javascript" location="src/javascripts"/>
+    <property name="css" location="src/stylesheets"/>
+    <property name="mashups" location="src/mashup"/>
+
+    <property name="lib" location="lib"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+
+
+    <target name="build" depends="init, minify, build-mashups, clean" />
+
+    <target name="build-mashups">
+        <copy todir="${dist}" overwrite="true">
+            <fileset dir="${mashups}" includes="*.html" />
+        </copy>
+
+        <loadfile property="javascript-content" srcFile="${build}/global${minify-suffix}.js"/>
+        <loadfile property="css-content" srcFile="${build}/global${minify-suffix}.css"/>
+        <loadfile property="html-layout" srcFile="${mashups}/common/layout.html"/>
+        <replace dir="${dist}">
+            <replacefilter token="@javascript@" value="${javascript-content}"/>
+            <replacefilter token="@css@" value="${css-content}"/>
+            <replacefilter token="@layout@" value="${html-layout}"/>
+        </replace>
+    </target>
+
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}" failonerror="false"/>
+    </target>
+
+
+    <!--
+        minify will concatenate all of our javascripts and stylesheets
+        then use the YUI compressor library to compress them
+    -->
+    <target name="minify">
+        <!--${libs} is path to the downloaded jars -->
+        <property name="yui-compressor.jar" location="${lib}/yuicompressor-2.4.2.jar"/>
+        <property name="yui-compressor-ant-task.jar" location="${lib}/yui-compressor-ant-task-0.4.jar"/>
+
+        <path id="task.classpath">
+            <pathelement location="${yui-compressor.jar}"/>
+            <pathelement location="${yui-compressor-ant-task.jar}"/>
+        </path>
+
+        <!-- yui-compressor task definition -->
+        <taskdef name="yui-compressor" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+            <classpath refid="task.classpath"/>
+        </taskdef>
+
+        <!-- concatenation of javascript -->
+        <echo message="Building global javascript"/>
+        <concat destfile="${build}/global.js">
+            <!-- explicitly order js concat because ordering matters here -->
+            <fileset dir="${javascript}" includes="constants.js"/>
+            <fileset dir="${javascript}" includes="card.js"/>
+            <fileset dir="${javascript}" includes="swimlane.js"/>
+            <fileset dir="${javascript}" includes="service.js"/>
+        </concat>
+
+        <!-- concatenation of cascading stylesheets -->
+        <echo message="Building global cascading stylesheets"/>
+        <concat destfile="${build}/global.css">
+            <fileset dir="${css}" includes="rally-board-mashup.css"/>
+        </concat>
+
+        <!-- invoke compressor -->
+        <yui-compressor warn="false" charset="UTF-8" fromdir="${build}" todir="${build}">
+            <include name="global.js"/>
+            <include name="global.css"/>
+        </yui-compressor>
+
+    </target>
+
+</project>

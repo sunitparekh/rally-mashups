@@ -94,7 +94,7 @@ YUI.add('card-tests', function(Y) {
 
         'should load cards inside swimlane-cards div': function() {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var cards = Y.Mashups.Tests.Data.Cards();
             swimlanes.renderCards(cards);
@@ -105,7 +105,7 @@ YUI.add('card-tests', function(Y) {
 
         'should add total estimate inside swimlane-header and swimlane-footer': function() {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var cards = Y.Mashups.Tests.Data.Cards();
             swimlanes.renderCards(cards);
@@ -116,7 +116,7 @@ YUI.add('card-tests', function(Y) {
 
         'should create swimlane to keep all card without any swimlane': function() {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var cards = Y.Mashups.Tests.Data.Cards();
             swimlanes.renderCards(cards);
@@ -126,7 +126,7 @@ YUI.add('card-tests', function(Y) {
 
         'should create swimlane based on estimate of the card and palces them inside': function() {
             var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes();
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var cards = Y.Mashups.Tests.Data.Cards();
             swimlanes.renderCards(cards);
@@ -150,7 +150,7 @@ YUI.add('card-tests', function(Y) {
 
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.set('service', serviceMock);
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
             var cards = new Y.Mashups.Cards().addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]));
             swimlanes.renderCards(cards);
 
@@ -174,7 +174,7 @@ YUI.add('card-tests', function(Y) {
 
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.set('service', serviceMock);
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
             var cards = new Y.Mashups.Cards().addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]));
             swimlanes.renderCards(cards);
 
@@ -185,7 +185,7 @@ YUI.add('card-tests', function(Y) {
 
                 // recreating swimlane and cards so that while rendering card it uses cookie to get owner name
                 var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-                swimlanes.render();
+                swimlanes.renderSwimlanes();
                 var cards = new Y.Mashups.Cards().addCard(new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]));
                 swimlanes.renderCards(cards);
                 var ownerName = Y.one("#card-325594710").one(".owner").get("innerHTML");
@@ -208,7 +208,7 @@ YUI.add('card-tests', function(Y) {
 
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.set('service', serviceMock);
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var cards = Y.Mashups.Tests.Data.Cards();
             swimlanes.renderCards(cards);

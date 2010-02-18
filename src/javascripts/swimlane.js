@@ -60,7 +60,7 @@ YUI.add('mashups-swimlane', function(Y) {
     Swimlanes.ATTRS = {
         swimlaneNotAvailable : { value : new Y.Mashups.Swimlane({ Name: "Undefined"}) },
         swimlaneKey: { value: 'KanbanState'},
-        service: { value : new Y.Mashups.Service() }
+        service: { value : null }
     };
 
     Y.extend(Swimlanes, Y.Base, {
@@ -103,13 +103,13 @@ YUI.add('mashups-swimlane', function(Y) {
             return this.swimlanes[index];
         },
 
-        render: function() {
+        renderSwimlanes: function() {
             this.clearSwimlanes();
             var swimlaneHeader = Y.one(".swimlane-header");
             var swimlaneCards = Y.one(".swimlane-cards");
             var swimlaneFooter = Y.one(".swimlane-footer");
             var self = this;
-            Y.each(this.swimlanes, function(swimlane, index, array) {
+            Y.each(this.swimlanes, function(swimlane) {
                 var swimlaneNotAvailableFlag = (swimlane === self.get("swimlaneNotAvailable"));
 
                 swimlaneHeader.append(swimlane.renderHeaderRow("header", swimlaneNotAvailableFlag));
@@ -174,4 +174,4 @@ YUI.add('mashups-swimlane', function(Y) {
     Y.Mashups.Swimlanes = Swimlanes;
 
 
-}, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global','mashup-service']});
+}, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global','mashups-service']});

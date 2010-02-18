@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Scrum Board Mashup by sUnit, ThoughtWorks Inc.</title>
+
+    <script charset="utf-8" src="/slm/pack/combined.js.h-1314550004.pack" type="text/javascript"></script>
+    <script type="text/javascript" src="/slm/js-lib/dojo/1.3.1/dojo/dojo.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/batch-toolkit.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/utilities.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/dropdown.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://real.us.yimg.com/lib/yui/3.0.0/build/cssreset/reset-min.css"/>
+    <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+
+    <style type="text/css">
+        .outer-container{width:1900px;font-family:arial,verdana,geneva,sans-serif;font-size:.75em;}.left{float:left;}.right{float:right;}.navigation-bar{margin:5px 20px;}.navigation-bar select{margin-left:20px;}.swimlane-row{clear:both;margin:0;padding:0;}.swimlane{float:left;width:150px;border-right:2px solid;}.swimlane-cards .swimlane{height:1000px;}.swimlane .name,.swimlane .estimate{text-align:center;}.swimlane-not-available .name{color:red;}.swimlane .estimate{color:green;}.yui-dd-drop-over{background-color:#FFA928;}.card{width:135px;margin:5px 5px;border:solid 1px black;border-left-width:5px;font-size:.9em;overflow:hidden;}.story{border-left-color:blue;}.defect{border-left-color:orange;}.card .header{clear:both;}.card .number{text-align:left;width:85px;background:#B5D8EB;padding:1px 5px;float:left;}.card .estimate{background:gray;color:white;width:15px;padding:1px 3px;float:left;text-align:center;}.card .state{width:15px;background:#060;color:white;float:left;padding:1px 2px;text-align:center;}.card .blocked-true{background:red;}.card .title{padding:2px 5px;}.card .owner{text-align:left;width:140px;background:#B5D8EB;padding:1px 5px;float:left;overflow:hidden;}
+    </style>
+    <script type="text/javascript">
+        YUI.add("mashups-global",function(Y){Y.namespace("Mashups.Constants");Y.Mashups.Constants.CARD_NAME_LENGTH=70;Y.Mashups.Constants.BaseUrl="/";Y.namespace("Mashups.Data");String.prototype.htmlID=function(){return this.replace(/ /g,"-").replace(/\./g,"-");};},"0.6",{requires:["base"]});YUI.add("mashups-card",function(Y){Y.namespace("Mashups");function Card(data){Card.superclass.constructor.apply(this,arguments);}Card.NAME="card";Card.ATTRS={type:{value:"card"},service:{value:null}};Y.extend(Card,Y.Base,{initializer:function(data){var self=this;Y.each(data,function(value,index,array){self[index]=value;});},render:function(){var card=Y.Node.create("<div></div>");card.addClass("card");card.addClass(this.get("type"));card.setAttribute("id","card-"+this.ObjectID);var header=Y.Node.create("<div></div>");header.addClass("header");var number=Y.Node.create("<div></div>");number.addClass("number");number.setContent(this.FormattedID);header.appendChild(number);var estimate=Y.Node.create("<div></div>");estimate.addClass("estimate");estimate.setContent(this.estimate());header.appendChild(estimate);var state=Y.Node.create("<div></div>");state.addClass("state");state.addClass("blocked-"+this.Blocked);state.setContent(this.scheduleStateLegend());header.appendChild(state);card.appendChild(header);var title=Y.Node.create("<div></div>");title.addClass("title");title.setContent(this.truncatedName());card.appendChild(title);var footer=Y.Node.create("<div></div>");footer.addClass("footer");var owner=Y.Node.create("<div></div>");owner.addClass("owner");owner.setContent(this.ownerName());footer.appendChild(owner);card.appendChild(footer);return card;},truncatedName:function(){if(this.Name.length<=Y.Mashups.Constants.CARD_NAME_LENGTH){return this.Name;}return this.Name.substring(0,Y.Mashups.Constants.CARD_NAME_LENGTH)+"...";},ownerName:function(){if(this.Owner==null||this.Owner==""){return"&nbsp;";}var ownerName=Y.Cookie.getSub("email-name",this.Owner);if(ownerName!=null){return ownerName;}this.get("service").findOwnerNameByEmailId(this);return this.Owner;},updateOwnerName:function(ownerName){Y.Cookie.setSub("email-name",this.Owner,ownerName,{expires:new Date("January 12, 2025")});Y.one("#card-"+this.ObjectID).one(".owner").setContent(ownerName);},estimate:function(){if(this.PlanEstimate==null){return"&nbsp;";}return this.PlanEstimate;},scheduleStateLegend:function(){switch(this.ScheduleState){case"Backlog":return"B";case"Defined":return"D";case"In-Progress":return"P";case"Completed":return"C";case"Accepted":return"A";}}});Y.Mashups.Card=Card;Y.Mashups.Card.sortByRank=function(a,b){return(a.Rank-b.Rank);};function Story(data){Story.superclass.constructor.apply(this,arguments);}Story.NAME="story";Story.ATTRS={type:{value:"story"}};Y.extend(Story,Y.Mashups.Card,{});function Defect(data){Defect.superclass.constructor.apply(this,arguments);}Defect.NAME="defect";Defect.ATTRS={type:{value:"defect"}};Y.extend(Defect,Y.Mashups.Card,{});Y.Mashups.Story=Story;Y.Mashups.Defect=Defect;function Cards(config){Cards.superclass.constructor.apply(this,arguments);}Cards.NAME="cards";Cards.ATTRS={};Y.extend(Cards,Y.Base,{addCard:function(card){if(this.cards==null){this.cards=new Array();}this.cards=this.cards.concat(card);return this;},findByObjectID:function(cardObjectID){if(this.cards==null){return;}return Y.Array.find(this.cards,function(card){return(card.ObjectID==cardObjectID);});},noOfCards:function(){return this.cards.length;},sortByRank:function(){this.cards.sort(Y.Mashups.Card.sortByRank);},indexOf:function(index){return this.cards[index];}});Y.Mashups.Cards=Cards;},"1.0",{requires:["base","node","io","json","dd","cookie","collection","mashups-global","mashups-service"]});YUI.add("mashups-swimlane",function(Y){Y.namespace("Mashups");function Swimlane(data){Swimlane.superclass.constructor.apply(this,arguments);}Swimlane.NAME="swimlane";Swimlane.ATTRS={};Y.extend(Swimlane,Y.Base,{initializer:function(data){var self=this;Y.each(data,function(value,index,array){self[index]=value;});if(this.Label==null){this.Label=this.Name;}},htmlID:function(){return this.Name.htmlID();},renderHeaderRow:function(prefix,swimlaneNotAvailableFlag){var swimlaneNode=Y.Node.create("<div></div>");swimlaneNode.addClass("swimlane");if(swimlaneNotAvailableFlag){swimlaneNode.addClass("swimlane-not-available");}swimlaneNode.setAttribute("id",prefix+"-"+this.htmlID());var swimlaneName=Y.Node.create("<div></div>");swimlaneName.addClass("name");swimlaneName.set("innerHTML",this.Label);swimlaneNode.appendChild(swimlaneName);var swimlaneTotalEstimate=Y.Node.create("<div></div>");swimlaneTotalEstimate.addClass("estimate");swimlaneTotalEstimate.set("innerHTML",0);swimlaneNode.appendChild(swimlaneTotalEstimate);return swimlaneNode;},renderCardsRow:function(){var swimlaneNode=Y.Node.create("<div></div>");swimlaneNode.addClass("swimlane");swimlaneNode.setAttribute("id","cards-"+this.htmlID());return swimlaneNode;},move:function(service,card){alert("Moving card "+card.FormattedID+" to swimlane "+this.Name);}});Y.Mashups.Swimlane=Swimlane;function Swimlanes(config){Swimlanes.superclass.constructor.apply(this,arguments);}Swimlanes.NAME="swimlanes";Swimlanes.ATTRS={swimlaneNotAvailable:{value:new Y.Mashups.Swimlane({Name:"Undefined"})},swimlaneKey:{value:"KanbanState"},service:{value:null}};Y.extend(Swimlanes,Y.Base,{initializer:function(config){this.cards=new Y.Mashups.Cards();},addSwimlane:function(swimlane){if(this.swimlanes==null){this.swimlanes=new Array(this.get("swimlaneNotAvailable"));}this.swimlanes=this.swimlanes.concat(swimlane);return this;},noOfSwimlanes:function(){return this.swimlanes.length;},findByName:function(swimlaneName,returnThisIfNotFound){var swimlaneFound=Y.Array.find(this.swimlanes,function(swimlane){return(swimlane.Name==swimlaneName);});if(swimlaneFound==null){if(returnThisIfNotFound===undefined){returnThisIfNotFound=this.get("swimlaneNotAvailable");}swimlaneFound=returnThisIfNotFound;}return swimlaneFound;},findByHtmlID:function(htmlID){return Y.Array.find(this.swimlanes,function(swimlane){return(swimlane.htmlID()==htmlID);});},findCardByObjectID:function(cardObjectID){return this.cards.findByObjectID(cardObjectID);},indexOf:function(index){return this.swimlanes[index];},renderSwimlanes:function(){this.clearSwimlanes();var swimlaneHeader=Y.one(".swimlane-header");var swimlaneCards=Y.one(".swimlane-cards");var swimlaneFooter=Y.one(".swimlane-footer");var self=this;Y.each(this.swimlanes,function(swimlane){var swimlaneNotAvailableFlag=(swimlane===self.get("swimlaneNotAvailable"));swimlaneHeader.append(swimlane.renderHeaderRow("header",swimlaneNotAvailableFlag));var cardsRowNode=swimlane.renderCardsRow();cardsRowNode.plug(Y.Plugin.Drop);cardsRowNode.drop.on("drop:hit",function(element){var swimlane=self.findByHtmlID(element.drop.get("node").getAttribute("id").substring("cards-".length));var card=self.findCardByObjectID(element.drag.get("node").getAttribute("id").substring("card-".length));swimlane.move(self.get("service"),card);});swimlaneCards.append(cardsRowNode);swimlaneFooter.append(swimlane.renderHeaderRow("footer",swimlaneNotAvailableFlag));});},clearSwimlanes:function(){Y.one(".swimlane-header").set("innerHTML","");Y.one(".swimlane-footer").set("innerHTML","");Y.one(".swimlane-cards").set("innerHTML","");},clearCards:function(){Y.each(this.swimlanes,function(swimlane,index,array){var swimlaneCards=Y.one("#cards-"+swimlane.htmlID());swimlaneCards.set("innerHTML","");});},renderCard:function(card){var swimlaneKey=this.get("swimlaneKey");var swimlane=this.findByName(card[swimlaneKey]);this.cards.addCard(card);var swimlaneCardsNode=Y.one("#cards-"+swimlane.htmlID());var cardNode=card.render();cardNode.plug(Y.Plugin.Drag);swimlaneCardsNode.append(cardNode);this.updateEstimate(card[swimlaneKey],card.PlanEstimate,"header");this.updateEstimate(card[swimlaneKey],card.PlanEstimate,"footer");},renderCards:function(cards){this.clearCards();var self=this;Y.each(cards.cards,function(card){card.set("service",self.get("service"));self.renderCard(card);});},updateEstimate:function(swimlaneName,estimate,prefix){if(estimate==null||estimate==0||estimate==0){return;}var swimlaneNode=Y.one("#"+prefix+"-"+this.findByName(swimlaneName).htmlID());var estimateNode=swimlaneNode.one(".estimate");var total=parseFloat(estimateNode.get("innerHTML"))+estimate;estimateNode.set("innerHTML",total);}});Y.Mashups.Swimlanes=Swimlanes;},"1.0",{requires:["base","node","io","json","dd","cookie","collection","mashups-global","mashups-service"]});YUI.add("mashups-service",function(Y){Y.namespace("Mashups");function Service(data){Service.superclass.constructor.apply(this,arguments);}Service.NAME="service";Service.ATTRS={};Y.extend(Service,Y.Base,{initialiser:function(config){Y.io.header("Content-Type","application/json");},getBatchToolkit:function(){if(this.batchToolkit==null||this.batchToolkit==undefined){this.batchToolkit=new RALLY.Mashup.BatchToolkit("__WORKSPACE_OID__","__PROJECT_OID__","__PROJECT_SCOPING_UP__","__PROJECT_SCOPING_DOWN__");}return this.batchToolkit;},execute:function(url,config){Y.io.execute(url,config);},findOwnerNameByEmailId:function(card){var url="/slm/webservice/1.14/user.js?query=(EmailAddress = "+card.Owner+" )";var config={method:"GET",on:{success:function(x,o,card){var ownerName=null;var response=Y.JSON.parse(o.responseText);var ownerObject=response.QueryResult["Results"][0];if(ownerObject!=null){ownerName=ownerObject._refObjectName;}card.updateOwnerName(ownerName);}},arguments:card};this.execute(url,config);},loadFilter:function(filterType,callback){this.iterationDropdown=new RALLY.Mashup.Dropdown(this.getBatchToolkit(),filterType,"filter-dropdown","filter-label","mu_iteration_status");this.iterationDropdown.invoke(callback);},findKanbanStatesAsSwimlanes:function(){return new Y.Mashups.Swimlanes({service:this}).addSwimlane(new Y.Mashups.Swimlane({Name:"Defined"})).addSwimlane(new Y.Mashups.Swimlane({Name:"Prioritised"})).addSwimlane(new Y.Mashups.Swimlane({Name:"In Analysis"})).addSwimlane(new Y.Mashups.Swimlane({Name:"Ready For Development"})).addSwimlane(new Y.Mashups.Swimlane({Name:"In Development"})).addSwimlane(new Y.Mashups.Swimlane({Name:"Ready For Code Review"})).addSwimlane(new Y.Mashups.Swimlane({Name:"In Code Review"})).addSwimlane(new Y.Mashups.Swimlane({Name:"Ready For Test"})).addSwimlane(new Y.Mashups.Swimlane({Name:"In Test"})).addSwimlane(new Y.Mashups.Swimlane({Name:"Ready For Acceptance"})).addSwimlane(new Y.Mashups.Swimlane({Name:"Accepted"}));},findCardsByFilter:function(filterType,callback){var queryArr=[];var fields="FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked,Iteration";queryArr[0]={key:"defects",type:"defect",fetch:fields,order:"Rank",query:"("+filterType+'.Name = "'+this.iterationDropdown.getSelectedName()+'")'};queryArr[1]={key:"stories",type:"hierarchicalrequirement",fetch:fields,order:"Rank",query:"("+filterType+'.Name = "'+this.iterationDropdown.getSelectedName()+'")'};this.getBatchToolkit().findAll(queryArr,function(results){var cards=new Y.Mashups.Cards();Y.each(results.stories,function(story){cards.addCard(new Y.Mashups.Story(story));});Y.each(results.defects,function(defect){cards.addCard(new Y.Mashups.Defect(defect));});callback(cards);});}});Y.Mashups.Service=Service;},"0.6",{requires:["base","io"]});
+    </script>
+</head>
+<body>
+
+<div class="outer-container">
+    <form action="layout.html#">
+        <div class="navigation-bar">
+            <div class="left">
+                <div class="left" id="filter-label"></div>
+                <div class="left"><select id="filter-dropdown"></select>
+                </div>
+            </div>
+            <div class="left menu-bar">&nbsp;</div>
+        </div>
+        <div class="swimlane-board">
+            <div class="swimlane-header swimlane-row"></div>
+            <div class="swimlane-cards swimlane-row"></div>
+            <div class="swimlane-footer swimlane-row"></div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
+        var service = null;
+        var swimlanes = null;
+        var filterType = RALLY.Mashup.ITERATION;
+
+        function initPage() {
+            service = new Y.Mashups.Service();
+            service.loadFilter(filterType, Y.Mashups.ScrumBoard.loadSwimlaneBoard);
+        }
+
+        Y.namespace('Mashups.ScrumBoard');
+
+        Y.Mashups.ScrumBoard.loadSwimlaneBoard = function() {
+            swimlanes = service.findKanbanStatesAsSwimlanes();
+            swimlanes.set('service',service);
+            swimlanes.renderSwimlanes();
+
+            Y.Mashups.ScrumBoard.refreshCardsOnBoard();
+        };
+
+        Y.Mashups.ScrumBoard.refreshCardsOnBoard = function() {
+            var cards = service.findCardsByFilter(filterType, Y.Mashups.ScrumBoard.renderCards);
+        };
+
+        Y.Mashups.ScrumBoard.renderCards = function(cards) {
+            cards.sortByRank();
+            swimlanes.renderCards(cards);
+        };
+
+        initPage();
+    });
+
+    function refreshWindow(url, cardNumber, cardTitle, flag1, flag2, flag3){
+        YahooUI.MashupsApp.runMainQuery();
+    }
+    
+</script>
+</body>
+</html>

@@ -60,7 +60,7 @@ YUI.add('mashups-card', function(Y) {
         },
 
         ownerName: function() {
-            if (this.Owner == null) return "&nbsp;";
+            if (this.Owner == null || this.Owner == "") return "&nbsp;";
             var ownerName = Y.Cookie.getSub("email-name",this.Owner);
             if (ownerName != null) return ownerName;
             this.get('service').findOwnerNameByEmailId(this);
@@ -153,4 +153,4 @@ YUI.add('mashups-card', function(Y) {
     });
     Y.Mashups.Cards = Cards;
 
-}, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global','mashup-service']});
+}, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global','mashups-service']});

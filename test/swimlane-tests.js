@@ -30,7 +30,7 @@ YUI.add('swimlane-tests', function(Y) {
 
         'should render swimlanes inside swimlane-header div': function () {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var swimlaneNodes = Y.one(".swimlane-header").all(".swimlane");
             Y.Assert.areEqual(12, swimlaneNodes.size());
@@ -38,7 +38,7 @@ YUI.add('swimlane-tests', function(Y) {
 
         'should render swimlanes inside swimlane-cards div': function () {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var swimlaneNodes = Y.one(".swimlane-cards").all(".swimlane");
             Y.Assert.areEqual(12, swimlaneNodes.size());
@@ -46,7 +46,7 @@ YUI.add('swimlane-tests', function(Y) {
 
         'should render swimlanes inside swimlane-footer div': function () {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var swimlaneNodes = Y.one(".swimlane-footer").all(".swimlane");
             Y.Assert.areEqual(12, swimlaneNodes.size());
@@ -68,7 +68,7 @@ YUI.add('swimlane-tests', function(Y) {
 
         'should create swimlane based on estimate': function() {
             var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes();
-            swimlanes.render();
+            swimlanes.renderSwimlanes();
 
             var swimlaneNodes = Y.one(".swimlane-header").all(".swimlane");
             Y.Assert.areEqual(6, swimlaneNodes.size());
