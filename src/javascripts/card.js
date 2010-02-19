@@ -24,34 +24,41 @@ YUI.add('mashups-card', function(Y) {
             card.addClass("card");
             card.addClass(this.get('type'));
             card.setAttribute("id", "card-" + this.ObjectID);
-            var header = Y.Node.create("<div></div>");
-            header.addClass("header");
-            var number = Y.Node.create("<div></div>");
-            number.addClass("number");
-            number.setContent(this.FormattedID);
-            header.appendChild(number);
-            var estimate = Y.Node.create("<div></div>");
-            estimate.addClass("estimate");
-            estimate.setContent(this.estimate());
-            header.appendChild(estimate);
-            var state = Y.Node.create("<div></div>");
-            state.addClass("state");
-            state.addClass('blocked-' + this.Blocked);
-            state.setContent(this.scheduleStateLegend());
-            header.appendChild(state);
+                var header = Y.Node.create("<div></div>");
+                header.addClass("header");
+                    var number = Y.Node.create("<div></div>");
+                    number.addClass("number");
+                    number.setContent(this.FormattedID);
+                    number.on("click", function(e,card){card.editCard();} ,{},this);
+                header.appendChild(number);
+                    var estimate = Y.Node.create("<div></div>");
+                    estimate.addClass("estimate");
+                    estimate.setContent(this.estimate());
+                header.appendChild(estimate);
+                    var state = Y.Node.create("<div></div>");
+                    state.addClass("state");
+                    state.addClass('blocked-' + this.Blocked);
+                    state.setContent(this.scheduleStateLegend());
+                header.appendChild(state);
             card.appendChild(header);
-            var title = Y.Node.create("<div></div>");
-            title.addClass("title");
-            title.setContent(this.truncatedName());
+                var title = Y.Node.create("<div></div>");
+                title.addClass("title");
+                title.setContent(this.truncatedName());
             card.appendChild(title);
-            var footer = Y.Node.create("<div></div>");
-            footer.addClass("footer");
-            var owner = Y.Node.create("<div></div>");
-            owner.addClass("owner");
-            owner.setContent(this.ownerName());
-            footer.appendChild(owner);
+                var footer = Y.Node.create("<div></div>");
+                footer.addClass("footer");
+                    var owner = Y.Node.create("<div></div>");
+                    owner.addClass("owner");
+                    owner.setContent(this.ownerName());
+                footer.appendChild(owner);
             card.appendChild(footer);
             return card;
+        },
+
+        editCard: function(){
+            var url = '/slm/awp/edit.sp?oid=' + this.ObjectID +  '&typeDefName=' + this.get('editCardRallyType');
+            window.popup(url, 800, 600, 'littleN');
+            return false;
         },
 
         truncatedName: function() {
@@ -98,7 +105,7 @@ YUI.add('mashups-card', function(Y) {
     }
 
     Story.NAME = 'story';
-    Story.ATTRS = { type: { value: "story"}};
+    Story.ATTRS = { type: { value: "story"}, rallyType: { value: "HierarchicalRequirement"}, editCardRallyType: { value: "Hierarchical Requirement"}};
     Y.extend(Story, Y.Mashups.Card, {
 
     });
@@ -109,7 +116,7 @@ YUI.add('mashups-card', function(Y) {
     }
 
     Defect.NAME = 'defect';
-    Defect.ATTRS = { type: { value: "defect"}};
+    Defect.ATTRS = { type: { value: "defect"}, rallyType: { value: "Defect"}, editCardRallyType: { value: "Defect"}};
     Y.extend(Defect, Y.Mashups.Card, {
 
     });

@@ -20,7 +20,7 @@ YUI.add('mashups-service', function(Y) {
         },
 
         execute : function(url, config) {
-            Y.io.execute(url, config);
+            Y.io(url, config);
         },
 
         findOwnerNameByEmailId : function(card) {

@@ -12,11 +12,23 @@
     float: right;
 }
 
+.hide {
+    display:none;
+}
+
+#flash-message {
+    text-align: center;
+    width:600px;
+    background-color: #ccffcc;
+    padding: 2px 10px;
+}
+
 .navigation-bar {
     margin: 5px 20px;
+    height: 20px;
 }
 .navigation-bar select{
-    margin-left: 20px;
+    margin-left: 5px;
 }
 
 .swimlane-row {
@@ -58,6 +70,7 @@
     border-left-width: 5px;
     font-size: 0.9em;
     overflow: hidden;
+    cursor: move;
 }
 
 .story {
@@ -74,10 +87,12 @@
 
 .card .number {
     text-align: left;
+    text-decoration:underline;
     width: 85px;
     background: #B5D8EB;
     padding: 1px 5px;
     float: left;
+    cursor: pointer;
 }
 
 .card .estimate {

@@ -28,11 +28,23 @@
     float: right;
 }
 
+.hide {
+    display:none;
+}
+
+#flash-message {
+    text-align: center;
+    width:600px;
+    background-color: #ccffcc;
+    padding: 2px 10px;
+}
+
 .navigation-bar {
     margin: 5px 20px;
+    height: 20px;
 }
 .navigation-bar select{
-    margin-left: 20px;
+    margin-left: 5px;
 }
 
 .swimlane-row {
@@ -74,6 +86,7 @@
     border-left-width: 5px;
     font-size: 0.9em;
     overflow: hidden;
+    cursor: move;
 }
 
 .story {
@@ -90,10 +103,12 @@
 
 .card .number {
     text-align: left;
+    text-decoration:underline;
     width: 85px;
     background: #B5D8EB;
     padding: 1px 5px;
     float: left;
+    cursor: pointer;
 }
 
 .card .estimate {
@@ -171,34 +186,41 @@
             card.addClass("card");
             card.addClass(this.get('type'));
             card.setAttribute("id", "card-" + this.ObjectID);
-            var header = Y.Node.create("<div></div>");
-            header.addClass("header");
-            var number = Y.Node.create("<div></div>");
-            number.addClass("number");
-            number.setContent(this.FormattedID);
-            header.appendChild(number);
-            var estimate = Y.Node.create("<div></div>");
-            estimate.addClass("estimate");
-            estimate.setContent(this.estimate());
-            header.appendChild(estimate);
-            var state = Y.Node.create("<div></div>");
-            state.addClass("state");
-            state.addClass('blocked-' + this.Blocked);
-            state.setContent(this.scheduleStateLegend());
-            header.appendChild(state);
+                var header = Y.Node.create("<div></div>");
+                header.addClass("header");
+                    var number = Y.Node.create("<div></div>");
+                    number.addClass("number");
+                    number.setContent(this.FormattedID);
+                    number.on("click", function(e,card){card.editCard();} ,{},this);
+                header.appendChild(number);
+                    var estimate = Y.Node.create("<div></div>");
+                    estimate.addClass("estimate");
+                    estimate.setContent(this.estimate());
+                header.appendChild(estimate);
+                    var state = Y.Node.create("<div></div>");
+                    state.addClass("state");
+                    state.addClass('blocked-' + this.Blocked);
+                    state.setContent(this.scheduleStateLegend());
+                header.appendChild(state);
             card.appendChild(header);
-            var title = Y.Node.create("<div></div>");
-            title.addClass("title");
-            title.setContent(this.truncatedName());
+                var title = Y.Node.create("<div></div>");
+                title.addClass("title");
+                title.setContent(this.truncatedName());
             card.appendChild(title);
-            var footer = Y.Node.create("<div></div>");
-            footer.addClass("footer");
-            var owner = Y.Node.create("<div></div>");
-            owner.addClass("owner");
-            owner.setContent(this.ownerName());
-            footer.appendChild(owner);
+                var footer = Y.Node.create("<div></div>");
+                footer.addClass("footer");
+                    var owner = Y.Node.create("<div></div>");
+                    owner.addClass("owner");
+                    owner.setContent(this.ownerName());
+                footer.appendChild(owner);
             card.appendChild(footer);
             return card;
+        },
+
+        editCard: function(){
+            var url = '/slm/awp/edit.sp?oid=' + this.ObjectID +  '&typeDefName=' + this.get('editCardRallyType');
+            window.popup(url, 800, 600, 'littleN');
+            return false;
         },
 
         truncatedName: function() {
@@ -245,7 +267,7 @@
     }
 
     Story.NAME = 'story';
-    Story.ATTRS = { type: { value: "story"}};
+    Story.ATTRS = { type: { value: "story"}, rallyType: { value: "HierarchicalRequirement"}, editCardRallyType: { value: "Hierarchical Requirement"}};
     Y.extend(Story, Y.Mashups.Card, {
 
     });
@@ -256,7 +278,7 @@
     }
 
     Defect.NAME = 'defect';
-    Defect.ATTRS = { type: { value: "defect"}};
+    Defect.ATTRS = { type: { value: "defect"}, rallyType: { value: "Defect"}, editCardRallyType: { value: "Defect"}};
     Y.extend(Defect, Y.Mashups.Card, {
 
     });
@@ -498,7 +520,7 @@
         },
 
         execute : function(url, config) {
-            Y.io.execute(url, config);
+            Y.io(url, config);
         },
 
         findOwnerNameByEmailId : function(card) {
@@ -589,10 +611,11 @@
         <div class="navigation-bar">
             <div class="left">
                 <div class="left" id="filter-label"></div>
-                <div class="left"><select id="filter-dropdown"></select>
-                </div>
+                <div class="left"><select id="filter-dropdown"></select></div>
             </div>
             <div class="left menu-bar">&nbsp;</div>
+            <div class="left" id="flash-message">Loading YUI Libraray....taking too long means no internet connection. please check proxy settings. </div>
+            <div class="right"><a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">Scrum Board v1.0</a></div>
         </div>
         <div class="swimlane-board">
             <div class="swimlane-header swimlane-row"></div>
@@ -604,14 +627,17 @@
 
 
 <script type="text/javascript">
-    YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
+    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
         var service = null;
-        var swimlanes = null;
+        var swimlanes = null;                                   
         var filterType = RALLY.Mashup.ITERATION;
+        var flashMessage = Y.one("#flash-message");
 
         function initPage() {
             service = new Y.Mashups.Service();
-            service.loadFilter(filterType, Y.Mashups.ScrumBoard.loadSwimlaneBoard);
+            flashMessage.set("innerHTML","Please wait... loading swimlanes"); flashMessage.removeClass("hide");
+            Y.Mashups.ScrumBoard.loadSwimlaneBoard();
+            service.loadFilter(filterType, Y.Mashups.ScrumBoard.refreshCardsOnBoard);
         }
 
         Y.namespace('Mashups.ScrumBoard');
@@ -620,24 +646,26 @@
             swimlanes = service.findKanbanStatesAsSwimlanes();
             swimlanes.set('service',service);
             swimlanes.renderSwimlanes();
-
-            Y.Mashups.ScrumBoard.refreshCardsOnBoard();
         };
 
         Y.Mashups.ScrumBoard.refreshCardsOnBoard = function() {
+            flashMessage.set("innerHTML","Please wait... loading cards");  flashMessage.removeClass("hide");
             var cards = service.findCardsByFilter(filterType, Y.Mashups.ScrumBoard.renderCards);
         };
 
         Y.Mashups.ScrumBoard.renderCards = function(cards) {
             cards.sortByRank();
             swimlanes.renderCards(cards);
+            Y.one("#flash-message").addClass("hide");
         };
 
         initPage();
     });
 
+    
+
     function refreshWindow(url, cardNumber, cardTitle, flag1, flag2, flag3){
-        YahooUI.MashupsApp.runMainQuery();
+        YahooUI.Mashups.ScrumBoard.refreshCardsOnBoard();
     }
     
 </script>
