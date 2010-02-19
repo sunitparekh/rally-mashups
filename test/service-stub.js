@@ -9,8 +9,12 @@ YUI.add('mashup-stubs', function(Y) {
     Service.ATTRS = {};
 
     Y.extend(Service, Y.Base, {
+        // don't care responding stub
         findOwnerNameByEmailId : function(obj) {
-            //don't care updating owner name
+            return;
+        },
+
+        updateCard : function(card, dataAsJSON) {
             return;
         }
 

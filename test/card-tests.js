@@ -140,7 +140,7 @@ YUI.add('card-tests', function(Y) {
         },
 
         'should update owner with name on the card using service call': function() {
-            var serviceMock = new Y.Mashups.Service();
+            var serviceMock = new Y.Mashups.Stubs.Service();
             serviceMock.findOwnerNameByEmailId = function(card) {
                 var tempFunc = function() {
                     card.updateOwnerName("test owner")
@@ -164,7 +164,7 @@ YUI.add('card-tests', function(Y) {
         },
 
         'should update owner from cookie on the card': function() {
-            var serviceMock = new Y.Mashups.Service();
+            var serviceMock = new Y.Mashups.Stubs.Service();
             serviceMock.findOwnerNameByEmailId = function(card) {
                 var tempFunc = function() {
                     card.updateOwnerName("test owner")
@@ -196,8 +196,32 @@ YUI.add('card-tests', function(Y) {
 
         },
 
+        'should get data from swimlanes that needs to be applied to story card while updating': function(){
+            var swimlane = new Y.Mashups.Swimlane({ Name: "Defined", data : '{ "KanbanState": "Defined", "ScheduleSate": "Backlog" }' });
+            var card = new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]);
+            var serviceMock = new Y.Mashups.Stubs.Service();
+            serviceMock.updateCard = function(card, jsonData) {
+                Y.Assert.areEqual('{"HierarchicalRequirement": { "KanbanState": "Defined", "ScheduleSate": "Backlog" }}', jsonData );
+            };
+            card.set('service',serviceMock);
+
+            swimlane.move(card);
+        },
+
+        'should get data from swimlanes that needs to be applied to defect card while updating': function(){
+            var swimlane = new Y.Mashups.Swimlane({ Name: "Defined", data : '{ "KanbanState": "Defined", "ScheduleSate": "Backlog" }' });
+            var card = new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[0]);
+            var serviceMock = new Y.Mashups.Stubs.Service();
+            serviceMock.updateCard = function(card, jsonData) {
+                Y.Assert.areEqual('{"Defect": { "KanbanState": "Defined", "ScheduleSate": "Backlog" }}', jsonData );
+            };
+            card.set('service',serviceMock);
+
+            swimlane.move(card);
+        },
+
         'should make play area for test as last test': function() {
-            var serviceMock = new Y.Mashups.Service();
+            var serviceMock = new Y.Mashups.Stubs.Service();
             serviceMock.findOwnerNameByEmailId = function(card) {
                 var tempFunc = function() {
                     card.updateOwnerName(card.Owner.substring(0, card.Owner.indexOf(".")))

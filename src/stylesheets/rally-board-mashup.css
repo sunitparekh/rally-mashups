@@ -16,6 +16,14 @@
     display:none;
 }
 
+#error-message {
+    width:100%;
+    background-color: #ccffcc;
+    color: red;
+    padding: 2px 10px;
+    clear:both;
+}
+
 #flash-message {
     text-align: center;
     width:600px;

@@ -92,8 +92,14 @@ YUI.add('mashups-card', function(Y) {
                 case 'Completed': return 'C';
                 case 'Accepted': return 'A';
             }
+        },
+
+        update: function(data) {
+            var jsonData = '{"' + this.get('rallyType') + '": ' + data + "}";
+            this.get('service').updateCard(this, jsonData);
         }
     });
+    
     Y.Mashups.Card = Card;
     Y.Mashups.Card.sortByRank = function (a, b) {
         return (a.Rank - b.Rank);

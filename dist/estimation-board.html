@@ -32,6 +32,14 @@
     display:none;
 }
 
+#error-message {
+    width:100%;
+    background-color: #ccffcc;
+    color: red;
+    padding: 2px 10px;
+    clear:both;
+}
+
 #flash-message {
     text-align: center;
     width:600px;
@@ -160,6 +168,36 @@
         return this.replace(/ /g, '-').replace(/\./g,"-");
     };
 
+    Y.namespace('Mashups');
+
+    function FlashMessage(data) {
+        FlashMessage.superclass.constructor.apply(this, arguments);
+    }
+
+    FlashMessage.NAME = 'FlashMessage';
+    FlashMessage.ATTRS = { id: { value: "flash-message"} };
+
+    Y.extend(FlashMessage, Y.Base, {
+        show: function(message) {
+            var flashMessage = Y.one("#" + this.get('id'));
+            if (flashMessage == null || flashMessage == undefined) return;
+            flashMessage.set("innerHTML",message);
+            flashMessage.removeClass("hide");
+        },
+
+        hide: function() {
+            var flashMessage = Y.one("#" + this.get('id'));
+            if (flashMessage == null || flashMessage == undefined) return;
+            flashMessage.set("innerHTML","");
+            flashMessage.addClass("hide");
+        }
+    });
+
+    Y.Mashups.FlashMessage = FlashMessage;
+
+    Y.Mashups.FlashMessage.message = new Y.Mashups.FlashMessage();
+    Y.Mashups.FlashMessage.error = new Y.Mashups.FlashMessage({ id: "error-message"});
+
 },'0.6',{requires: ['base']});YUI.add('mashups-card', function(Y) {
     Y.namespace('Mashups');
 
@@ -254,8 +292,14 @@
                 case 'Completed': return 'C';
                 case 'Accepted': return 'A';
             }
+        },
+
+        update: function(data) {
+            var jsonData = '{"' + this.get('rallyType') + '": ' + data + "}";
+            this.get('service').updateCard(this, jsonData);
         }
     });
+    
     Y.Mashups.Card = Card;
     Y.Mashups.Card.sortByRank = function (a, b) {
         return (a.Rank - b.Rank);
@@ -369,8 +413,9 @@
             return swimlaneNode;
         },
 
-        move: function(service, card) {
-            alert("Moving card " + card.FormattedID + " to swimlane " + this.Name);
+        move: function(card) {
+            Y.Mashups.FlashMessage.message.show("Please wait.. moving card '" + card.FormattedID + "' to swimlane '" + this.Name + "'");
+            card.update(this.data);
         }
     });
     Y.Mashups.Swimlane = Swimlane;
@@ -439,12 +484,14 @@
                 swimlaneHeader.append(swimlane.renderHeaderRow("header", swimlaneNotAvailableFlag));
 
                 var cardsRowNode = swimlane.renderCardsRow();
-                cardsRowNode.plug(Y.Plugin.Drop);
-                cardsRowNode.drop.on('drop:hit', function(element) {
-                    var swimlane = self.findByHtmlID(element.drop.get('node').getAttribute("id").substring("cards-".length));
-                    var card = self.findCardByObjectID(element.drag.get('node').getAttribute("id").substring("card-".length));
-                    swimlane.move(self.get('service'), card);
-                });
+                if (swimlane != self.get('swimlaneNotAvailable')) {
+                    cardsRowNode.plug(Y.Plugin.Drop);
+                    cardsRowNode.drop.on('drop:hit', function(element) {
+                        var swimlane = self.findByHtmlID(element.drop.get('node').getAttribute("id").substring("cards-".length));
+                        var card = self.findCardByObjectID(element.drag.get('node').getAttribute("id").substring("card-".length));
+                        swimlane.move(card);
+                    });
+                }
                 swimlaneCards.append(cardsRowNode);
 
                 swimlaneFooter.append(swimlane.renderHeaderRow("footer", swimlaneNotAvailableFlag));
@@ -458,9 +505,13 @@
         },
 
         clearCards : function() {
+            var self = this;
+            this.cards = new Y.Mashups.Cards();
             Y.each(this.swimlanes, function(swimlane, index, array) {
                 var swimlaneCards = Y.one("#cards-" + swimlane.htmlID());
                 swimlaneCards.set("innerHTML", "");
+                self.updateEstimate(swimlane.Name, 0, "header", false);
+                self.updateEstimate(swimlane.Name, 0, "footer", false);
             });
         },
 
@@ -485,13 +536,15 @@
                 card.set('service', self.get('service'));
                 self.renderCard(card);
             });
+            Y.Mashups.FlashMessage.message.hide();
         },
 
-        updateEstimate : function(swimlaneName, estimate, prefix) {
-            if (estimate == null || estimate == 0 || estimate == 0.0) return;
+        updateEstimate : function(swimlaneName, estimate, prefix, addAndUpdateFlag) {
+            if (addAndUpdateFlag == undefined) addAndUpdateFlag = true;
+            if (estimate == null) return;
             var swimlaneNode = Y.one("#" + prefix + "-" + this.findByName(swimlaneName).htmlID());
             var estimateNode = swimlaneNode.one(".estimate");
-            var total = parseFloat(estimateNode.get("innerHTML")) + estimate;
+            var total = ( (addAndUpdateFlag) ? parseFloat(estimateNode.get("innerHTML")) : 0) + estimate;
             estimateNode.set("innerHTML", total);
         }
     });
@@ -501,7 +554,7 @@
 }, '1.0', {requires: ['base','node','io','json','dd','cookie','collection','mashups-global','mashups-service']});YUI.add('mashups-service', function(Y) {
     Y.namespace('Mashups');
 
-    function Service(data) {
+    function Service(config) {
         Service.superclass.constructor.apply(this, arguments);
     }
 
@@ -509,14 +562,13 @@
     Service.ATTRS = {};
 
     Y.extend(Service, Y.Base, {
-        initialiser : function(config) {
-            Y.io.header('Content-Type', 'application/json');
-        },
-
-        getBatchToolkit: function() {
-            if (this.batchToolkit == null || this.batchToolkit == undefined)
-                this.batchToolkit = new RALLY.Mashup.BatchToolkit('__WORKSPACE_OID__', '__PROJECT_OID__', '__PROJECT_SCOPING_UP__', '__PROJECT_SCOPING_DOWN__');
-            return this.batchToolkit;
+        initializer : function(config) {
+            Y.Mashups.FlashMessage.message.hide();
+            var self = this;
+            Y.each(config, function(value, index) {
+                self[index] = value;
+            });
+            this.batchToolkit = new RALLY.Mashup.BatchToolkit('__WORKSPACE_OID__', '__PROJECT_OID__', '__PROJECT_SCOPING_UP__', '__PROJECT_SCOPING_DOWN__');
         },
 
         execute : function(url, config) {
@@ -527,6 +579,7 @@
             var url = '/slm/webservice/1.14/user.js?query=(EmailAddress = ' + card.Owner + ' )';
             var config = {
                 method: 'GET',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
                 on: {
                     success: function (x, o, card) {
                         var ownerName = null;
@@ -545,29 +598,31 @@
         },
 
         loadFilter: function(filterType, callback) {
-            this.iterationDropdown = new RALLY.Mashup.Dropdown(this.getBatchToolkit(), filterType, "filter-dropdown", "filter-label", 'mu_iteration_status');
-            this.iterationDropdown.invoke(callback);
+            Y.Mashups.FlashMessage.message.show("Please wait... loading filter options");
+            this.filterDropdown = new RALLY.Mashup.Dropdown(this.batchToolkit, filterType, "filter-dropdown", "filter-label", 'mu_iteration_status');
+            this.filterDropdown.invoke(callback);
+            Y.Mashups.FlashMessage.message.show("Please wait... loading swimlanes");
         },
 
         findKanbanStatesAsSwimlanes: function() {
             return new Y.Mashups.Swimlanes({ service: this })
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Defined" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Prioritised" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Analysis" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Development" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Development" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Code Review" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Code Review" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Test" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Test" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Acceptance" }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Accepted" }));
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Defined", data : '{ "KanbanState": "Defined", "ScheduleState": "Backlog" }' }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Prioritised", data : '{ "KanbanState": "Prioritised", "ScheduleState": "Backlog" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Analysis", data : '{ "KanbanState": "In Analysis", "ScheduleState": "Backlog" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Development", data : '{ "KanbanState": "Ready For Development", "ScheduleState": "Defined" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Development", data : '{ "KanbanState": "In Development", "ScheduleState": "In-Progress" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Code Review", data : '{ "KanbanState": "Ready For Code Review", "ScheduleState": "In-Progress" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Code Review", data : '{ "KanbanState": "In Code Review", "ScheduleState": "In-Progress" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Test", data : '{ "KanbanState": "Ready For Test", "ScheduleState": "In-Progress" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Test" , data : '{ "KanbanState": "In Test", "ScheduleState": "In-Progress" }' }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Acceptance", data : '{ "KanbanState": "Ready For Acceptance", "ScheduleState": "Completed" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Accepted" , data : '{ "KanbanState": "Accepted", "ScheduleState": "Accepted" }' }));
 
         },
 
         findCardsByFilter: function(filterType, callback) {
+            Y.Mashups.FlashMessage.message.show("Please wait... loading cards for '" + this.filterDropdown.getSelectedName() + "'");
             var queryArr = [];
-
             var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked,Iteration";
             queryArr[0] =
             {
@@ -575,7 +630,7 @@
                 type: 'defect',
                 fetch: fields,
                 order: "Rank",
-                query: "(" + filterType + ".Name = " + "\"" + this.iterationDropdown.getSelectedName() + "\")"
+                query: "(" + filterType + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
             };
 
             queryArr[1] =
@@ -584,16 +639,48 @@
                 type: "hierarchicalrequirement",
                 fetch: fields,
                 order: "Rank",
-                query: "(" + filterType + ".Name = " + "\"" + this.iterationDropdown.getSelectedName() + "\")"
+                query: "(" + filterType + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
             };
 
-            this.getBatchToolkit().findAll(queryArr, function(results) {
+            this.batchToolkit.findAll(queryArr, function(results) {
                 var cards = new Y.Mashups.Cards();
-                Y.each(results.stories, function(story) { cards.addCard(new Y.Mashups.Story(story)); });
-                Y.each(results.defects, function(defect) { cards.addCard(new Y.Mashups.Defect(defect)); });
+                Y.each(results.stories, function(story) {
+                    cards.addCard(new Y.Mashups.Story(story));
+                });
+                Y.each(results.defects, function(defect) {
+                    cards.addCard(new Y.Mashups.Defect(defect));
+                });
 
                 callback(cards);
             });
+        },
+
+        updateCard : function(card, dataAsJSON) {
+            var url = '/slm/webservice/1.14/' + card.get('rallyType') + '/' + card.ObjectID + ".js";
+            var config = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                data: dataAsJSON,
+                on: {
+                    success: function (ioId, o, callback) {
+                        var response = Y.JSON.parse(o.responseText);
+                        if (response['OperationResult']['Errors'].length > 0) {
+                            Y.Mashups.FlashMessage.error.show('Failed updating state. \n Response:' + o.responseText);
+                        } else {
+                            Y.Mashups.FlashMessage.message.show("Card updated successfully.");
+                        }
+                        callback();
+                    },
+                    failure: function (ioId, o, callback) {
+                        Y.Mashups.FlashMessage.error.show('Failed updating state. \n Response:' + o.responseText);
+                        callback();
+                    }
+                },
+                arguments: this.refreshCardsCallback
+
+            };
+
+            this.execute(url, config);
         }
 
     });
@@ -607,6 +694,7 @@
 <body>
 
 <div class="outer-container">
+    <div class="hide left" id="error-message"></div>
     <form action="layout.html#">
         <div class="navigation-bar">
             <div class="left">

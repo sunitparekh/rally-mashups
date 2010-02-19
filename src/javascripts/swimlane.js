@@ -45,8 +45,9 @@ YUI.add('mashups-swimlane', function(Y) {
             return swimlaneNode;
         },
 
-        move: function(service, card) {
-            alert("Moving card " + card.FormattedID + " to swimlane " + this.Name);
+        move: function(card) {
+            Y.Mashups.FlashMessage.message.show("Please wait.. moving card '" + card.FormattedID + "' to swimlane '" + this.Name + "'");
+            card.update(this.data);
         }
     });
     Y.Mashups.Swimlane = Swimlane;
@@ -115,12 +116,14 @@ YUI.add('mashups-swimlane', function(Y) {
                 swimlaneHeader.append(swimlane.renderHeaderRow("header", swimlaneNotAvailableFlag));
 
                 var cardsRowNode = swimlane.renderCardsRow();
-                cardsRowNode.plug(Y.Plugin.Drop);
-                cardsRowNode.drop.on('drop:hit', function(element) {
-                    var swimlane = self.findByHtmlID(element.drop.get('node').getAttribute("id").substring("cards-".length));
-                    var card = self.findCardByObjectID(element.drag.get('node').getAttribute("id").substring("card-".length));
-                    swimlane.move(self.get('service'), card);
-                });
+                if (swimlane != self.get('swimlaneNotAvailable')) {
+                    cardsRowNode.plug(Y.Plugin.Drop);
+                    cardsRowNode.drop.on('drop:hit', function(element) {
+                        var swimlane = self.findByHtmlID(element.drop.get('node').getAttribute("id").substring("cards-".length));
+                        var card = self.findCardByObjectID(element.drag.get('node').getAttribute("id").substring("card-".length));
+                        swimlane.move(card);
+                    });
+                }
                 swimlaneCards.append(cardsRowNode);
 
                 swimlaneFooter.append(swimlane.renderHeaderRow("footer", swimlaneNotAvailableFlag));
@@ -134,9 +137,13 @@ YUI.add('mashups-swimlane', function(Y) {
         },
 
         clearCards : function() {
+            var self = this;
+            this.cards = new Y.Mashups.Cards();
             Y.each(this.swimlanes, function(swimlane, index, array) {
                 var swimlaneCards = Y.one("#cards-" + swimlane.htmlID());
                 swimlaneCards.set("innerHTML", "");
+                self.updateEstimate(swimlane.Name, 0, "header", false);
+                self.updateEstimate(swimlane.Name, 0, "footer", false);
             });
         },
 
@@ -161,13 +168,15 @@ YUI.add('mashups-swimlane', function(Y) {
                 card.set('service', self.get('service'));
                 self.renderCard(card);
             });
+            Y.Mashups.FlashMessage.message.hide();
         },
 
-        updateEstimate : function(swimlaneName, estimate, prefix) {
-            if (estimate == null || estimate == 0 || estimate == 0.0) return;
+        updateEstimate : function(swimlaneName, estimate, prefix, addAndUpdateFlag) {
+            if (addAndUpdateFlag == undefined) addAndUpdateFlag = true;
+            if (estimate == null) return;
             var swimlaneNode = Y.one("#" + prefix + "-" + this.findByName(swimlaneName).htmlID());
             var estimateNode = swimlaneNode.one(".estimate");
-            var total = parseFloat(estimateNode.get("innerHTML")) + estimate;
+            var total = ( (addAndUpdateFlag) ? parseFloat(estimateNode.get("innerHTML")) : 0) + estimate;
             estimateNode.set("innerHTML", total);
         }
     });

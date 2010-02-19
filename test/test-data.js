@@ -119,33 +119,20 @@ YUI.add('mashups-test-data',function(Y){
             .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[3]))
             .addCard(new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[4]))};
 
-    Y.Mashups.Tests.Data.KanbanSwimlanesAsData = new Array(
-        { Name: "Defined" },
-        { Name: "Prioritised" },
-        { Name: "In Analysis" },
-        { Name: "Ready For Development" },
-        { Name: "In Development" },
-        { Name: "Ready For Code Review" },
-        { Name: "In Code Review" },
-        { Name: "Ready For Test" },
-        { Name: "In Test" },
-        { Name: "Ready For Acceptance" },
-        { Name: "Accepted" }
-    );
-
     Y.Mashups.Tests.Data.KanbanSwimlanes = function(){
-        return new Y.Mashups.Swimlanes( { service: new Y.Mashups.Stubs.Service() } )
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[0]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[1]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[2]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[3]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[4]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[5]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[6]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[7]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[8]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[9]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.KanbanSwimlanesAsData[10]))
+        return new Y.Mashups.Swimlanes({ service: new Y.Mashups.Stubs.Service() })
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "Defined", data : { KanbanState: "Defined", ScheduleSate: "Backlog" } }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "Prioritised", data : { KanbanState: "Prioritised", ScheduleSate: "Backlog" }  }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Analysis", data : { KanbanState: "In Analysis", ScheduleSate: "Backlog" }  }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Development", data : { KanbanState: "Ready For Development", ScheduleSate: "Defined" }  }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Development", data : { KanbanState: "In Development", ScheduleSate: "In-Progress" }  }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Code Review", data : { KanbanState: "Ready For Code Review", ScheduleSate: "In-Progress" }  }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Code Review", data : { KanbanState: "In Code Review", ScheduleSate: "In-Progress" }  }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Test", data : { KanbanState: "Ready For Test", ScheduleSate: "In-Progress" }  }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Test" , data : { KanbanState: "In Test", ScheduleSate: "In-Progress" } }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Acceptance", data : { KanbanState: "Ready For Acceptance", ScheduleSate: "Completed" }  }))
+                            .addSwimlane(new Y.Mashups.Swimlane({ Name: "Accepted" , data : { KanbanState: "Accepted", ScheduleSate: "Accepted" } }));
+        
     };
 
     Y.Mashups.Tests.Data.EstimateSwimlanesAsData = new Array(
