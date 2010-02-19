@@ -25,14 +25,15 @@
 @layout@
 
 <script type="text/javascript">
-    YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
+    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
         var service = null;
         var swimlanes = null;
         var filterType = RALLY.Mashup.ITERATION;
 
         function initPage() {
-            service = new Y.Mashups.Service();
-            service.loadFilter(filterType, Y.Mashups.EstimationBoard.loadSwimlaneBoard);
+            service = new Y.Mashups.Service({refreshCardsCallback: Y.Mashups.EstimationBoard.refreshCardsOnBoard});
+            Y.Mashups.EstimationBoard.loadSwimlaneBoard();
+            service.loadFilter(filterType, Y.Mashups.EstimationBoard.refreshCardsOnBoard);
         }
 
         Y.namespace('Mashups.EstimationBoard');
@@ -41,8 +42,6 @@
             swimlanes = Y.Mashups.EstimationBoard.EstimationSwimlanes;
             swimlanes.set('service',service);
             swimlanes.renderSwimlanes();
-
-            Y.Mashups.EstimationBoard.refreshCardsOnBoard();
         };
 
         Y.Mashups.EstimationBoard.refreshCardsOnBoard = function() {
@@ -58,16 +57,21 @@
             swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "To Be Estimated", Label: "To Be Estimated"}),
             swimlaneKey: 'PlanEstimate'
         })
-           .addSwimlane(new Y.Mashups.Swimlane({ Name: "0", Label: "Free (0)" }))
-           .addSwimlane(new Y.Mashups.Swimlane({ Name: "1", Label: "Small (1)" }))
-           .addSwimlane(new Y.Mashups.Swimlane({ Name: "2", Label: "Medium (2)"}))
-           .addSwimlane(new Y.Mashups.Swimlane({ Name: "3", Label: "Large (3)"}))
-           .addSwimlane(new Y.Mashups.Swimlane({ Name: "5", Label: "X-Large (5)"}));
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "0", Label: "Free (0)", data : '{ "PlanEstimate": "0" }' }))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "1", Label: "Small (1)", data : '{ "PlanEstimate": "1" }'}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "2", Label: "Medium (2)", data : '{ "PlanEstimate": "2" }'}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "3", Label: "Large (3)", data : '{ "PlanEstimate": "3" }'}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "5", Label: "X-Large (5)", data : '{ "PlanEstimate": "5" }'}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "5", Label: "XX-Large (8)", data : '{ "PlanEstimate": "8" }'}));
 
 
         initPage();
     });
 
+    function refreshWindow(url, cardNumber, cardTitle, flag1, flag2, flag3){
+        YahooUI.Mashups.EstimationBoard.refreshCardsOnBoard();
+    }
+    
 </script>
 </body>
 </html>
