@@ -230,9 +230,13 @@ YUI.add('card-tests', function(Y) {
             };
 
 
-            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
+            var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes();
             swimlanes.set('service', serviceMock);
             swimlanes.renderSwimlanes();
+
+            var actionMenu = new Y.Mashups.ActionMenu();
+            actionMenu.buildMenu(swimlanes);
+            actionMenu.show();
 
             var cards = Y.Mashups.Tests.Data.Cards();
             swimlanes.renderCards(cards);

@@ -71,7 +71,7 @@ YUI.add('swimlane-tests', function(Y) {
             swimlanes.renderSwimlanes();
 
             var swimlaneNodes = Y.one(".swimlane-header").all(".swimlane");
-            Y.Assert.areEqual(6, swimlaneNodes.size());
+            Y.Assert.areEqual(7, swimlaneNodes.size());
 
         }
 

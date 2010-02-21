@@ -39,6 +39,14 @@
     margin-left: 5px;
 }
 
+.menu-bar {
+    margin: 0 10px;
+}
+
+.swimlane-board {
+    margin-top: 15px;
+}
+
 .swimlane-row {
     clear: both;
     margin: 0;

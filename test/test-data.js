@@ -149,11 +149,12 @@ YUI.add('mashups-test-data',function(Y){
             swimlaneKey: 'PlanEstimate',
             service: new Y.Mashups.Stubs.Service()
         })
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[0]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[1]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[2]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[3]))
-           .addSwimlane(new Y.Mashups.Swimlane(Y.Mashups.Tests.Data.EstimateSwimlanesAsData[4]))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "0", Label: "Free (0)", data : '{ "PlanEstimate": "0" }' }))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "1", Label: "Small (1)", data : '{ "PlanEstimate": "1" }'}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "2", Label: "Medium (2)", data : '{ "PlanEstimate": "2" }'}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "3", Label: "Large (3)", data : '{ "PlanEstimate": "3" }'}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "5", Label: "X-Large (5)", data : '{ "PlanEstimate": "5" }'}))
+           .addSwimlane(new Y.Mashups.Swimlane({ Name: "8", Label: "XX-Large (8)", data : '{ "PlanEstimate": "8" }'}));
     };
 
 },'1.0',{requires: ['base','mashups-swimlane','mashup-stubs']});

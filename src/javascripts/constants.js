@@ -40,4 +40,4 @@ YUI.add('mashups-global',function(Y){
     Y.Mashups.FlashMessage.message = new Y.Mashups.FlashMessage();
     Y.Mashups.FlashMessage.error = new Y.Mashups.FlashMessage({ id: "error-message"});
 
-},'0.6',{requires: ['base']});
+},'1.0',{requires: ['base']});

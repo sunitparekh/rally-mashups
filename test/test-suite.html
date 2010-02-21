@@ -6,10 +6,13 @@
 
     <link rel="stylesheet" type="text/css" href="../src/stylesheets/rally-board-mashup.css">
     <link rel="stylesheet" type="text/css" href="lib/reset-min.css">
+    <link rel="stylesheet" type="text/css" href="lib/node-menunav.css">
     <script type="text/javascript" src="lib/yui.js"></script>
+    <script type="text/javascript" src="lib/node-menunav.js"></script>
     <script type="text/javascript" src="lib/test-fireunit.js"></script>
 
     <script type="text/javascript" src="../src/javascripts/swimlane.js"></script>
+    <script type="text/javascript" src="../src/javascripts/action-menu.js"></script>
     <script type="text/javascript" src="../src/javascripts/card.js"></script>
     <script type="text/javascript" src="../src/javascripts/constants.js"></script>
     <script type="text/javascript" src="../src/javascripts/service.js"></script>
@@ -18,22 +21,35 @@
     <script type="text/javascript" src="service-stub.js"></script>
     <script type="text/javascript" src="test-suite.js"></script>
     <script type="text/javascript" src="swimlane-tests.js"></script>
+    <script type="text/javascript" src="action-menu-tests.js"></script>
     <script type="text/javascript" src="card-tests.js"></script>
 
 </head>
 <body>
 
-<div class="outer-container">
-    <div class="navigation-bar">
-        <div class="iteration-filter"></div>
-        <div class="menu-bar"></div>
-    </div>
-    <div class="swimlane-board">
-        <div class="swimlane-header swimlane-row"></div>
-        <div class="swimlane-cards swimlane-row"></div>
-        <div class="swimlane-footer swimlane-row"></div>
-    </div>
+<div class="outer-container yui-skin-sam">
+    <div class="hide left" id="error-message"></div>
+    <form action="#">
+        <div class="navigation-bar">
+            <div class="left">
+                <div class="left" id="filter-label"></div>
+                <div class="left"><select id="filter-dropdown"></select></div>
+            </div>
+            <div id="action-menu" class="hide left menu-bar yui-menu yui-menu-horizontal yui-menubuttonnav">
+                <div class="yui-menu-content"><!-- Content box -->
+                </div>
+            </div>
+            <div class="left" id="flash-message">Loading YUI Libraray....taking too long means no internet connection. please check proxy settings. </div>
+            <div class="right"><a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">Scrum Board v1.0</a></div>
+        </div>
+        <div class="swimlane-board">
+            <div class="swimlane-header swimlane-row"></div>
+            <div class="swimlane-cards swimlane-row"></div>
+            <div class="swimlane-footer swimlane-row"></div>
+        </div>
+    </form>
 </div>
+
 
 <script type="text/javascript">
     YUI().use('test-fireunit', 'test', 'test-suite', function (Y) {

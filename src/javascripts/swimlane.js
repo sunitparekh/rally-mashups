@@ -48,6 +48,18 @@ YUI.add('mashups-swimlane', function(Y) {
         move: function(card) {
             Y.Mashups.FlashMessage.message.show("Please wait.. moving card '" + card.FormattedID + "' to swimlane '" + this.Name + "'");
             card.update(this.data);
+        },
+
+        show: function() {
+            Y.one("#header-" + this.htmlID()).removeClass("hide");
+            Y.one("#cards-" + this.htmlID()).removeClass("hide");
+            Y.one("#footer-" + this.htmlID()).removeClass("hide");
+        },
+
+        hide: function() {
+            Y.one("#header-" + this.htmlID()).addClass("hide");
+            Y.one("#cards-" + this.htmlID()).addClass("hide");
+            Y.one("#footer-" + this.htmlID()).addClass("hide");
         }
     });
     Y.Mashups.Swimlane = Swimlane;
