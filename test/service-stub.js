@@ -6,7 +6,7 @@ YUI.add('mashup-stubs', function(Y) {
     }
 
     Service.NAME = 'service';
-    Service.ATTRS = {};
+    Service.ATTRS = {mashupName: {value: null}};
 
     Y.extend(Service, Y.Base, {
         // don't care responding stub

@@ -153,6 +153,7 @@ YUI.add('mashups-card', function(Y) {
             });
         },
         noOfCards: function() {
+            if (this.cards == null) return 0;
             return this.cards.length;
         },
 

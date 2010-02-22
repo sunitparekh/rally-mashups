@@ -25,33 +25,58 @@
 @layout@
 
 <script type="text/javascript">
-    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
+    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service','mashups-action-menu', function (Y) {
         var service = null;
         var swimlanes = null;                                   
-        var filterType = RALLY.Mashup.ITERATION;
+        var actionMenu = null;
 
         function initPage() {
-            service = new Y.Mashups.Service({refreshCardsCallback: Y.Mashups.ScrumBoard.refreshCardsOnBoard});
-            Y.Mashups.ScrumBoard.loadSwimlaneBoard();
-            service.loadFilter(filterType, Y.Mashups.ScrumBoard.refreshCardsOnBoard);
+            Y.Mashups.FlashMessage.message.hide();
+            service = new Y.Mashups.Service({mashupName: "ScrumBoard", refreshCardsCallback: Y.Mashups.ScrumBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.ITERATION});
+            swimlanes = Y.Mashups.ScrumBoard.loadSwimlaneBoard();
+            actionMenu = Y.Mashups.ScrumBoard.loadActionMenu(swimlanes);
+            service.loadFilter();
         }
 
         Y.namespace('Mashups.ScrumBoard');
 
         Y.Mashups.ScrumBoard.loadSwimlaneBoard = function() {
-            swimlanes = service.findKanbanStatesAsSwimlanes();
-            swimlanes.set('service',service);
-            swimlanes.renderSwimlanes();
+            var tempSwimlanes = Y.Mashups.ScrumBoard.KanbanStatesAsSwimlanes();
+            tempSwimlanes.renderSwimlanes();
+            return tempSwimlanes;
+        };
+
+        Y.Mashups.ScrumBoard.loadActionMenu = function(swimlanes) {
+            var tempActionMenu = new Y.Mashups.ActionMenu();
+            tempActionMenu.buildMenu(swimlanes);
+            tempActionMenu.show();
+            return tempActionMenu;
         };
 
         Y.Mashups.ScrumBoard.refreshCardsOnBoard = function() {
-            var cards = service.findCardsByFilter(filterType, Y.Mashups.ScrumBoard.renderCards);
+            var cards = service.findCardsByFilter(Y.Mashups.ScrumBoard.renderCards);
         };
 
         Y.Mashups.ScrumBoard.renderCards = function(cards) {
             cards.sortByRank();
             swimlanes.renderCards(cards);
         };
+
+        Y.Mashups.ScrumBoard.KanbanStatesAsSwimlanes = function() {
+            return new Y.Mashups.Swimlanes({ service: service })
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Defined", data : '{ "KanbanState": "Defined", "ScheduleState": "Backlog" }' }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Prioritised", data : '{ "KanbanState": "Prioritised", "ScheduleState": "Backlog" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Analysis", data : '{ "KanbanState": "In Analysis", "ScheduleState": "Backlog" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Development", data : '{ "KanbanState": "Ready For Development", "ScheduleState": "Defined" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Development", data : '{ "KanbanState": "In Development", "ScheduleState": "In-Progress" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Code Review", data : '{ "KanbanState": "Ready For Code Review", "ScheduleState": "In-Progress" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Code Review", data : '{ "KanbanState": "In Code Review", "ScheduleState": "In-Progress" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Test", data : '{ "KanbanState": "Ready For Test", "ScheduleState": "In-Progress" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Test" , data : '{ "KanbanState": "In Test", "ScheduleState": "In-Progress" }' }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Acceptance", data : '{ "KanbanState": "Ready For Acceptance", "ScheduleState": "Completed" }'  }))
+                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Accepted" , data : '{ "KanbanState": "Accepted", "ScheduleState": "Accepted" }' }));
+
+        }
 
         initPage();
     });

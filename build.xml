@@ -68,6 +68,7 @@
         <concat destfile="${build}/global.js">
             <!-- explicitly order js concat because ordering matters here -->
             <fileset dir="${javascript}" includes="constants.js"/>
+            <fileset dir="${javascript}" includes="action-menu.js"/>
             <fileset dir="${javascript}" includes="card.js"/>
             <fileset dir="${javascript}" includes="swimlane.js"/>
             <fileset dir="${javascript}" includes="service.js"/>

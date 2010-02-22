@@ -54,12 +54,18 @@ YUI.add('mashups-swimlane', function(Y) {
             Y.one("#header-" + this.htmlID()).removeClass("hide");
             Y.one("#cards-" + this.htmlID()).removeClass("hide");
             Y.one("#footer-" + this.htmlID()).removeClass("hide");
+            Y.Cookie.removeSub(this.get("service").get("mashupName") + ".swimlanes",this.Name, { removeIfEmpty: true });
         },
 
         hide: function() {
             Y.one("#header-" + this.htmlID()).addClass("hide");
             Y.one("#cards-" + this.htmlID()).addClass("hide");
             Y.one("#footer-" + this.htmlID()).addClass("hide");
+            Y.Cookie.setSub(this.get("service").get("mashupName") + ".swimlanes",this.Name,"hide", { expires: new Date("January 12, 2025") });
+        },
+
+        isHidden: function() {
+            return (Y.Cookie.getSub(this.get("service").get("mashupName") + ".swimlanes",this.Name) == "hide");
         }
     });
     Y.Mashups.Swimlane = Swimlane;
@@ -123,6 +129,7 @@ YUI.add('mashups-swimlane', function(Y) {
             var swimlaneFooter = Y.one(".swimlane-footer");
             var self = this;
             Y.each(this.swimlanes, function(swimlane) {
+                swimlane.set('service',self.get("service"));
                 var swimlaneNotAvailableFlag = (swimlane === self.get("swimlaneNotAvailable"));
 
                 swimlaneHeader.append(swimlane.renderHeaderRow("header", swimlaneNotAvailableFlag));

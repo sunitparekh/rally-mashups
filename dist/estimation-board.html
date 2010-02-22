@@ -55,6 +55,14 @@
     margin-left: 5px;
 }
 
+.menu-bar {
+    margin: 0 10px;
+}
+
+.swimlane-board {
+    margin-top: 15px;
+}
+
 .swimlane-row {
     clear: both;
     margin: 0;
@@ -199,7 +207,86 @@
     Y.Mashups.FlashMessage.message = new Y.Mashups.FlashMessage();
     Y.Mashups.FlashMessage.error = new Y.Mashups.FlashMessage({ id: "error-message"});
 
-},'0.6',{requires: ['base']});YUI.add('mashups-card', function(Y) {
+},'1.0',{requires: ['base']});YUI.add('mashups-action-menu', function(Y) {
+    Y.namespace('Mashups');
+
+    function ActionMenu(config) {
+        ActionMenu.superclass.constructor.apply(this, arguments);
+    }
+
+    ActionMenu.NAME = 'action-menu';
+    ActionMenu.ATTRS = { id: { value: "action-menu"}, showSwimlane: {value: true}, hideSwimlane: {value: true} };
+
+    Y.extend(ActionMenu, Y.Base, {
+        initializer: function(config) {
+        },
+
+        buildMenu: function(swimlanes) {
+            this.clear();
+            var mainMenuNode = Y.Node.create("<ul></ul>");
+            this.buildShowSwimlaneActionMenu(swimlanes, mainMenuNode);
+            this.buildHideSwimlaneActionMenu(swimlanes, mainMenuNode);
+
+            var menuContent = Y.one(".yui-menu-content");
+            menuContent.appendChild(mainMenuNode);
+            
+            var menu = Y.one("#" + this.get('id'));
+            menu.plug(Y.Plugin.NodeMenuNav);
+        },
+
+        buildShowSwimlaneActionMenu: function(swimlanes, mainMenuNode) {
+            if (this.get("showSwimlane"))
+                this.buildSwimlaneActionmenu(swimlanes,mainMenuNode,"Show Swimlane","show-swimlane", function(swimlane) {swimlane.show();});
+        },
+
+        buildHideSwimlaneActionMenu: function(swimlanes, mainMenuNode) {
+            if (this.get("hideSwimlane"))
+                this.buildSwimlaneActionmenu(swimlanes,mainMenuNode,"Hide Swimlane","hide-swimlane", function(swimlane) {swimlane.hide();});
+        },
+
+        buildSwimlaneActionmenu: function(swimlanes, mainMenuNode, mainMenuLabel, subMenuId, onclickCallback) {
+            var showSwimlaneMainMenuNode = Y.Node.create("<li></li>");
+            showSwimlaneMainMenuNode.append("<a class=\"yui-menu-label\" href=\"#" + subMenuId +"\"><em>" + mainMenuLabel + "</em></a>");
+                var showSwimlaneSubMenu = Y.Node.create("<div id=\"" + subMenuId +"\" class=\"yui-menu\"></div>");
+                    var swimlaneSubMenuContent = Y.Node.create("<div class=\"yui-menu-content\"></div>");
+                        var swimlaneSubMenuUl = Y.Node.create("<ul></ul>");
+                            Y.each(swimlanes.swimlanes, function(swimlane) {
+                                if (swimlane.isHidden()) {
+                                    swimlane.hide();
+                                }
+                                var showSwimlaneLi = Y.Node.create('<li class="yui-menuitem"></li>');
+                                    var swimlaneMenuItemAction = Y.Node.create("<a class=\"yui-menuitem-content\" href=\"#\">" + swimlane.Label + "</a>");
+                                    swimlaneMenuItemAction.on("click",function() { onclickCallback(swimlane)});
+                                    showSwimlaneLi.appendChild(swimlaneMenuItemAction);
+                                swimlaneSubMenuUl.appendChild(showSwimlaneLi);
+                            });
+                        swimlaneSubMenuContent.appendChild(swimlaneSubMenuUl);
+                showSwimlaneSubMenu.appendChild(swimlaneSubMenuContent);
+
+                showSwimlaneMainMenuNode.appendChild(showSwimlaneSubMenu);
+            mainMenuNode.appendChild(showSwimlaneMainMenuNode);
+        },
+
+        show: function() {
+            var menu = Y.one("#" + this.get('id'));
+            if (menu == null || menu == undefined) return;
+            menu.removeClass("hide");
+        },
+
+        hide: function() {
+            var menu = Y.one("#" + this.get('id'));
+            if (menu == null || menu == undefined) return;
+            menu.addClass("hide");
+        },
+
+        clear: function() {
+            Y.one(".yui-menu-content").set("innerHTML","");
+        }
+    });
+
+    Y.Mashups.ActionMenu = ActionMenu;
+
+}, '1.0', {requires: ['base','node-menunav']});YUI.add('mashups-card', function(Y) {
     Y.namespace('Mashups');
 
     function Card(data) {
@@ -354,6 +441,7 @@
             });
         },
         noOfCards: function() {
+            if (this.cards == null) return 0;
             return this.cards.length;
         },
 
@@ -417,6 +505,24 @@
         move: function(card) {
             Y.Mashups.FlashMessage.message.show("Please wait.. moving card '" + card.FormattedID + "' to swimlane '" + this.Name + "'");
             card.update(this.data);
+        },
+
+        show: function() {
+            Y.one("#header-" + this.htmlID()).removeClass("hide");
+            Y.one("#cards-" + this.htmlID()).removeClass("hide");
+            Y.one("#footer-" + this.htmlID()).removeClass("hide");
+            Y.Cookie.removeSub(this.get("service").get("mashupName") + ".swimlanes",this.Name, { removeIfEmpty: true });
+        },
+
+        hide: function() {
+            Y.one("#header-" + this.htmlID()).addClass("hide");
+            Y.one("#cards-" + this.htmlID()).addClass("hide");
+            Y.one("#footer-" + this.htmlID()).addClass("hide");
+            Y.Cookie.setSub(this.get("service").get("mashupName") + ".swimlanes",this.Name,"hide", { expires: new Date("January 12, 2025") });
+        },
+
+        isHidden: function() {
+            return (Y.Cookie.getSub(this.get("service").get("mashupName") + ".swimlanes",this.Name) == "hide");
         }
     });
     Y.Mashups.Swimlane = Swimlane;
@@ -480,6 +586,7 @@
             var swimlaneFooter = Y.one(".swimlane-footer");
             var self = this;
             Y.each(this.swimlanes, function(swimlane) {
+                swimlane.set('service',self.get("service"));
                 var swimlaneNotAvailableFlag = (swimlane === self.get("swimlaneNotAvailable"));
 
                 swimlaneHeader.append(swimlane.renderHeaderRow("header", swimlaneNotAvailableFlag));
@@ -560,15 +667,10 @@
     }
 
     Service.NAME = 'service';
-    Service.ATTRS = {};
+    Service.ATTRS = {mashupName: {value: null}, refreshCardsCallback: {value: null}, filterType: {value: null}};
 
     Y.extend(Service, Y.Base, {
         initializer : function(config) {
-            Y.Mashups.FlashMessage.message.hide();
-            var self = this;
-            Y.each(config, function(value, index) {
-                self[index] = value;
-            });
             this.batchToolkit = new RALLY.Mashup.BatchToolkit('__WORKSPACE_OID__', '__PROJECT_OID__', '__PROJECT_SCOPING_UP__', '__PROJECT_SCOPING_DOWN__');
         },
 
@@ -598,30 +700,14 @@
             this.execute(url, config);
         },
 
-        loadFilter: function(filterType, callback) {
+        loadFilter: function() {
             Y.Mashups.FlashMessage.message.show("Please wait... loading filter options");
-            this.filterDropdown = new RALLY.Mashup.Dropdown(this.batchToolkit, filterType, "filter-dropdown", "filter-label", 'mu_iteration_status');
-            this.filterDropdown.invoke(callback);
+            this.filterDropdown = new RALLY.Mashup.Dropdown(this.batchToolkit, this.get('filterType'), "filter-dropdown", "filter-label", 'mu_iteration_status');
+            this.filterDropdown.invoke(this.get("refreshCardsCallback"));
             Y.Mashups.FlashMessage.message.show("Please wait... loading swimlanes");
         },
 
-        findKanbanStatesAsSwimlanes: function() {
-            return new Y.Mashups.Swimlanes({ service: this })
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Defined", data : '{ "KanbanState": "Defined", "ScheduleState": "Backlog" }' }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Prioritised", data : '{ "KanbanState": "Prioritised", "ScheduleState": "Backlog" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Analysis", data : '{ "KanbanState": "In Analysis", "ScheduleState": "Backlog" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Development", data : '{ "KanbanState": "Ready For Development", "ScheduleState": "Defined" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Development", data : '{ "KanbanState": "In Development", "ScheduleState": "In-Progress" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Code Review", data : '{ "KanbanState": "Ready For Code Review", "ScheduleState": "In-Progress" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Code Review", data : '{ "KanbanState": "In Code Review", "ScheduleState": "In-Progress" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Test", data : '{ "KanbanState": "Ready For Test", "ScheduleState": "In-Progress" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Test" , data : '{ "KanbanState": "In Test", "ScheduleState": "In-Progress" }' }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Acceptance", data : '{ "KanbanState": "Ready For Acceptance", "ScheduleState": "Completed" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Accepted" , data : '{ "KanbanState": "Accepted", "ScheduleState": "Accepted" }' }));
-
-        },
-
-        findCardsByFilter: function(filterType, callback) {
+        findCardsByFilter: function(callback) {
             Y.Mashups.FlashMessage.message.show("Please wait... loading cards for '" + this.filterDropdown.getSelectedName() + "'");
             var queryArr = [];
             var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked,Iteration";
@@ -631,7 +717,7 @@
                 type: 'defect',
                 fetch: fields,
                 order: "Rank",
-                query: "(" + filterType + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
+                query: "(" + this.get('filterType') + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
             };
 
             queryArr[1] =
@@ -640,7 +726,7 @@
                 type: "hierarchicalrequirement",
                 fetch: fields,
                 order: "Rank",
-                query: "(" + filterType + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
+                query: "(" + this.get('filterType') + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
             };
 
             this.batchToolkit.findAll(queryArr, function(results) {
@@ -651,7 +737,7 @@
                 Y.each(results.defects, function(defect) {
                     cards.addCard(new Y.Mashups.Defect(defect));
                 });
-
+                if (cards.noOfCards() == 0){ Y.Mashups.FlashMessage.message.show("No cards found"); return; }
                 callback(cards);
             });
         },
@@ -677,7 +763,7 @@
                         callback();
                     }
                 },
-                arguments: this.refreshCardsCallback
+                arguments: this.get("refreshCardsCallback")
 
             };
 
@@ -694,15 +780,18 @@
 </head>
 <body>
 
-<div class="outer-container">
+<div class="outer-container yui-skin-sam">
     <div class="hide left" id="error-message"></div>
-    <form action="layout.html#">
+    <form action="#">
         <div class="navigation-bar">
             <div class="left">
                 <div class="left" id="filter-label"></div>
                 <div class="left"><select id="filter-dropdown"></select></div>
             </div>
-            <div class="left menu-bar">&nbsp;</div>
+            <div id="action-menu" class="hide left menu-bar yui-menu yui-menu-horizontal yui-menubuttonnav">
+                <div class="yui-menu-content"><!-- Content box -->
+                </div>
+            </div>
             <div class="left" id="flash-message">Loading YUI Libraray....taking too long means no internet connection. please check proxy settings. </div>
             <div class="right"><a class="version" href="http://github.com/sunitparekh/rally-mashups/raw/master/README">Scrum Board v1.0</a></div>
         </div>
@@ -716,27 +805,36 @@
 
 
 <script type="text/javascript">
-    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
+    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service','mashups-action-menu', function (Y) {
         var service = null;
         var swimlanes = null;
-        var filterType = RALLY.Mashup.ITERATION;
+        var actionMenu = null;
 
         function initPage() {
-            service = new Y.Mashups.Service({refreshCardsCallback: Y.Mashups.EstimationBoard.refreshCardsOnBoard});
-            Y.Mashups.EstimationBoard.loadSwimlaneBoard();
-            service.loadFilter(filterType, Y.Mashups.EstimationBoard.refreshCardsOnBoard);
+            Y.Mashups.FlashMessage.message.hide();
+            service = new Y.Mashups.Service({mashupName: "EstimationBoard", refreshCardsCallback: Y.Mashups.EstimationBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.ITERATION});
+            swimlanes = Y.Mashups.EstimationBoard.loadSwimlaneBoard();
+            actionMenu = Y.Mashups.EstimationBoard.loadActionMenu(swimlanes);
+            service.loadFilter();
         }
 
         Y.namespace('Mashups.EstimationBoard');
 
         Y.Mashups.EstimationBoard.loadSwimlaneBoard = function() {
-            swimlanes = Y.Mashups.EstimationBoard.EstimationSwimlanes;
-            swimlanes.set('service',service);
-            swimlanes.renderSwimlanes();
+            var tempSwimlanes = Y.Mashups.EstimationBoard.EstimationSwimlanes();
+            tempSwimlanes.renderSwimlanes();
+            return tempSwimlanes;
+        };
+
+        Y.Mashups.EstimationBoard.loadActionMenu = function(swimlanes) {
+            var tempActionMenu = new Y.Mashups.ActionMenu();
+            tempActionMenu.buildMenu(swimlanes);
+            tempActionMenu.show();
+            return tempActionMenu;
         };
 
         Y.Mashups.EstimationBoard.refreshCardsOnBoard = function() {
-            var cards = service.findCardsByFilter(filterType, Y.Mashups.EstimationBoard.renderCards);
+            var cards = service.findCardsByFilter(Y.Mashups.EstimationBoard.renderCards);
         };
 
         Y.Mashups.EstimationBoard.renderCards = function(cards) {
@@ -744,9 +842,10 @@
             swimlanes.renderCards(cards);
         };
 
-        Y.Mashups.EstimationBoard.EstimationSwimlanes = new Y.Mashups.Swimlanes({
+        Y.Mashups.EstimationBoard.EstimationSwimlanes = function(){ return new Y.Mashups.Swimlanes({
             swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "To Be Estimated", Label: "To Be Estimated"}),
-            swimlaneKey: 'PlanEstimate'
+            swimlaneKey: 'PlanEstimate',
+            service: service
         })
            .addSwimlane(new Y.Mashups.Swimlane({ Name: "0", Label: "Free (0)", data : '{ "PlanEstimate": "0" }' }))
            .addSwimlane(new Y.Mashups.Swimlane({ Name: "1", Label: "Small (1)", data : '{ "PlanEstimate": "1" }'}))
@@ -754,7 +853,7 @@
            .addSwimlane(new Y.Mashups.Swimlane({ Name: "3", Label: "Large (3)", data : '{ "PlanEstimate": "3" }'}))
            .addSwimlane(new Y.Mashups.Swimlane({ Name: "5", Label: "X-Large (5)", data : '{ "PlanEstimate": "5" }'}))
            .addSwimlane(new Y.Mashups.Swimlane({ Name: "8", Label: "XX-Large (8)", data : '{ "PlanEstimate": "8" }'}));
-
+        };
 
         initPage();
     });

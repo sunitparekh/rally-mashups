@@ -6,15 +6,10 @@ YUI.add('mashups-service', function(Y) {
     }
 
     Service.NAME = 'service';
-    Service.ATTRS = {};
+    Service.ATTRS = {mashupName: {value: null}, refreshCardsCallback: {value: null}, filterType: {value: null}};
 
     Y.extend(Service, Y.Base, {
         initializer : function(config) {
-            Y.Mashups.FlashMessage.message.hide();
-            var self = this;
-            Y.each(config, function(value, index) {
-                self[index] = value;
-            });
             this.batchToolkit = new RALLY.Mashup.BatchToolkit('__WORKSPACE_OID__', '__PROJECT_OID__', '__PROJECT_SCOPING_UP__', '__PROJECT_SCOPING_DOWN__');
         },
 
@@ -44,30 +39,14 @@ YUI.add('mashups-service', function(Y) {
             this.execute(url, config);
         },
 
-        loadFilter: function(filterType, callback) {
+        loadFilter: function() {
             Y.Mashups.FlashMessage.message.show("Please wait... loading filter options");
-            this.filterDropdown = new RALLY.Mashup.Dropdown(this.batchToolkit, filterType, "filter-dropdown", "filter-label", 'mu_iteration_status');
-            this.filterDropdown.invoke(callback);
+            this.filterDropdown = new RALLY.Mashup.Dropdown(this.batchToolkit, this.get('filterType'), "filter-dropdown", "filter-label", 'mu_iteration_status');
+            this.filterDropdown.invoke(this.get("refreshCardsCallback"));
             Y.Mashups.FlashMessage.message.show("Please wait... loading swimlanes");
         },
 
-        findKanbanStatesAsSwimlanes: function() {
-            return new Y.Mashups.Swimlanes({ service: this })
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Defined", data : '{ "KanbanState": "Defined", "ScheduleState": "Backlog" }' }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Prioritised", data : '{ "KanbanState": "Prioritised", "ScheduleState": "Backlog" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Analysis", data : '{ "KanbanState": "In Analysis", "ScheduleState": "Backlog" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Development", data : '{ "KanbanState": "Ready For Development", "ScheduleState": "Defined" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Development", data : '{ "KanbanState": "In Development", "ScheduleState": "In-Progress" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Code Review", data : '{ "KanbanState": "Ready For Code Review", "ScheduleState": "In-Progress" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Code Review", data : '{ "KanbanState": "In Code Review", "ScheduleState": "In-Progress" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Test", data : '{ "KanbanState": "Ready For Test", "ScheduleState": "In-Progress" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Test" , data : '{ "KanbanState": "In Test", "ScheduleState": "In-Progress" }' }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Acceptance", data : '{ "KanbanState": "Ready For Acceptance", "ScheduleState": "Completed" }'  }))
-                    .addSwimlane(new Y.Mashups.Swimlane({ Name: "Accepted" , data : '{ "KanbanState": "Accepted", "ScheduleState": "Accepted" }' }));
-
-        },
-
-        findCardsByFilter: function(filterType, callback) {
+        findCardsByFilter: function(callback) {
             Y.Mashups.FlashMessage.message.show("Please wait... loading cards for '" + this.filterDropdown.getSelectedName() + "'");
             var queryArr = [];
             var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked,Iteration";
@@ -77,7 +56,7 @@ YUI.add('mashups-service', function(Y) {
                 type: 'defect',
                 fetch: fields,
                 order: "Rank",
-                query: "(" + filterType + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
+                query: "(" + this.get('filterType') + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
             };
 
             queryArr[1] =
@@ -86,7 +65,7 @@ YUI.add('mashups-service', function(Y) {
                 type: "hierarchicalrequirement",
                 fetch: fields,
                 order: "Rank",
-                query: "(" + filterType + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
+                query: "(" + this.get('filterType') + ".Name = " + "\"" + this.filterDropdown.getSelectedName() + "\")"
             };
 
             this.batchToolkit.findAll(queryArr, function(results) {
@@ -97,7 +76,7 @@ YUI.add('mashups-service', function(Y) {
                 Y.each(results.defects, function(defect) {
                     cards.addCard(new Y.Mashups.Defect(defect));
                 });
-
+                if (cards.noOfCards() == 0){ Y.Mashups.FlashMessage.message.show("No cards found"); return; }
                 callback(cards);
             });
         },
@@ -123,7 +102,7 @@ YUI.add('mashups-service', function(Y) {
                         callback();
                     }
                 },
-                arguments: this.refreshCardsCallback
+                arguments: this.get("refreshCardsCallback")
 
             };
 

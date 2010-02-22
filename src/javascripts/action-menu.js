@@ -42,6 +42,9 @@ YUI.add('mashups-action-menu', function(Y) {
                     var swimlaneSubMenuContent = Y.Node.create("<div class=\"yui-menu-content\"></div>");
                         var swimlaneSubMenuUl = Y.Node.create("<ul></ul>");
                             Y.each(swimlanes.swimlanes, function(swimlane) {
+                                if (swimlane.isHidden()) {
+                                    swimlane.hide();
+                                }
                                 var showSwimlaneLi = Y.Node.create('<li class="yui-menuitem"></li>');
                                     var swimlaneMenuItemAction = Y.Node.create("<a class=\"yui-menuitem-content\" href=\"#\">" + swimlane.Label + "</a>");
                                     swimlaneMenuItemAction.on("click",function() { onclickCallback(swimlane)});

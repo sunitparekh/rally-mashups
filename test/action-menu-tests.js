@@ -6,7 +6,8 @@ YUI.add('action-menu-tests', function(Y) {
         name : "Action Menu Tests",
 
         setUp : function () {
-            Y.Cookie.remove("MashupsName-Swimlanes"); // remove cookie after verification
+            Y.Cookie.remove("MashupsName-Swimlanes");
+            Y.Cookie.remove("swimlanes");
         },
 
         tearDown : function () {
@@ -62,6 +63,23 @@ YUI.add('action-menu-tests', function(Y) {
 
             Y.Assert.areEqual(7,Y.all("#show-swimlane li").size());
             Y.Assert.areEqual(7,Y.all("#hide-swimlane li").size());
+
+        },
+
+        'should hide swimlanes for mashup stated in cookie': function() {
+            var serviceMock = new Y.Mashups.Stubs.Service({mashupName: "MyMashup"});
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
+            swimlanes.set('service', serviceMock);
+            swimlanes.renderSwimlanes();
+
+            var actionMenu = new Y.Mashups.ActionMenu();
+            Y.Cookie.setSub("MyMashup.swimlanes","Defined","hide", { expires: new Date("January 12, 2025") });
+            actionMenu.buildMenu(swimlanes);
+            actionMenu.show();
+
+            Y.Assert.isTrue(Y.one("#header-Defined").hasClass("hide"));
+            Y.Assert.isTrue(Y.one("#cards-Defined").hasClass("hide"));
+            Y.Assert.isTrue(Y.one("#footer-Defined").hasClass("hide"));
 
         }
 

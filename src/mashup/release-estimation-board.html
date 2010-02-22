@@ -34,37 +34,39 @@
 @layout@
 
 <script type="text/javascript">
-    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service', function (Y) {
+    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service','mashups-action-menu', function (Y) {
         var service = null;
         var swimlanes = null;
-        var filterType = RALLY.Mashup.RELEASE;
 
         function initPage() {
-            service = new Y.Mashups.Service({refreshCardsCallback: Y.Mashups.EstimationBoard.refreshCardsOnBoard});
-            Y.Mashups.EstimationBoard.loadSwimlaneBoard();
-            service.loadFilter(filterType, Y.Mashups.EstimationBoard.refreshCardsOnBoard);
+            Y.Mashups.FlashMessage.message.hide();
+            service = new Y.Mashups.Service({mashupName: "ReleaseEstimationBoard", refreshCardsCallback: Y.Mashups.ReleaseEstimationBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.RELEASE});
+            swimlanes = Y.Mashups.ReleaseEstimationBoard.loadSwimlaneBoard();
+            service.loadFilter();
         }
 
-        Y.namespace('Mashups.EstimationBoard');
+        Y.namespace('Mashups.ReleaseEstimationBoard');
 
-        Y.Mashups.EstimationBoard.loadSwimlaneBoard = function() {
-            swimlanes = Y.Mashups.EstimationBoard.EstimationSwimlanes;
-            swimlanes.set('service',service);
-            swimlanes.renderSwimlanes();
+        Y.Mashups.ReleaseEstimationBoard.loadSwimlaneBoard = function() {
+            var tempSwimlanes = Y.Mashups.ReleaseEstimationBoard.EstimationSwimlanes();
+            tempSwimlanes.renderSwimlanes();
+            return tempSwimlanes;
         };
 
-        Y.Mashups.EstimationBoard.refreshCardsOnBoard = function() {
-            var cards = service.findCardsByFilter(filterType, Y.Mashups.EstimationBoard.renderCards);
+        Y.Mashups.ReleaseEstimationBoard.refreshCardsOnBoard = function() {
+            var cards = service.findCardsByFilter(Y.Mashups.ReleaseEstimationBoard.renderCards);
         };
 
-        Y.Mashups.EstimationBoard.renderCards = function(cards) {
+
+        Y.Mashups.ReleaseEstimationBoard.renderCards = function(cards) {
             cards.sortByRank();
             swimlanes.renderCards(cards);
         };
 
-        Y.Mashups.EstimationBoard.EstimationSwimlanes = new Y.Mashups.Swimlanes({
+        Y.Mashups.ReleaseEstimationBoard.EstimationSwimlanes = function(){ return new Y.Mashups.Swimlanes({
             swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "To Be Estimated", Label: "To Be Estimated"}),
-            swimlaneKey: 'PlanEstimate'
+            swimlaneKey: 'PlanEstimate',
+            service: service
         })
            .addSwimlane(new Y.Mashups.Swimlane({ Name: "0", Label: "Free (0)", data : '{ "PlanEstimate": "0" }' }))
            .addSwimlane(new Y.Mashups.Swimlane({ Name: "1", Label: "Small (1)", data : '{ "PlanEstimate": "1" }'}))
@@ -72,13 +74,13 @@
            .addSwimlane(new Y.Mashups.Swimlane({ Name: "3", Label: "Large (3)", data : '{ "PlanEstimate": "3" }'}))
             .addSwimlane(new Y.Mashups.Swimlane({ Name: "5", Label: "X-Large (5)", data : '{ "PlanEstimate": "5" }'}))
             .addSwimlane(new Y.Mashups.Swimlane({ Name: "8", Label: "XX-Large (8)", data : '{ "PlanEstimate": "8" }'}));
-
+        };
 
         initPage();
     });
 
     function refreshWindow(url, cardNumber, cardTitle, flag1, flag2, flag3){
-        YahooUI.Mashups.EstimationBoard.refreshCardsOnBoard();
+        YahooUI.Mashups.ReleaseEstimationBoard.refreshCardsOnBoard();
     }
 
 </script>
