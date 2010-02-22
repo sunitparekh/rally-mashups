@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Scrum Board Mashup by sUnit, ThoughtWorks Inc.</title>
+
+    <script charset="utf-8" src="/slm/pack/combined.js.h-1314550004.pack" type="text/javascript"></script>
+    <script type="text/javascript" src="/slm/js-lib/dojo/1.3.1/dojo/dojo.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/batch-toolkit.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/utilities.js"></script>
+    <script type="text/javascript" src="/slm/mashup/1.14/js/dropdown.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://real.us.yimg.com/lib/yui/3.0.0/build/cssreset/reset-min.css"/>
+    <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+
+    <style type="text/css">
+        @css@
+    </style>
+    <script type="text/javascript">
+        @javascript@
+    </script>
+    <style type="text/css">
+        .swimlane {
+            width: 305px;
+        }
+
+        .outer-container {
+            width: 5000px;
+        }
+    </style>
+</head>
+<body>
+
+@layout@
+
+<script type="text/javascript">
+    var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service','mashups-action-menu', function (Y) {
+        var service = null;
+        var swimlanes = null;                                   
+
+        function initPage() {
+            Y.Mashups.FlashMessage.message.hide();
+            service = new Y.Mashups.Service({mashupName: "ReleasePlanningBoard", refreshCardsCallback: Y.Mashups.ReleasePlanningBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.RELEASE});
+            Y.Mashups.ReleasePlanningBoard.fetchIterationsAsSwimlanes();
+        }
+
+        Y.namespace('Mashups.ReleasePlanningBoard');
+
+        Y.Mashups.ReleasePlanningBoard.loadSwimlaneBoard = function(tempSwimlanes) {
+            swimlanes = tempSwimlanes;
+            swimlanes.renderSwimlanes();
+            Y.Mashups.ReleasePlanningBoard.loadActionMenu(swimlanes);
+            service.loadFilter();
+        };
+
+        Y.Mashups.ReleasePlanningBoard.loadActionMenu = function(swimlanes) {
+            var actionMenu = new Y.Mashups.ActionMenu();
+            actionMenu.buildMenu(swimlanes);
+            actionMenu.show();
+        };
+
+        Y.Mashups.ReleasePlanningBoard.refreshCardsOnBoard = function() {
+            var cards = service.findCardsByFilter(Y.Mashups.ReleasePlanningBoard.renderCards);
+        };
+
+        Y.Mashups.ReleasePlanningBoard.renderCards = function(cards) {
+            cards.sortByRank();
+            swimlanes.renderCards(cards);
+        };
+
+        Y.Mashups.ReleasePlanningBoard.fetchIterationsAsSwimlanes = function() {
+            var url = '/slm/webservice/1.14/iteration.js?query=(Project.ObjectID = "' + __PROJECT_OID__ + '")&fetch=true&order=StartDate&start=1&pagesize=100';
+            var config = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                on: {
+                    success: function (x, o) {
+                        var response = Y.JSON.parse(o.responseText);
+                        var iterations = response['QueryResult']['Results'];
+                        var tempSwimlanes = new Y.Mashups.Swimlanes({
+                            swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "Not Scheduled"}),
+                            swimlaneKey: 'Iteration.ObjectID',
+                            service: service
+                        });
+                        Y.each(iterations, function(iteration){
+                            tempSwimlanes.addSwimlane(new Y.Mashups.Swimlane({ Name: iteration.ObjectID.toString(), Label: iteration.Name, data : '{ "Iteration.ObjectID": "' + iteration.ObjectID + '" }' }));
+                        });
+                        Y.Mashups.ReleasePlanningBoard.loadSwimlaneBoard(tempSwimlanes);
+                    }
+                }
+            };
+
+            service.execute(url, config);
+        };
+
+        initPage();
+    });
+
+    function refreshWindow(url, cardNumber, cardTitle, flag1, flag2, flag3){
+        YahooUI.Mashups.ReleasePlanningBoard.refreshCardsOnBoard();
+    }
+    
+</script>
+</body>
+</html>

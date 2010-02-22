@@ -4,7 +4,7 @@ fetch all the defects in an iteration:
  fetch all iterations for the project:
 /slm/webservice/1.14/iteration.js?query=(Project.ObjectID = "321826629")&fetch=true&order=StartDate&start=1&pagesize=100
 /slm/webservice/1.14/iteration.js?query=(Project.Name = "Design Manager")&fetch=true&order=StartDate&start=1&pagesize=100
-/slm/webservice/1.14/iteration.js?query=(Project.ObjectID = "__PROJECT_OID__")&fetch=true&order=StartDate&start=1&pagesize=100
+/slm/webservice/1.14/iteration.js?query=(Project.ObjectID = __PROJECT_OID__)&fetch=true&order=StartDate&start=1&pagesize=100
 
 
 fetch current user object

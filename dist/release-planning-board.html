@@ -788,6 +788,15 @@
 
 }, '0.6', {requires: ['base','io']});
     </script>
+    <style type="text/css">
+        .swimlane {
+            width: 305px;
+        }
+
+        .outer-container {
+            width: 5000px;
+        }
+    </style>
 </head>
 <body>
 
@@ -822,50 +831,64 @@
 
         function initPage() {
             Y.Mashups.FlashMessage.message.hide();
-            service = new Y.Mashups.Service({mashupName: "DocumentationScrumBoard", refreshCardsCallback: Y.Mashups.DocumentationScrumBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.ITERATION});
-            swimlanes = Y.Mashups.DocumentationScrumBoard.loadSwimlaneBoard();
-            service.loadFilter();
+            service = new Y.Mashups.Service({mashupName: "ReleasePlanningBoard", refreshCardsCallback: Y.Mashups.ReleasePlanningBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.RELEASE});
+            Y.Mashups.ReleasePlanningBoard.fetchIterationsAsSwimlanes();
         }
 
-        Y.namespace('Mashups.DocumentationScrumBoard');
+        Y.namespace('Mashups.ReleasePlanningBoard');
 
-        Y.Mashups.DocumentationScrumBoard.loadSwimlaneBoard = function() {
-            var tempSwimlanes = Y.Mashups.DocumentationScrumBoard.KanbanStatesAsSwimlanes();
-            tempSwimlanes.renderSwimlanes();
-            return tempSwimlanes;
+        Y.Mashups.ReleasePlanningBoard.loadSwimlaneBoard = function(tempSwimlanes) {
+            swimlanes = tempSwimlanes;
+            swimlanes.renderSwimlanes();
+            Y.Mashups.ReleasePlanningBoard.loadActionMenu(swimlanes);
+            service.loadFilter();
         };
 
-        Y.Mashups.DocumentationScrumBoard.refreshCardsOnBoard = function() {
-            var cards = service.findCardsByFilter(Y.Mashups.DocumentationScrumBoard.renderCards);
+        Y.Mashups.ReleasePlanningBoard.loadActionMenu = function(swimlanes) {
+            var actionMenu = new Y.Mashups.ActionMenu();
+            actionMenu.buildMenu(swimlanes);
+            actionMenu.show();
         };
 
-        Y.Mashups.DocumentationScrumBoard.renderCards = function(cards) {
+        Y.Mashups.ReleasePlanningBoard.refreshCardsOnBoard = function() {
+            var cards = service.findCardsByFilter(Y.Mashups.ReleasePlanningBoard.renderCards);
+        };
+
+        Y.Mashups.ReleasePlanningBoard.renderCards = function(cards) {
             cards.sortByRank();
             swimlanes.renderCards(cards);
         };
 
-        Y.Mashups.DocumentationScrumBoard.KanbanStatesAsSwimlanes = function() {
-            return new Y.Mashups.Swimlanes({
-                swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "Undefined", Label: "No Defined State"}) ,
-                service: service
-            })
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "Defined", Label: "Backlog", data : '{ "KanbanState": "Defined", "ScheduleState": "Backlog" }' }))
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Development", Label: "Defined", data : '{ "KanbanState": "Ready For Development", "ScheduleState": "Defined" }'  }))
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Development", Label: "In Progress", data : '{ "KanbanState": "In Development", "ScheduleState": "In-Progress" }'  }))
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Code Review", Label: "Ready for Peer Review", data : '{ "KanbanState": "Ready For Code Review", "ScheduleState": "In-Progress" }'  }))
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Code Review", Label: "In Peer Review", data : '{ "KanbanState": "In Code Review", "ScheduleState": "In-Progress" }'  }))
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Test", Label: "Ready for Technical Review", data : '{ "KanbanState": "Ready For Test", "ScheduleState": "In-Progress" }'  }))
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "In Test" , Label: "In Technical Review", data : '{ "KanbanState": "In Test", "ScheduleState": "In-Progress" }' }))
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Acceptance", Label: "Ready For Acceptance", data : '{ "KanbanState": "Ready For Acceptance", "ScheduleState": "Completed" }'  }))
-                .addSwimlane(new Y.Mashups.Swimlane({ Name: "Accepted" , Label: "Backlog", data : '{ "KanbanState": "Accepted", "ScheduleState": "Accepted" }' }));
+        Y.Mashups.ReleasePlanningBoard.fetchIterationsAsSwimlanes = function() {
+            var url = '/slm/webservice/1.14/iteration.js?query=(Project.ObjectID = "' + __PROJECT_OID__ + '")&fetch=true&order=StartDate&start=1&pagesize=100';
+            var config = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                on: {
+                    success: function (x, o) {
+                        var response = Y.JSON.parse(o.responseText);
+                        var iterations = response['QueryResult']['Results'];
+                        var tempSwimlanes = new Y.Mashups.Swimlanes({
+                            swimlaneNotAvailable : new Y.Mashups.Swimlane({ Name: "Not Scheduled"}),
+                            swimlaneKey: 'Iteration.ObjectID',
+                            service: service
+                        });
+                        Y.each(iterations, function(iteration){
+                            tempSwimlanes.addSwimlane(new Y.Mashups.Swimlane({ Name: iteration.ObjectID.toString(), Label: iteration.Name, data : '{ "Iteration.ObjectID": "' + iteration.ObjectID + '" }' }));
+                        });
+                        Y.Mashups.ReleasePlanningBoard.loadSwimlaneBoard(tempSwimlanes);
+                    }
+                }
+            };
 
+            service.execute(url, config);
         };
 
         initPage();
     });
 
     function refreshWindow(url, cardNumber, cardTitle, flag1, flag2, flag3){
-        YahooUI.Mashups.DocumentationScrumBoard.refreshCardsOnBoard();
+        YahooUI.Mashups.ReleasePlanningBoard.refreshCardsOnBoard();
     }
     
 </script>

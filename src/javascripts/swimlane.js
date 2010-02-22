@@ -87,6 +87,16 @@ YUI.add('mashups-swimlane', function(Y) {
             this.cards = new Y.Mashups.Cards();
         },
 
+        swimlaneKeyValue: function(card) {
+            var keyParts = this.get("swimlaneKey").split(".");
+            var keyValue = card;
+            Y.each(keyParts, function(keyPart) {
+                if (keyValue == null) return;
+                keyValue = keyValue[keyPart];
+            });
+            return (keyValue == card ? null : keyValue);
+        },
+
         addSwimlane: function(swimlane) {
             if (this.swimlanes == null) this.swimlanes = new Array(this.get('swimlaneNotAvailable'));
             this.swimlanes = this.swimlanes.concat(swimlane);
@@ -140,7 +150,7 @@ YUI.add('mashups-swimlane', function(Y) {
                     cardsRowNode.drop.on('drop:hit', function(element) {
                         var newSwimlane = self.findByHtmlID(element.drop.get('node').getAttribute("id").substring("cards-".length));
                         var card = self.findCardByObjectID(element.drag.get('node').getAttribute("id").substring("card-".length));
-                        if (newSwimlane.Name == card[self.get('swimlaneKey')]) { Y.Mashups.FlashMessage.message.show('Card moved into same swimlane. No updates.'); return; }
+                        if (newSwimlane.Name == self.swimlaneKeyValue(card)) { Y.Mashups.FlashMessage.message.show('Card moved into same swimlane. No updates.'); return; }
                         newSwimlane.move(card);
                     });
                 }
@@ -168,8 +178,8 @@ YUI.add('mashups-swimlane', function(Y) {
         },
 
         renderCard : function(card) {
-            var swimlaneKey = this.get('swimlaneKey');
-            var swimlane = this.findByName(card[swimlaneKey]);
+            var keyValue = this.swimlaneKeyValue(card);
+            var swimlane = this.findByName(keyValue);
             this.cards.addCard(card);
             var swimlaneCardsNode = Y.one("#cards-" + swimlane.htmlID());
 
@@ -177,8 +187,8 @@ YUI.add('mashups-swimlane', function(Y) {
             cardNode.plug(Y.Plugin.Drag);
             swimlaneCardsNode.append(cardNode);
 
-            this.updateEstimate(card[swimlaneKey], card.PlanEstimate, "header");
-            this.updateEstimate(card[swimlaneKey], card.PlanEstimate, "footer");
+            this.updateEstimate(keyValue, card.PlanEstimate, "header");
+            this.updateEstimate(keyValue, card.PlanEstimate, "footer");
         },
 
         renderCards : function (cards) {
