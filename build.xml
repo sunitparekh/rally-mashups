@@ -5,7 +5,7 @@
 
     <!--  make minify-suffix = "" : if you don't want minified version in distributed mashups  -->
     <!--  make minify-suffix = "-min" : if you want minified version in distributed mashups  -->
-    <property name="minify-suffix" value=""/>
+    <property name="minify-suffix" value="-min"/>
 
     <property name="src" location="src"/>
     <property name="javascript" location="src/javascripts"/>
