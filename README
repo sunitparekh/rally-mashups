@@ -5,11 +5,12 @@ http://wiki.github.com/sunitparekh/rally-mashups/
 
 == v1.0 (Edge Under Development Release, Date: TBD)
 http://github.com/sunitparekh/rally-mashups/issues/labels/In%20Progress
-* adding new swimlane board is made easy. Already have 5 different swimlane boards available for team to use under distribution. (http://github.com/sunitparekh/rally-mashups/tree/master/dist/)
+* adding new swimlane board is made easy. Already have 5 different swimlane boards available for team to use under distribution.
+        (http://github.com/sunitparekh/rally-mashups/tree/master/dist/)
 * Added BUSY messages while loading swimlane and cards. Better error reporting when YUI js is not available.
 * Added swimlane heading at top and bottom of the board so that scrolling down doesn't loose swimlane details
 * defect and story cards within swimlane are now ordered by Rank
-* refactored code base with unit tests
+* refactored code base with unit tests.
 
 == v0.7.1 (Date: 15 Feb 2010)
 Defects Fixed
