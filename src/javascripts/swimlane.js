@@ -138,9 +138,10 @@ YUI.add('mashups-swimlane', function(Y) {
                 if (swimlane != self.get('swimlaneNotAvailable')) {
                     cardsRowNode.plug(Y.Plugin.Drop);
                     cardsRowNode.drop.on('drop:hit', function(element) {
-                        var swimlane = self.findByHtmlID(element.drop.get('node').getAttribute("id").substring("cards-".length));
+                        var newSwimlane = self.findByHtmlID(element.drop.get('node').getAttribute("id").substring("cards-".length));
                         var card = self.findCardByObjectID(element.drag.get('node').getAttribute("id").substring("card-".length));
-                        swimlane.move(card);
+                        if (newSwimlane.Name == card[self.get('swimlaneKey')]) { Y.Mashups.FlashMessage.message.show('Card moved into same swimlane. No updates.'); return; }
+                        newSwimlane.move(card);
                     });
                 }
                 swimlaneCards.append(cardsRowNode);
