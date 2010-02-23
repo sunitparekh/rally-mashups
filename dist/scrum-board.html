@@ -678,7 +678,12 @@
     }
 
     Service.NAME = 'service';
-    Service.ATTRS = {mashupName: {value: null}, refreshCardsCallback: {value: null}, filterType: {value: null}};
+    Service.ATTRS = {
+        mashupName: {value: null},
+        filterType: {value: null},
+        refreshCardsCallback: {value: null},
+        beforeCardUpdateHook: {value: null}
+    };
 
     Y.extend(Service, Y.Base, {
         initializer : function(config) {
@@ -754,6 +759,10 @@
         },
 
         updateCard : function(card, dataAsJSON) {
+            var beforeCardUpdateHook = this.get('beforeCardUpdateHook');
+            if (beforeCardUpdateHook != null) {
+                dataAsJSON = beforeCardUpdateHook(card, dataAsJSON);
+            }
             var url = '/slm/webservice/1.14/' + card.get('rallyType') + '/' + card.ObjectID + ".js";
             var config = {
                 method: 'POST',
@@ -823,7 +832,12 @@
 
         function initPage() {
             Y.Mashups.FlashMessage.message.hide();
-            service = new Y.Mashups.Service({mashupName: "ScrumBoard", refreshCardsCallback: Y.Mashups.ScrumBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.ITERATION});
+            service = new Y.Mashups.Service({
+                mashupName: "ScrumBoard",
+                filterType : RALLY.Mashup.ITERATION,
+                refreshCardsCallback: Y.Mashups.ScrumBoard.refreshCardsOnBoard,
+                beforeCardUpdateHook: Y.Mashups.ScrumBoard.beforeCardUpdate
+            });
             swimlanes = Y.Mashups.ScrumBoard.loadSwimlaneBoard();
             actionMenu = Y.Mashups.ScrumBoard.loadActionMenu(swimlanes);
             service.loadFilter();
@@ -851,6 +865,17 @@
         Y.Mashups.ScrumBoard.renderCards = function(cards) {
             cards.sortByRank();
             swimlanes.renderCards(cards);
+        };
+
+        Y.Mashups.ScrumBoard.beforeCardUpdate = function(card, jsonData) {
+            if (card instanceof Y.Mashups.Defect) { // for defect card
+                if (jsonData.indexOf("Accepted") >= 0) { // if state is accepted
+                    return jsonData.replace('}',', "State": "Closed" }'); // also change defect State to close defect
+                } else {
+                    return jsonData.replace('}',', "State": "Open" }'); // for all other states defect is still open    
+                }
+            }
+            return jsonData;
         };
 
         Y.Mashups.ScrumBoard.KanbanStatesAsSwimlanes = function() {

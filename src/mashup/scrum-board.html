@@ -32,7 +32,12 @@
 
         function initPage() {
             Y.Mashups.FlashMessage.message.hide();
-            service = new Y.Mashups.Service({mashupName: "ScrumBoard", refreshCardsCallback: Y.Mashups.ScrumBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.ITERATION});
+            service = new Y.Mashups.Service({
+                mashupName: "ScrumBoard",
+                filterType : RALLY.Mashup.ITERATION,
+                refreshCardsCallback: Y.Mashups.ScrumBoard.refreshCardsOnBoard,
+                beforeCardUpdateHook: Y.Mashups.ScrumBoard.beforeCardUpdate
+            });
             swimlanes = Y.Mashups.ScrumBoard.loadSwimlaneBoard();
             actionMenu = Y.Mashups.ScrumBoard.loadActionMenu(swimlanes);
             service.loadFilter();
@@ -60,6 +65,17 @@
         Y.Mashups.ScrumBoard.renderCards = function(cards) {
             cards.sortByRank();
             swimlanes.renderCards(cards);
+        };
+
+        Y.Mashups.ScrumBoard.beforeCardUpdate = function(card, jsonData) {
+            if (card instanceof Y.Mashups.Defect) { // for defect card
+                if (jsonData.indexOf("Accepted") >= 0) { // if state is accepted
+                    return jsonData.replace('}',', "State": "Closed" }'); // also change defect State to close defect
+                } else {
+                    return jsonData.replace('}',', "State": "Open" }'); // for all other states defect is still open    
+                }
+            }
+            return jsonData;
         };
 
         Y.Mashups.ScrumBoard.KanbanStatesAsSwimlanes = function() {

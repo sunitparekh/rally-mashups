@@ -678,7 +678,12 @@
     }
 
     Service.NAME = 'service';
-    Service.ATTRS = {mashupName: {value: null}, refreshCardsCallback: {value: null}, filterType: {value: null}};
+    Service.ATTRS = {
+        mashupName: {value: null},
+        filterType: {value: null},
+        refreshCardsCallback: {value: null},
+        beforeCardUpdateHook: {value: null}
+    };
 
     Y.extend(Service, Y.Base, {
         initializer : function(config) {
@@ -754,6 +759,10 @@
         },
 
         updateCard : function(card, dataAsJSON) {
+            var beforeCardUpdateHook = this.get('beforeCardUpdateHook');
+            if (beforeCardUpdateHook != null) {
+                dataAsJSON = beforeCardUpdateHook(card, dataAsJSON);
+            }
             var url = '/slm/webservice/1.14/' + card.get('rallyType') + '/' + card.ObjectID + ".js";
             var config = {
                 method: 'POST',
@@ -876,7 +885,7 @@
                         Y.each(iterations, function(iteration){
                             var startDate = new Date(iteration.StartDate);
                             var endDate = new Date(iteration.EndDate);
-                            var swimlaneLabel = iteration.Name + "(" + startDate.getDate() + "/" + (startDate.getMonth()+1) + " - "+ endDate.getDate() + "/" + (endDate.getMonth()+1) + ")";
+                            var swimlaneLabel = iteration.Name + " (" + startDate.getDate() + "/" + (startDate.getMonth()+1) + " - "+ endDate.getDate() + "/" + (endDate.getMonth()+1) + ")";
                             tempSwimlanes.addSwimlane(new Y.Mashups.Swimlane({ Name: iteration.ObjectID.toString(), Label: swimlaneLabel, data : '{ "Iteration.ObjectID": "' + iteration.ObjectID + '" }' }));
                         });
                         Y.Mashups.ReleasePlanningBoard.loadSwimlaneBoard(tempSwimlanes);

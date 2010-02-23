@@ -6,7 +6,12 @@ YUI.add('mashups-service', function(Y) {
     }
 
     Service.NAME = 'service';
-    Service.ATTRS = {mashupName: {value: null}, refreshCardsCallback: {value: null}, filterType: {value: null}};
+    Service.ATTRS = {
+        mashupName: {value: null},
+        filterType: {value: null},
+        refreshCardsCallback: {value: null},
+        beforeCardUpdateHook: {value: null}
+    };
 
     Y.extend(Service, Y.Base, {
         initializer : function(config) {
@@ -82,6 +87,10 @@ YUI.add('mashups-service', function(Y) {
         },
 
         updateCard : function(card, dataAsJSON) {
+            var beforeCardUpdateHook = this.get('beforeCardUpdateHook');
+            if (beforeCardUpdateHook != null) {
+                dataAsJSON = beforeCardUpdateHook(card, dataAsJSON);
+            }
             var url = '/slm/webservice/1.14/' + card.get('rallyType') + '/' + card.ObjectID + ".js";
             var config = {
                 method: 'POST',
