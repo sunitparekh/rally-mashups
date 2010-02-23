@@ -94,7 +94,7 @@ YUI.add('mashups-swimlane', function(Y) {
                 if (keyValue == null) return;
                 keyValue = keyValue[keyPart];
             });
-            return (keyValue == card ? null : keyValue);
+            return keyValue;
         },
 
         addSwimlane: function(swimlane) {

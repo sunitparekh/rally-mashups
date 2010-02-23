@@ -64,7 +64,8 @@ YUI.add('mashups-test-data',function(Y){
         PlanEstimate: null,
         Rank: 8.596,
         ScheduleState: "Backlog",
-        KanbanState: "Defined"
+        KanbanState: "Defined",
+        Iteration: {Name: "Sprint 1", ObjectID: 321905964, StartDate: "2009-01-01T00:00:00.000Z", EndDate: "2009-06-11T23:59:59.000Z"}
     },{
         ObjectID: 324377497,
         FormattedID: "US8089",
@@ -74,7 +75,8 @@ YUI.add('mashups-test-data',function(Y){
         PlanEstimate: 1.0,
         Rank: 288.348,
         ScheduleState: "In-Progress",
-        KanbanState: "In Development"
+        KanbanState: "In Development",
+        Iteration: null
     },{
         ObjectID: 325484197,
         FormattedID: "US10077",

@@ -73,6 +73,26 @@ YUI.add('swimlane-tests', function(Y) {
             var swimlaneNodes = Y.one(".swimlane-header").all(".swimlane");
             Y.Assert.areEqual(7, swimlaneNodes.size());
 
+        },
+
+        'should be able to read swimlane key with multiple level': function(){
+            var swimlanes = new Y.Mashups.Swimlanes({
+                            swimlaneKey: 'Iteration.ObjectID'
+                        });
+            var card = new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]);
+
+            Y.Assert.areEqual(321905964,swimlanes.swimlaneKeyValue(card));
+            
+        },
+
+        'should be able to read null value swimlane key with multiple level': function(){
+            var swimlanes = new Y.Mashups.Swimlanes({
+                            swimlaneKey: 'Iteration.ObjectID'
+                        });
+            var card = new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[1]);
+
+            Y.Assert.isNull(swimlanes.swimlaneKeyValue(card));
+
         }
 
 
