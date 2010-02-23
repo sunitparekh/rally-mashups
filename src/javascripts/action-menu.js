@@ -86,6 +86,7 @@ YUI.add('mashups-action-menu', function(Y) {
                                 var swimlaneMenuItemAction = Y.Node.create("<a class=\"yui-menuitem-content\" href=\"#\">" + iteration.Name + "</a>");
                                 swimlaneMenuItemAction.on("click", function(e, iteration) {
                                     var cardNodes = Y.all(".card .selected");
+                                    if (cardNodes.size() == 0) Y.Mashups.FlashMessage.message.show("No cards selected. Toggle card selection by clicking on card.");
                                     Y.each(cardNodes, function(cardTitleNode, index, array) {
                                         var cardNode = cardTitleNode.ancestor(function(parentNode){return parentNode.hasClass("card");});
                                         Y.Mashups.FlashMessage.message.show("Please wait... moving selected card(s) to iteration '" + iteration.Name + "'.");

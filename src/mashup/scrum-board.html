@@ -92,9 +92,9 @@
                     .addSwimlane(new Y.Mashups.Swimlane({ Name: "Ready For Acceptance", data : '{ "KanbanState": "Ready For Acceptance", "ScheduleState": "Completed" }'  }))
                     .addSwimlane(new Y.Mashups.Swimlane({ Name: "Accepted" , data : '{ "KanbanState": "Accepted", "ScheduleState": "Accepted" }' }));
 
-        }
+        };
 
-        initPage();
+        Y.on("domready", initPage);
     });
 
     function refreshWindow(url, cardNumber, cardTitle, flag1, flag2, flag3){
