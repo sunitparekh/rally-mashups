@@ -53,7 +53,7 @@
 
         Y.Mashups.ScrumBoard.loadActionMenu = function(swimlanes) {
             var tempActionMenu = new Y.Mashups.ActionMenu();
-            tempActionMenu.buildMenu(swimlanes);
+            tempActionMenu.buildMenu(swimlanes, service);
             tempActionMenu.show();
             return tempActionMenu;
         };

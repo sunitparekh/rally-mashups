@@ -86,7 +86,9 @@ YUI.add('mashups-service', function(Y) {
             });
         },
 
-        updateCard : function(card, dataAsJSON) {
+        updateCard : function(card, dataAsJSON, callback) {
+            if (callback == undefined || callback == null) callback = this.get("refreshCardsCallback");
+
             var beforeCardUpdateHook = this.get('beforeCardUpdateHook');
             if (beforeCardUpdateHook != null) {
                 dataAsJSON = beforeCardUpdateHook(card, dataAsJSON);
@@ -111,7 +113,7 @@ YUI.add('mashups-service', function(Y) {
                         callback();
                     }
                 },
-                arguments: this.get("refreshCardsCallback")
+                arguments: callback
 
             };
 

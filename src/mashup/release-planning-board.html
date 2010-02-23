@@ -86,7 +86,7 @@
                             var startDate = new Date(iteration.StartDate);
                             var endDate = new Date(iteration.EndDate);
                             var swimlaneLabel = iteration.Name + " (" + startDate.getDate() + "/" + (startDate.getMonth()+1) + " - "+ endDate.getDate() + "/" + (endDate.getMonth()+1) + ")";
-                            tempSwimlanes.addSwimlane(new Y.Mashups.Swimlane({ Name: iteration.ObjectID.toString(), Label: swimlaneLabel, data : '{ "Iteration.ObjectID": "' + iteration.ObjectID + '" }' }));
+                            tempSwimlanes.addSwimlane(new Y.Mashups.Swimlane({ Name: iteration.ObjectID.toString(), Label: swimlaneLabel, data : '{ "Iteration": ' + iteration.ObjectID + ' }' }));
                         });
                         Y.Mashups.ReleasePlanningBoard.loadSwimlaneBoard(tempSwimlanes);
                     }

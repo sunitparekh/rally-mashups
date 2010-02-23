@@ -155,7 +155,7 @@
 }
 
 .card .selected {
-    background-color: #7fff00;
+    background-color: #ffcccc;
 }
 
 .card .owner {
@@ -219,21 +219,24 @@
     }
 
     ActionMenu.NAME = 'action-menu';
-    ActionMenu.ATTRS = { id: { value: "action-menu"}, showSwimlane: {value: true}, hideSwimlane: {value: true} };
+    ActionMenu.ATTRS = { id: { value: "action-menu"}, showSwimlane: {value: true}, hideSwimlane: {value: true}, moveToIteration: {value: true} };
 
     Y.extend(ActionMenu, Y.Base, {
         initializer: function(config) {
         },
 
-        buildMenu: function(swimlanes) {
+        buildMenu: function(swimlanes, service) {
             this.clear();
             var mainMenuNode = Y.Node.create("<ul></ul>");
+            Y.one(".yui-menu-content").appendChild(mainMenuNode);
+
             this.buildShowSwimlaneActionMenu(swimlanes, mainMenuNode);
             this.buildHideSwimlaneActionMenu(swimlanes, mainMenuNode);
 
-            var menuContent = Y.one(".yui-menu-content");
-            menuContent.appendChild(mainMenuNode);
-            
+            this.buildMoveToIterationMenu(service, mainMenuNode, swimlanes);
+        },
+
+        applyYuiMenu: function() {
             var menu = Y.one("#" + this.get('id'));
             menu.plug(Y.Plugin.NodeMenuNav);
         },
@@ -255,9 +258,7 @@
                     var swimlaneSubMenuContent = Y.Node.create("<div class=\"yui-menu-content\"></div>");
                         var swimlaneSubMenuUl = Y.Node.create("<ul></ul>");
                             Y.each(swimlanes.swimlanes, function(swimlane) {
-                                if (swimlane.isHidden()) {
-                                    swimlane.hide();
-                                }
+                                if (swimlane.isHidden()) { swimlane.hide(); }
                                 var showSwimlaneLi = Y.Node.create('<li class="yui-menuitem"></li>');
                                     var swimlaneMenuItemAction = Y.Node.create("<a class=\"yui-menuitem-content\" href=\"#\">" + swimlane.Label + "</a>");
                                     swimlaneMenuItemAction.on("click",function() { onclickCallback(swimlane)});
@@ -269,6 +270,53 @@
 
                 showSwimlaneMainMenuNode.appendChild(showSwimlaneSubMenu);
             mainMenuNode.appendChild(showSwimlaneMainMenuNode);
+        },
+
+        buildMoveToIterationMenu: function(service, mainMenuNode, swimlanes) {
+            if (!this.get('moveToIteration')) { this.applyYuiMenu(); return; }
+
+            var showSwimlaneMainMenuNode = Y.Node.create("<li></li>");
+            showSwimlaneMainMenuNode.append("<a class=\"yui-menu-label\" href=\"#move-to-iteration\"><em>Move to Iteration</em></a>");
+                var showSwimlaneSubMenu = Y.Node.create("<div id=\"move-to-iteration\" class=\"yui-menu\"></div>");
+                    var swimlaneSubMenuContent = Y.Node.create("<div class=\"yui-menu-content\"></div>");
+                        var swimlaneSubMenuUl = Y.Node.create("<ul></ul>");
+                        swimlaneSubMenuContent.appendChild(swimlaneSubMenuUl);
+                showSwimlaneSubMenu.appendChild(swimlaneSubMenuContent);
+                showSwimlaneMainMenuNode.appendChild(showSwimlaneSubMenu);
+            mainMenuNode.appendChild(showSwimlaneMainMenuNode);
+
+            var self = this;
+            var url = '/slm/webservice/1.14/iteration.js?query=(Project.ObjectID = "' + __PROJECT_OID__ + '")&fetch=true&order=StartDate&start=1&pagesize=100';
+            var config = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                on: {
+                    success: function (x, o) {
+                        var response = Y.JSON.parse(o.responseText);
+                        var iterations = response['QueryResult']['Results'];
+                        Y.each(iterations, function(iteration){
+                            var showSwimlaneLi = Y.Node.create('<li class="yui-menuitem"></li>');
+                                var swimlaneMenuItemAction = Y.Node.create("<a class=\"yui-menuitem-content\" href=\"#\">" + iteration.Name + "</a>");
+                                swimlaneMenuItemAction.on("click", function(e, iteration) {
+                                    var cardNodes = Y.all(".card .selected");
+                                    Y.each(cardNodes, function(cardTitleNode, index, array) {
+                                        var cardNode = cardTitleNode.ancestor(function(parentNode){return parentNode.hasClass("card");});
+                                        Y.Mashups.FlashMessage.message.show("Please wait... moving selected card(s) to iteration '" + iteration.Name + "'.");
+                                        var card = swimlanes.findCardByObjectID(cardNode.getAttribute("id").substring("card-".length));
+                                        var callback = (index == (array.size() - 1)) ? undefined : function(){};
+                                        card.update('{ "Iteration" : ' + iteration.ObjectID +' }', callback);
+                                    }, iteration);
+
+                                },{}, iteration);
+                                showSwimlaneLi.appendChild(swimlaneMenuItemAction);
+                            swimlaneSubMenuUl.appendChild(showSwimlaneLi);
+                        });
+                        self.applyYuiMenu();
+                    }
+                }
+            };
+
+            service.execute(url, config);
         },
 
         show: function() {
@@ -290,7 +338,7 @@
 
     Y.Mashups.ActionMenu = ActionMenu;
 
-}, '1.0', {requires: ['base','node-menunav']});YUI.add('mashups-card', function(Y) {
+}, '1.0', {requires: ['base','node','node-menunav']});YUI.add('mashups-card', function(Y) {
     Y.namespace('Mashups');
 
     function Card(data) {
@@ -312,41 +360,41 @@
         },
 
         render: function() {
-            var card = Y.Node.create("<div></div>");
-            card.addClass("card");
-            card.addClass(this.get('type'));
-            card.setAttribute("id", "card-" + this.ObjectID);
-                var header = Y.Node.create("<div></div>");
-                header.addClass("header");
+            var cardNode = Y.Node.create("<div></div>");
+            cardNode.addClass("card");
+            cardNode.addClass(this.get('type'));
+            cardNode.setAttribute("id", "card-" + this.ObjectID);
+                var headerNode = Y.Node.create("<div></div>");
+                headerNode.addClass("header");
                     var number = Y.Node.create("<div></div>");
                     number.addClass("number");
                     number.setContent(this.FormattedID);
                     number.on("click", function(e,card){card.editCard();} ,{},this);
-                header.appendChild(number);
+                headerNode.appendChild(number);
                     var estimate = Y.Node.create("<div></div>");
                     estimate.addClass("estimate");
                     estimate.setContent(this.estimate());
-                header.appendChild(estimate);
+                headerNode.appendChild(estimate);
                     var state = Y.Node.create("<div></div>");
                     state.addClass("state");
                     state.addClass('blocked-' + this.Blocked);
                     state.setContent(this.scheduleStateLegend());
-                header.appendChild(state);
-            card.appendChild(header);
-                var title = Y.Node.create("<div></div>");
-                title.addClass("title");
-                title.setAttribute("title","click to toggle card selection");
-                title.setContent(this.truncatedName());
-                title.on("click", function(e,card){card.toggleSelection();} ,{},this);
-            card.appendChild(title);
-                var footer = Y.Node.create("<div></div>");
-                footer.addClass("footer");
+                headerNode.appendChild(state);
+            cardNode.appendChild(headerNode);
+                var titleNode = Y.Node.create("<div></div>");
+                titleNode.addClass("title");
+                titleNode.setAttribute("title","click to toggle card selection");
+                titleNode.setContent(this.truncatedName());
+                titleNode.on("click", function(e,card){card.toggleSelection();} ,{},this);
+            cardNode.appendChild(titleNode);
+                var footerNode = Y.Node.create("<div></div>");
+                footerNode.addClass("footer");
                     var owner = Y.Node.create("<div></div>");
                     owner.addClass("owner");
                     owner.setContent(this.ownerName());
-                footer.appendChild(owner);
-            card.appendChild(footer);
-            return card;
+                footerNode.appendChild(owner);
+            cardNode.appendChild(footerNode);
+            return cardNode;
         },
 
         editCard: function(){
@@ -392,9 +440,9 @@
             }
         },
 
-        update: function(data) {
+        update: function(data, callback) {
             var jsonData = '{"' + this.get('rallyType') + '": ' + data + "}";
-            this.get('service').updateCard(this, jsonData);
+            this.get('service').updateCard(this, jsonData, callback);
         }
     });
     
@@ -768,7 +816,9 @@
             });
         },
 
-        updateCard : function(card, dataAsJSON) {
+        updateCard : function(card, dataAsJSON, callback) {
+            if (callback == undefined || callback == null) callback = this.get("refreshCardsCallback");
+
             var beforeCardUpdateHook = this.get('beforeCardUpdateHook');
             if (beforeCardUpdateHook != null) {
                 dataAsJSON = beforeCardUpdateHook(card, dataAsJSON);
@@ -793,7 +843,7 @@
                         callback();
                     }
                 },
-                arguments: this.get("refreshCardsCallback")
+                arguments: callback
 
             };
 
@@ -896,7 +946,7 @@
                             var startDate = new Date(iteration.StartDate);
                             var endDate = new Date(iteration.EndDate);
                             var swimlaneLabel = iteration.Name + " (" + startDate.getDate() + "/" + (startDate.getMonth()+1) + " - "+ endDate.getDate() + "/" + (endDate.getMonth()+1) + ")";
-                            tempSwimlanes.addSwimlane(new Y.Mashups.Swimlane({ Name: iteration.ObjectID.toString(), Label: swimlaneLabel, data : '{ "Iteration.ObjectID": "' + iteration.ObjectID + '" }' }));
+                            tempSwimlanes.addSwimlane(new Y.Mashups.Swimlane({ Name: iteration.ObjectID.toString(), Label: swimlaneLabel, data : '{ "Iteration": ' + iteration.ObjectID + ' }' }));
                         });
                         Y.Mashups.ReleasePlanningBoard.loadSwimlaneBoard(tempSwimlanes);
                     }

@@ -18,7 +18,7 @@ YUI.add('action-menu-tests', function(Y) {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.renderSwimlanes();
 
-            var actionMenu = new Y.Mashups.ActionMenu();
+            var actionMenu = new Y.Mashups.ActionMenu({moveToIteration: false});
             actionMenu.buildMenu(swimlanes);
             actionMenu.show();
 
@@ -31,7 +31,7 @@ YUI.add('action-menu-tests', function(Y) {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.renderSwimlanes();
 
-            var actionMenu = new Y.Mashups.ActionMenu({hideSwimlane: false});
+            var actionMenu = new Y.Mashups.ActionMenu({hideSwimlane: false,moveToIteration: false});
             actionMenu.buildMenu(swimlanes);
             actionMenu.show();
 
@@ -44,7 +44,7 @@ YUI.add('action-menu-tests', function(Y) {
             var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
             swimlanes.renderSwimlanes();
 
-            var actionMenu = new Y.Mashups.ActionMenu({showSwimlane: false});
+            var actionMenu = new Y.Mashups.ActionMenu({showSwimlane: false,moveToIteration: false});
             actionMenu.buildMenu(swimlanes);
             actionMenu.show();
 
@@ -57,7 +57,7 @@ YUI.add('action-menu-tests', function(Y) {
             var swimlanes = Y.Mashups.Tests.Data.EstimateSwimlanes();
             swimlanes.renderSwimlanes();
 
-            var actionMenu = new Y.Mashups.ActionMenu();
+            var actionMenu = new Y.Mashups.ActionMenu({moveToIteration: false});
             actionMenu.buildMenu(swimlanes);
             actionMenu.show();
 
@@ -72,7 +72,7 @@ YUI.add('action-menu-tests', function(Y) {
             swimlanes.set('service', serviceMock);
             swimlanes.renderSwimlanes();
 
-            var actionMenu = new Y.Mashups.ActionMenu();
+            var actionMenu = new Y.Mashups.ActionMenu({moveToIteration: false});
             Y.Cookie.setSub("MyMashup.swimlanes","Defined","hide", { expires: new Date("January 12, 2025") });
             actionMenu.buildMenu(swimlanes);
             actionMenu.show();

@@ -196,26 +196,26 @@ YUI.add('card-tests', function(Y) {
 
         },
 
-        'should get data from swimlanes that needs to be applied to story card while updating': function(){
+        'should get data from swimlanes that needs to be applied to story card while updating': function() {
             var swimlane = new Y.Mashups.Swimlane({ Name: "Defined", data : '{ "KanbanState": "Defined", "ScheduleSate": "Backlog" }' });
             var card = new Y.Mashups.Story(Y.Mashups.Tests.Data.StoriesAsData[0]);
             var serviceMock = new Y.Mashups.Stubs.Service();
             serviceMock.updateCard = function(card, jsonData) {
-                Y.Assert.areEqual('{"HierarchicalRequirement": { "KanbanState": "Defined", "ScheduleSate": "Backlog" }}', jsonData );
+                Y.Assert.areEqual('{"HierarchicalRequirement": { "KanbanState": "Defined", "ScheduleSate": "Backlog" }}', jsonData);
             };
-            card.set('service',serviceMock);
+            card.set('service', serviceMock);
 
             swimlane.move(card);
         },
 
-        'should get data from swimlanes that needs to be applied to defect card while updating': function(){
+        'should get data from swimlanes that needs to be applied to defect card while updating': function() {
             var swimlane = new Y.Mashups.Swimlane({ Name: "Defined", data : '{ "KanbanState": "Defined", "ScheduleSate": "Backlog" }' });
             var card = new Y.Mashups.Defect(Y.Mashups.Tests.Data.DefectsAsData[0]);
             var serviceMock = new Y.Mashups.Stubs.Service();
             serviceMock.updateCard = function(card, jsonData) {
-                Y.Assert.areEqual('{"Defect": { "KanbanState": "Defined", "ScheduleSate": "Backlog" }}', jsonData );
+                Y.Assert.areEqual('{"Defect": { "KanbanState": "Defined", "ScheduleSate": "Backlog" }}', jsonData);
             };
-            card.set('service',serviceMock);
+            card.set('service', serviceMock);
 
             swimlane.move(card);
         },
@@ -228,7 +228,7 @@ YUI.add('card-tests', function(Y) {
             swimlanes.renderCards(cards);
 
             Y.Assert.isFalse(Y.one("#card-325594710").one(".title").hasClass("selected"));
-            
+
             Y.one("#card-325594710").one(".title").simulate("click");
             Y.Assert.isTrue(Y.one("#card-325594710").one(".title").hasClass("selected"));
 
@@ -250,7 +250,7 @@ YUI.add('card-tests', function(Y) {
             swimlanes.set('service', serviceMock);
             swimlanes.renderSwimlanes();
 
-            var actionMenu = new Y.Mashups.ActionMenu();
+            var actionMenu = new Y.Mashups.ActionMenu({moveToIteration: false});
             actionMenu.buildMenu(swimlanes);
             actionMenu.show();
 

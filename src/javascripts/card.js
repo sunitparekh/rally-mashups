@@ -20,41 +20,41 @@ YUI.add('mashups-card', function(Y) {
         },
 
         render: function() {
-            var card = Y.Node.create("<div></div>");
-            card.addClass("card");
-            card.addClass(this.get('type'));
-            card.setAttribute("id", "card-" + this.ObjectID);
-                var header = Y.Node.create("<div></div>");
-                header.addClass("header");
+            var cardNode = Y.Node.create("<div></div>");
+            cardNode.addClass("card");
+            cardNode.addClass(this.get('type'));
+            cardNode.setAttribute("id", "card-" + this.ObjectID);
+                var headerNode = Y.Node.create("<div></div>");
+                headerNode.addClass("header");
                     var number = Y.Node.create("<div></div>");
                     number.addClass("number");
                     number.setContent(this.FormattedID);
                     number.on("click", function(e,card){card.editCard();} ,{},this);
-                header.appendChild(number);
+                headerNode.appendChild(number);
                     var estimate = Y.Node.create("<div></div>");
                     estimate.addClass("estimate");
                     estimate.setContent(this.estimate());
-                header.appendChild(estimate);
+                headerNode.appendChild(estimate);
                     var state = Y.Node.create("<div></div>");
                     state.addClass("state");
                     state.addClass('blocked-' + this.Blocked);
                     state.setContent(this.scheduleStateLegend());
-                header.appendChild(state);
-            card.appendChild(header);
-                var title = Y.Node.create("<div></div>");
-                title.addClass("title");
-                title.setAttribute("title","click to toggle card selection");
-                title.setContent(this.truncatedName());
-                title.on("click", function(e,card){card.toggleSelection();} ,{},this);
-            card.appendChild(title);
-                var footer = Y.Node.create("<div></div>");
-                footer.addClass("footer");
+                headerNode.appendChild(state);
+            cardNode.appendChild(headerNode);
+                var titleNode = Y.Node.create("<div></div>");
+                titleNode.addClass("title");
+                titleNode.setAttribute("title","click to toggle card selection");
+                titleNode.setContent(this.truncatedName());
+                titleNode.on("click", function(e,card){card.toggleSelection();} ,{},this);
+            cardNode.appendChild(titleNode);
+                var footerNode = Y.Node.create("<div></div>");
+                footerNode.addClass("footer");
                     var owner = Y.Node.create("<div></div>");
                     owner.addClass("owner");
                     owner.setContent(this.ownerName());
-                footer.appendChild(owner);
-            card.appendChild(footer);
-            return card;
+                footerNode.appendChild(owner);
+            cardNode.appendChild(footerNode);
+            return cardNode;
         },
 
         editCard: function(){
@@ -100,9 +100,9 @@ YUI.add('mashups-card', function(Y) {
             }
         },
 
-        update: function(data) {
+        update: function(data, callback) {
             var jsonData = '{"' + this.get('rallyType') + '": ' + data + "}";
-            this.get('service').updateCard(this, jsonData);
+            this.get('service').updateCard(this, jsonData, callback);
         }
     });
     
