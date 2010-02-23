@@ -43,7 +43,9 @@ YUI.add('mashups-card', function(Y) {
             card.appendChild(header);
                 var title = Y.Node.create("<div></div>");
                 title.addClass("title");
+                title.setAttribute("title","click to toggle card selection");
                 title.setContent(this.truncatedName());
+                title.on("click", function(e,card){card.toggleSelection();} ,{},this);
             card.appendChild(title);
                 var footer = Y.Node.create("<div></div>");
                 footer.addClass("footer");
@@ -59,6 +61,10 @@ YUI.add('mashups-card', function(Y) {
             var url = '/slm/awp/edit.sp?oid=' + this.ObjectID +  '&typeDefName=' + this.get('editCardRallyType');
             window.popup(url, 800, 600, 'littleN');
             return false;
+        },
+
+        toggleSelection: function() {
+            Y.one("#card-" + this.ObjectID).one(".title").toggleClass("selected");
         },
 
         truncatedName: function() {

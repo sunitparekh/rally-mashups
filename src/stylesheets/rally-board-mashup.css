@@ -138,6 +138,10 @@
     padding: 2px 5px;
 }
 
+.card .selected {
+    background-color: #7fff00;
+}
+
 .card .owner {
     text-align: left;
     width: 140px;

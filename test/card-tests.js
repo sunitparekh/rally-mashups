@@ -220,6 +220,22 @@ YUI.add('card-tests', function(Y) {
             swimlane.move(card);
         },
 
+        'should toggle card selection on clicking card title': function() {
+            var swimlanes = Y.Mashups.Tests.Data.KanbanSwimlanes();
+            swimlanes.renderSwimlanes();
+
+            var cards = Y.Mashups.Tests.Data.Cards();
+            swimlanes.renderCards(cards);
+
+            Y.Assert.isFalse(Y.one("#card-325594710").one(".title").hasClass("selected"));
+            
+            Y.one("#card-325594710").one(".title").simulate("click");
+            Y.Assert.isTrue(Y.one("#card-325594710").one(".title").hasClass("selected"));
+
+            Y.one("#card-325594710").one(".title").simulate("click");
+            Y.Assert.isFalse(Y.one("#card-325594710").one(".title").hasClass("selected"));
+        },
+
         'should make play area for test as last test': function() {
             var serviceMock = new Y.Mashups.Stubs.Service();
             serviceMock.findOwnerNameByEmailId = function(card) {
