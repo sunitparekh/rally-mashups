@@ -562,7 +562,7 @@
         },
 
         move: function(card) {
-            Y.Mashups.FlashMessage.message.show("Please wait.. moving card '" + card.FormattedID + "' to swimlane '" + this.Name + "'");
+            Y.Mashups.FlashMessage.message.show("Please wait.. moving card '" + card.FormattedID + "' to swimlane '" + this.Label + "'");
             card.update(this.data);
         },
 
@@ -889,13 +889,12 @@
     var YahooUI = YUI().use('mashups-swimlane','mashups-card','mashups-service','mashups-action-menu', function (Y) {
         var service = null;
         var swimlanes = null;
-        var actionMenu = null;
 
         function initPage() {
             Y.Mashups.FlashMessage.message.hide();
             service = new Y.Mashups.Service({mashupName: "EstimationBoard", refreshCardsCallback: Y.Mashups.EstimationBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.ITERATION});
             swimlanes = Y.Mashups.EstimationBoard.loadSwimlaneBoard();
-            actionMenu = Y.Mashups.EstimationBoard.loadActionMenu(swimlanes);
+            Y.Mashups.EstimationBoard.loadActionMenu(swimlanes);
             service.loadFilter();
         }
 
@@ -908,10 +907,10 @@
         };
 
         Y.Mashups.EstimationBoard.loadActionMenu = function(swimlanes) {
-            var tempActionMenu = new Y.Mashups.ActionMenu();
-            tempActionMenu.buildMenu(swimlanes);
-            tempActionMenu.show();
-            return tempActionMenu;
+            var actionMenu = new Y.Mashups.ActionMenu({showSwimlane: false, hideSwimlane: false});
+            actionMenu.buildMenu(swimlanes, service);
+            actionMenu.show();
+            return actionMenu;
         };
 
         Y.Mashups.EstimationBoard.refreshCardsOnBoard = function() {

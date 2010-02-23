@@ -46,7 +46,7 @@ YUI.add('mashups-swimlane', function(Y) {
         },
 
         move: function(card) {
-            Y.Mashups.FlashMessage.message.show("Please wait.. moving card '" + card.FormattedID + "' to swimlane '" + this.Name + "'");
+            Y.Mashups.FlashMessage.message.show("Please wait.. moving card '" + card.FormattedID + "' to swimlane '" + this.Label + "'");
             card.update(this.data);
         },
 

@@ -55,7 +55,7 @@
 
         Y.Mashups.ReleasePlanningBoard.loadActionMenu = function(swimlanes) {
             var actionMenu = new Y.Mashups.ActionMenu({moveToIteration: false});
-            actionMenu.buildMenu(swimlanes);
+            actionMenu.buildMenu(swimlanes, service);
             actionMenu.show();
         };
 

@@ -33,6 +33,7 @@
             Y.Mashups.FlashMessage.message.hide();
             service = new Y.Mashups.Service({mashupName: "DocumentationScrumBoard", refreshCardsCallback: Y.Mashups.DocumentationScrumBoard.refreshCardsOnBoard, filterType : RALLY.Mashup.ITERATION});
             swimlanes = Y.Mashups.DocumentationScrumBoard.loadSwimlaneBoard();
+            Y.Mashups.DocumentationScrumBoard.loadActionMenu(swimlanes);
             service.loadFilter();
         }
 
@@ -42,6 +43,13 @@
             var tempSwimlanes = Y.Mashups.DocumentationScrumBoard.KanbanStatesAsSwimlanes();
             tempSwimlanes.renderSwimlanes();
             return tempSwimlanes;
+        };
+
+        Y.Mashups.DocumentationScrumBoard.loadActionMenu = function(swimlanes) {
+            var actionMenu = new Y.Mashups.ActionMenu({showSwimlane: false, hideSwimlane: false});
+            actionMenu.buildMenu(swimlanes, service);
+            actionMenu.show();
+            return actionMenu;
         };
 
         Y.Mashups.DocumentationScrumBoard.refreshCardsOnBoard = function() {
