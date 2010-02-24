@@ -19,11 +19,15 @@ YUI.add('mashups-card', function(Y) {
             });
         },
 
+        cardID: function() {
+            return "card-" + this.ObjectID;
+        },
+
         render: function() {
             var cardNode = Y.Node.create("<div></div>");
             cardNode.addClass("card");
             cardNode.addClass(this.get('type'));
-            cardNode.setAttribute("id", "card-" + this.ObjectID);
+            cardNode.setAttribute("id", this.cardID());
                 var headerNode = Y.Node.create("<div></div>");
                 headerNode.addClass("header");
                     var number = Y.Node.create("<div></div>");
@@ -64,7 +68,7 @@ YUI.add('mashups-card', function(Y) {
         },
 
         toggleSelection: function() {
-            Y.one("#card-" + this.ObjectID).one(".title").toggleClass("selected");
+            Y.one("#" + this.cardID()).one(".title").toggleClass("selected");
         },
 
         truncatedName: function() {
@@ -82,7 +86,7 @@ YUI.add('mashups-card', function(Y) {
 
         updateOwnerName: function(ownerName) {
             Y.Cookie.setSub("email-name",this.Owner, ownerName, { expires: new Date("January 12, 2025") });
-            Y.one("#card-" + this.ObjectID).one(".owner").setContent(ownerName);
+            Y.one("#" + this.cardID()).one(".owner").setContent(ownerName);
         },
         
         estimate: function() {

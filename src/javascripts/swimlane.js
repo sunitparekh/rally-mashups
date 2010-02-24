@@ -15,17 +15,30 @@ YUI.add('mashups-swimlane', function(Y) {
                 self[index] = value;
             });
             if (this.Label == null) this.Label = this.Name;
+            this.estimate = 0.0;
         },
 
         htmlID: function() {
             return this.Name.htmlID();
         },
 
-        renderHeaderRow: function(prefix, swimlaneNotAvailableFlag) {
+        headerID: function() {
+            return "header-" + this.htmlID();
+        },
+
+        footerID: function() {
+            return "footer-" + this.htmlID();
+        },
+
+        cardsID: function() {
+            return "cards-" + this.htmlID();
+        },
+
+        renderHeaderRow: function(id, swimlaneNotAvailableFlag) {
             var swimlaneNode = Y.Node.create("<div></div>");
             swimlaneNode.addClass("swimlane");
             if (swimlaneNotAvailableFlag) swimlaneNode.addClass("swimlane-not-available");
-            swimlaneNode.setAttribute("id", prefix + "-" + this.htmlID());
+            swimlaneNode.setAttribute("id", id);
             var swimlaneName = Y.Node.create("<div></div>");
             swimlaneName.addClass("name");
             swimlaneName.set("innerHTML", this.Label);
@@ -41,7 +54,7 @@ YUI.add('mashups-swimlane', function(Y) {
         renderCardsRow: function() {
             var swimlaneNode = Y.Node.create("<div></div>");
             swimlaneNode.addClass("swimlane");
-            swimlaneNode.setAttribute("id", "cards-" + this.htmlID());
+            swimlaneNode.setAttribute("id", this.cardsID());
             return swimlaneNode;
         },
 
@@ -51,16 +64,16 @@ YUI.add('mashups-swimlane', function(Y) {
         },
 
         show: function() {
-            Y.one("#header-" + this.htmlID()).removeClass("hide");
-            Y.one("#cards-" + this.htmlID()).removeClass("hide");
-            Y.one("#footer-" + this.htmlID()).removeClass("hide");
+            Y.one("#" + this.headerID()).removeClass("hide");
+            Y.one("#" + this.cardsID()).removeClass("hide");
+            Y.one("#" + this.footerID()).removeClass("hide");
             Y.Cookie.removeSub(this.get("service").get("mashupName") + ".swimlanes",this.Name, { removeIfEmpty: true });
         },
 
         hide: function() {
-            Y.one("#header-" + this.htmlID()).addClass("hide");
-            Y.one("#cards-" + this.htmlID()).addClass("hide");
-            Y.one("#footer-" + this.htmlID()).addClass("hide");
+            Y.one("#" + this.headerID()).addClass("hide");
+            Y.one("#" + this.cardsID()).addClass("hide");
+            Y.one("#" + this.footerID()).addClass("hide");
             Y.Cookie.setSub(this.get("service").get("mashupName") + ".swimlanes",this.Name,"hide", { expires: new Date("January 12, 2025") });
         },
 
@@ -142,7 +155,7 @@ YUI.add('mashups-swimlane', function(Y) {
                 swimlane.set('service',self.get("service"));
                 var swimlaneNotAvailableFlag = (swimlane === self.get("swimlaneNotAvailable"));
 
-                swimlaneHeader.append(swimlane.renderHeaderRow("header", swimlaneNotAvailableFlag));
+                swimlaneHeader.append(swimlane.renderHeaderRow(swimlane.headerID(), swimlaneNotAvailableFlag));
 
                 var cardsRowNode = swimlane.renderCardsRow();
                 if (swimlane != self.get('swimlaneNotAvailable')) {
@@ -156,7 +169,7 @@ YUI.add('mashups-swimlane', function(Y) {
                 }
                 swimlaneCards.append(cardsRowNode);
 
-                swimlaneFooter.append(swimlane.renderHeaderRow("footer", swimlaneNotAvailableFlag));
+                swimlaneFooter.append(swimlane.renderHeaderRow(swimlane.footerID(), swimlaneNotAvailableFlag));
             });
         },
 
@@ -169,11 +182,10 @@ YUI.add('mashups-swimlane', function(Y) {
         clearCards : function() {
             var self = this;
             this.cards = new Y.Mashups.Cards();
-            Y.each(this.swimlanes, function(swimlane, index, array) {
-                var swimlaneCards = Y.one("#cards-" + swimlane.htmlID());
-                swimlaneCards.set("innerHTML", "");
-                self.updateEstimate(swimlane.Name, 0, "header", false);
-                self.updateEstimate(swimlane.Name, 0, "footer", false);
+            Y.each(this.swimlanes, function(swimlane) {
+                Y.one("#" + swimlane.cardsID()).set("innerHTML", "");
+                swimlane.estimate = 0.0;
+                self.updateEstimate(swimlane, 0.0);
             });
         },
 
@@ -181,14 +193,13 @@ YUI.add('mashups-swimlane', function(Y) {
             var keyValue = this.swimlaneKeyValue(card);
             var swimlane = this.findByName(keyValue);
             this.cards.addCard(card);
-            var swimlaneCardsNode = Y.one("#cards-" + swimlane.htmlID());
+            var swimlaneCardsNode = Y.one("#" + swimlane.cardsID());
 
             var cardNode = card.render();
             cardNode.plug(Y.Plugin.Drag);
             swimlaneCardsNode.append(cardNode);
 
-            this.updateEstimate(keyValue, card.PlanEstimate, "header");
-            this.updateEstimate(keyValue, card.PlanEstimate, "footer");
+            this.updateEstimate(swimlane, card.PlanEstimate);
         },
 
         renderCards : function (cards) {
@@ -201,13 +212,11 @@ YUI.add('mashups-swimlane', function(Y) {
             Y.Mashups.FlashMessage.message.hide();
         },
 
-        updateEstimate : function(swimlaneName, estimate, prefix, addAndUpdateFlag) {
-            if (addAndUpdateFlag == undefined) addAndUpdateFlag = true;
-            if (estimate == null) return;
-            var swimlaneNode = Y.one("#" + prefix + "-" + this.findByName(swimlaneName).htmlID());
-            var estimateNode = swimlaneNode.one(".estimate");
-            var total = ( (addAndUpdateFlag) ? parseFloat(estimateNode.get("innerHTML")) : 0) + estimate;
-            estimateNode.set("innerHTML", total);
+        updateEstimate : function(swimlane, estimate) {
+            if (estimate == null || estimate == undefined) return;
+            swimlane.estimate = swimlane.estimate + estimate;
+            Y.one("#" + swimlane.headerID()).one(".estimate").set("innerHTML", swimlane.estimate);
+            Y.one("#" + swimlane.footerID()).one(".estimate").set("innerHTML", swimlane.estimate);
         }
     });
     Y.Mashups.Swimlanes = Swimlanes;
