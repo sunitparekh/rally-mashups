@@ -360,11 +360,15 @@
             });
         },
 
+        cardID: function() {
+            return "card-" + this.ObjectID;
+        },
+
         render: function() {
             var cardNode = Y.Node.create("<div></div>");
             cardNode.addClass("card");
             cardNode.addClass(this.get('type'));
-            cardNode.setAttribute("id", "card-" + this.ObjectID);
+            cardNode.setAttribute("id", this.cardID());
                 var headerNode = Y.Node.create("<div></div>");
                 headerNode.addClass("header");
                     var number = Y.Node.create("<div></div>");
@@ -405,7 +409,7 @@
         },
 
         toggleSelection: function() {
-            Y.one("#card-" + this.ObjectID).one(".title").toggleClass("selected");
+            Y.one("#" + this.cardID()).one(".title").toggleClass("selected");
         },
 
         truncatedName: function() {
@@ -423,7 +427,7 @@
 
         updateOwnerName: function(ownerName) {
             Y.Cookie.setSub("email-name",this.Owner, ownerName, { expires: new Date("January 12, 2025") });
-            Y.one("#card-" + this.ObjectID).one(".owner").setContent(ownerName);
+            Y.one("#" + this.cardID()).one(".owner").setContent(ownerName);
         },
         
         estimate: function() {
@@ -538,11 +542,23 @@
             return this.Name.htmlID();
         },
 
-        renderHeaderRow: function(prefix, swimlaneNotAvailableFlag) {
+        headerID: function() {
+            return "header-" + this.htmlID();
+        },
+
+        footerID: function() {
+            return "footer-" + this.htmlID();
+        },
+
+        cardsID: function() {
+            return "cards-" + this.htmlID();
+        },
+
+        renderHeaderRow: function(id, swimlaneNotAvailableFlag) {
             var swimlaneNode = Y.Node.create("<div></div>");
             swimlaneNode.addClass("swimlane");
             if (swimlaneNotAvailableFlag) swimlaneNode.addClass("swimlane-not-available");
-            swimlaneNode.setAttribute("id", prefix + "-" + this.htmlID());
+            swimlaneNode.setAttribute("id", id);
             var swimlaneName = Y.Node.create("<div></div>");
             swimlaneName.addClass("name");
             swimlaneName.set("innerHTML", this.Label);
@@ -558,7 +574,7 @@
         renderCardsRow: function() {
             var swimlaneNode = Y.Node.create("<div></div>");
             swimlaneNode.addClass("swimlane");
-            swimlaneNode.setAttribute("id", "cards-" + this.htmlID());
+            swimlaneNode.setAttribute("id", this.cardsID());
             return swimlaneNode;
         },
 
@@ -568,16 +584,16 @@
         },
 
         show: function() {
-            Y.one("#header-" + this.htmlID()).removeClass("hide");
-            Y.one("#cards-" + this.htmlID()).removeClass("hide");
-            Y.one("#footer-" + this.htmlID()).removeClass("hide");
+            Y.one("#" + this.headerID()).removeClass("hide");
+            Y.one("#" + this.cardsID()).removeClass("hide");
+            Y.one("#" + this.footerID()).removeClass("hide");
             Y.Cookie.removeSub(this.get("service").get("mashupName") + ".swimlanes",this.Name, { removeIfEmpty: true });
         },
 
         hide: function() {
-            Y.one("#header-" + this.htmlID()).addClass("hide");
-            Y.one("#cards-" + this.htmlID()).addClass("hide");
-            Y.one("#footer-" + this.htmlID()).addClass("hide");
+            Y.one("#" + this.headerID()).addClass("hide");
+            Y.one("#" + this.cardsID()).addClass("hide");
+            Y.one("#" + this.footerID()).addClass("hide");
             Y.Cookie.setSub(this.get("service").get("mashupName") + ".swimlanes",this.Name,"hide", { expires: new Date("January 12, 2025") });
         },
 
@@ -659,7 +675,7 @@
                 swimlane.set('service',self.get("service"));
                 var swimlaneNotAvailableFlag = (swimlane === self.get("swimlaneNotAvailable"));
 
-                swimlaneHeader.append(swimlane.renderHeaderRow("header", swimlaneNotAvailableFlag));
+                swimlaneHeader.append(swimlane.renderHeaderRow(swimlane.headerID(), swimlaneNotAvailableFlag));
 
                 var cardsRowNode = swimlane.renderCardsRow();
                 if (swimlane != self.get('swimlaneNotAvailable')) {
@@ -673,7 +689,7 @@
                 }
                 swimlaneCards.append(cardsRowNode);
 
-                swimlaneFooter.append(swimlane.renderHeaderRow("footer", swimlaneNotAvailableFlag));
+                swimlaneFooter.append(swimlane.renderHeaderRow(swimlane.footerID(), swimlaneNotAvailableFlag));
             });
         },
 
@@ -687,7 +703,7 @@
             var self = this;
             this.cards = new Y.Mashups.Cards();
             Y.each(this.swimlanes, function(swimlane) {
-                Y.one("#cards-" + swimlane.htmlID()).set("innerHTML", "");
+                Y.one("#" + swimlane.cardsID()).set("innerHTML", "");
                 swimlane.estimate = 0.0;
                 self.updateEstimate(swimlane, 0.0);
             });
@@ -697,7 +713,7 @@
             var keyValue = this.swimlaneKeyValue(card);
             var swimlane = this.findByName(keyValue);
             this.cards.addCard(card);
-            var swimlaneCardsNode = Y.one("#cards-" + swimlane.htmlID());
+            var swimlaneCardsNode = Y.one("#" + swimlane.cardsID());
 
             var cardNode = card.render();
             cardNode.plug(Y.Plugin.Drag);
@@ -719,8 +735,8 @@
         updateEstimate : function(swimlane, estimate) {
             if (estimate == null || estimate == undefined) return;
             swimlane.estimate = swimlane.estimate + estimate;
-            Y.one("#header-" + swimlane.htmlID()).one(".estimate").set("innerHTML", swimlane.estimate);
-            Y.one("#footer-" + swimlane.htmlID()).one(".estimate").set("innerHTML", swimlane.estimate);
+            Y.one("#" + swimlane.headerID()).one(".estimate").set("innerHTML", swimlane.estimate);
+            Y.one("#" + swimlane.footerID()).one(".estimate").set("innerHTML", swimlane.estimate);
         }
     });
     Y.Mashups.Swimlanes = Swimlanes;
