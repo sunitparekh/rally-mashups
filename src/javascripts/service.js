@@ -54,7 +54,7 @@ YUI.add('mashups-service', function(Y) {
         findCardsByFilter: function(callback) {
             Y.Mashups.FlashMessage.message.show("Please wait... loading cards for '" + this.filterDropdown.getSelectedName() + "'");
             var queryArr = [];
-            var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked,Iteration";
+            var fields = "FormattedID,Name,ObjectID,ScheduleState,PlanEstimate,Owner,KanbanState,Blocked,Iteration,Rank";
             queryArr[0] =
             {
                 key: 'defects',
