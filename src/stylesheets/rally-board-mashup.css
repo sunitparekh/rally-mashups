@@ -1,5 +1,5 @@
 .outer-container {
-    width: 2100px;
+    width: 1900px;
     font-family: arial, verdana, geneva, sans-serif;
     font-size: 0.75em;
 }
@@ -32,7 +32,7 @@
 }
 
 .navigation-bar {
-    margin: 5px 20px;
+    margin: 5px 20px 10px 20px;
     height: 20px;
 }
 .navigation-bar select{
@@ -43,23 +43,15 @@
     margin: 0 10px;
 }
 
-.swimlane-board {
-    margin: 15px 0 0 0;
-    padding: 0;
-}
-
 .swimlane-row {
     clear: both;
-    margin: 0;
-    padding: 0;
 }
 
 .swimlane {
     float: left;
-    width: 155px;
+    width: 150px;
     border-right: 2px solid;
-    margin: 0;
-    padding: 0;
+    overflow: hidden;
 }
 
 .swimlane-cards .swimlane {
@@ -84,7 +76,7 @@
 
 .card {
     width: 135px;
-    margin: 3px 3px;
+    margin: 4px 4px;
     padding: 0;
     border: solid 1px black;
     border-left-width: 5px;
