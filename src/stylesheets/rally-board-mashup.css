@@ -1,5 +1,5 @@
 .outer-container {
-    width: 1900px;
+    width: 2100px;
     font-family: arial, verdana, geneva, sans-serif;
     font-size: 0.75em;
 }
@@ -44,7 +44,8 @@
 }
 
 .swimlane-board {
-    margin-top: 15px;
+    margin: 15px 0 0 0;
+    padding: 0;
 }
 
 .swimlane-row {
@@ -55,8 +56,10 @@
 
 .swimlane {
     float: left;
-    width: 150px;
+    width: 155px;
     border-right: 2px solid;
+    margin: 0;
+    padding: 0;
 }
 
 .swimlane-cards .swimlane {
@@ -81,7 +84,8 @@
 
 .card {
     width: 135px;
-    margin: 5px 5px;
+    margin: 3px 3px;
+    padding: 0;
     border: solid 1px black;
     border-left-width: 5px;
     font-size: 0.9em;
@@ -135,6 +139,10 @@
 }
 
 .card .title {
+    text-align: left;
+    width: 125px;
+    float: left;
+    overflow: hidden;
     padding: 2px 5px;
 }
 
@@ -144,7 +152,7 @@
 
 .card .owner {
     text-align: left;
-    width: 140px;
+    width: 125px;
     background: #B5D8EB;
     padding: 1px 5px;
     float: left;
