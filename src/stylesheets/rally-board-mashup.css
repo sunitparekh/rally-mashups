@@ -49,9 +49,8 @@
 
 .swimlane {
     float: left;
-    width: 150px;
+    width: 155px;
     border-right: 2px solid;
-    overflow: hidden;
 }
 
 .swimlane-cards .swimlane {
